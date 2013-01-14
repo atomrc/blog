@@ -1,0 +1,5 @@
+var aboutViews = {
+  index: '\
+    {{&content}}\
+  ',
+}

@@ -1,0 +1,97 @@
+body { padding:0; margin:0; background:url('/images/noise.png') #EEE; color:#666; font-family:Arial; }
+
+h1, h2, .tweet-ref, strong { color:#F06; }
+a { color:inherit;  text-decoration:none; }
+label { float:left; display:block; width:100px;  }
+fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
+legend { font-weight:bold; }
+ul { list-style: none; padding:0; }
+
+#header { background:url('/images/tom.png') no-repeat center 5px ; /*background-color:#4D90FE;*/
+  padding-top:5px; height:4em; font-size:11pt; text-shadow:0px 1px 0px white;
+  position:relative; }
+
+
+#footer { font-size:11pt; text-align:center; border-top:solid 1px #CCC; margin:auto;}
+
+.container { width:650px; margin:auto; }
+
+#header .container > div { float:left; width:50%; height:100%; }
+#header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; }
+#header .logo #id-image { height:3em; margin-top:0.5em; }
+#header .menu ul { float:right; margin:0;}
+#header .menu li { display:block; float:left; width:75px; text-align:center; }
+#header .menu li a.state { display:block; float:left; width:75px; text-align:center; }
+#header .menu p { line-height:0; margin-top:3.25em; }
+
+#about { background:url('/images/sprite.png') 0 0; }
+#about:hover { background:url('/images/sprite.png') 0px 62px; }
+
+#posts { background:url('/images/sprite.png') 75px 0px; }
+#posts:hover { background:url('/images/sprite.png') 75px 62px; }
+
+#home { background:url('/images/sprite.png') 150px 0px; }
+#home:hover { background:url('/images/sprite.png') 150px 62px; }
+
+
+#main-content { padding: 30px 40px; }
+
+#welcome { font-size: 30pt; font-weight:bold; margin: 10px 0 30px 0}
+
+.success, .error { text-align: center; padding:10px; }
+.success {color:green; }
+.error {color:red; }
+
+/* HOME */
+.widget { border-radius:5px; background:white; margin:20px 0 }
+.widget-container, .widget-title { padding:20px; }
+.widget-title { font-size:20pt; font-weight:bold;  }
+.widget-container { padding-top:0 }
+
+.tweets-list .tweet { padding:10px; border-top:solid 1px #ccc;  }
+.tweets-list { margin-top:0; }
+
+
+.pubdate { font-size:10pt; color:#888 }
+.error404 { font-size:50pt; text-align:center; font-weight:bold; padding:50px 0; }
+
+.edit-panel a.delete:before { content:"×"; }
+.edit-panel a.edit:before { content:"✍"; }
+.edit-panel {display:none; position:absolute; top:5px; right:5px; font-size:14pt; font-weight:bold; }
+.edit-panel a{ display:block; float:left; height:1em; width:1em;}
+
+.unpublished { color:#888; }
+/* Posts list */
+.posts-list { margin:0; padding:0; }
+.posts-list li { position:relative; }
+.posts-list li>a{ display:block; padding:5px; border-top:solid 1px #ccc }
+.posts-list li:hover>a,
+.comment:nth-child(odd),
+article .edition-panel, .widget, aside { background:rgba(255,255,255, 0.5);}
+.posts-list li:hover .edit-panel { display:block; }
+.posts-list h2 { color:#F06; margin:0; }
+
+/* full article */
+aside { position: absolute; right:105%; top:0; padding:10px; border:solid 1px #CCC; border-right:none; border-radius:3px; }
+article { text-align:justify; border-bottom:solid 1px #ccc; position:relative; }
+article h1 { font-size: 2em; margin:0; }
+article .body { margin:20px 0; }
+article .edition-panel { position:absolute; left:100%; padding:10px; border:solid #ccc 1px; border-left:0; border-radius:3px; }
+
+a.button {display:inline-block; margin:10px}
+input[type=submit], button, .button { border:solid #3079ED 1px; border-radius:3px; padding:5px; color:white; font-size:12pt; background:#4D90FE; }
+.unpublish { background-color: #7A0026; border-color:grey; }
+
+/* tags */
+#tags-list {}
+#tags-list li { background-color:white; border-radius:5px; padding:3px; border:solid 1px #ccc; }
+
+/* Comments */
+#commentsContainer .name { font-weight:bold; }
+.comment { padding:10px 5px 20px 10px; border-bottom: solid 0px #ccc; position:relative; }
+.comment p { margin-bottom: 0; }
+.comment:hover .edit-panel {display:block; }
+
+/* ABOUT */
+#idpic {border-radius: 5px; height:150px; float:left; margin:0 10px; }
+#about-contact a { font-weight:bold; }
