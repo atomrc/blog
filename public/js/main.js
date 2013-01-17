@@ -1,21 +1,18 @@
-/*global require*/
+/*global require, define*/
+
 require.config({
     baseUrl: 'js/src',
     paths: {
-        jquery: '../lib/jquery',
-        backbone: '../lib/backbone',
-        underscore: '../lib/underscore',
-        mustache: '../lib/mustache'
+        angular: '../lib/angular.min'
     },
     shim: {
-        backbone: {
-            deps : ['jquery', 'underscore'],
-            exports: 'Backbone'
+        'angular': {
+            exports: "Angular"  //attaches "Backbone" to the window object
         }
     }
 });
 
-require(['application'], function (application) {
+require(['angular', 'application'], function (Angular, application) {
     'use strict';
     application.initialize();
 });

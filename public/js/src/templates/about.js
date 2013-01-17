@@ -1,5 +1,0 @@
-var aboutViews = {
-  index: '\
-    {{&content}}\
-  ',
-}
