@@ -10,9 +10,9 @@ define([ 'angular', 'controllers' ],
                     .module('blog', [])
                     .config(['$routeProvider', function ($routeProvider) {
                         $routeProvider
-                            .when('/', {templateUrl: 'views/home.html',   controller: controllers.home.index})
-                            .when('/posts', {templateUrl: 'views/posts.html',   controller: controllers.posts.index})
-                            .when('/posts/:postSlug', {templateUrl: 'partials/post.html', controller: controllers.posts.show})
+                            .when('/', {templateUrl: 'views/home',   controller: controllers.home.index})
+                            .when('/posts', {templateUrl: 'views/posts',   controller: controllers.posts.index})
+                            .when('/posts/:postSlug', {templateUrl: 'views/post', controller: controllers.posts.show})
                             .otherwise({redirectTo: '/'});
                     }]);
                 angular.bootstrap(window.document, ['blog']);

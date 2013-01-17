@@ -4,16 +4,29 @@ define([],
 
     function () {
         'use strict';
-        var postsController = {
+        var postsController = null,
+            homeController = null;
+
+        postsController = {
             index: function ($http, $scope) {
-                $http.get('/posts').success(function (posts) {
-                    $scope.posts = posts;
-                });
+                $http
+                    .get('/posts')
+                    .success(function (posts) {
+                        $scope.posts = posts;
+                    });
+            },
+
+            show: function ($http, $scope, $routeParams) {
+                $http
+                    .get('/posts/' + $routeParams.postSlug)
+                    .success(function (post) {
+                        $scope.post = post;
+                    });
             }
         };
 
-        var homeController = {
-            index: function($http, $scope) {
+        homeController = {
+            index: function ($http, $scope) {
                 $http.get('/posts?limit=3').success(function (posts) {
                     $scope.posts = posts;
                 });

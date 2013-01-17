@@ -27,6 +27,9 @@ module.exports = function(app) {
 
     app.get('/', controllers.homeController.index);
 
+    //VIEWS
+    app.get('/views/:view_id', controllers.viewsController.show);
+
     //POSTS
     app.get('/posts', controllers.postsController.index);
     app.post('/posts', authenticateApp, controllers.postsController.create);
