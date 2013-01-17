@@ -1,5 +1,20 @@
-<ul>
-    <li ng-repeat='post in posts'>
-        {{ post.title }}
-    </li>
-</ul>
+<div id="welcome"> Bienvenue </div>
+<div class="widget">
+    <div class="widget-title"> Mes derniers posts </div>
+        <div id="posts-container" class="widget-container">
+        <ul class="posts-list">
+            <li class="post" ng-repeat="post in posts">
+                {{ post.title }}
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="widget">
+    <div class="widget-title"> Mes derniers tweets </div>
+    <div id="tweets-container" class="widget-container">
+        <ul class="tweets-list">
+            <li class="tweet" ng-repeat="tweet in tweets">
+            </li>
+        </ul>
+    </div>
+</div>

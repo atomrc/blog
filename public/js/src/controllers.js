@@ -19,7 +19,7 @@ define([],
                 });
 
                 $http.get().success(function (tweets) {
-                    $scope.tweets = tweets;
+                    $scope.tweets = [];
                 });
             }
         };
