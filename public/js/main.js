@@ -1,3 +1,4 @@
+/*global require*/
 require.config({
     baseUrl: 'js/src',
     paths: {
@@ -8,13 +9,13 @@ require.config({
     },
     shim: {
         backbone: {
-            deps : ['underscore'],
+            deps : ['jquery', 'underscore'],
             exports: 'Backbone'
         }
     }
 });
 
-require(['jquery', 'underscore', 'application'], function ($, underscore, application) {
+require(['application'], function (application) {
     'use strict';
     application.initialize();
 });

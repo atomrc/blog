@@ -1,36 +1,44 @@
-define([
-        "models/PostsCollection", 
-        "models/TweetsCollection", 
+/*global define, document*/
+define(
+    [
+        "jquery",
+        "models/PostsCollection",
+        "models/TweetsCollection",
         "mustache",
         "templates/home",
         "views/posts",
-        "views/tweets",
+        "views/tweets"
     ],
-    function(PostsCollection, TweetsCollection, Mustache, homeTemplates, postsViews, tweetsViews) {
-    var home = {
-        index: function() {
-            var posts = new PostsCollection();
-            var tweets = new TweetsCollection();
+    function ($, PostsCollection, TweetsCollection, Mustache, homeTemplates, postsViews, tweetsViews) {
+        'use strict';
+        var home = {
+            index: function () {
+                var posts = new PostsCollection(),
+                    tweets = new TweetsCollection(),
+                    container = document.getElementById("main-content"),
+                    tweetsIndex = null,
+                    postsIndex = null;
 
-            var container = document.getElementById("main-content");
-            $(container).empty();
-            container.innerHTML = Mustache.render(homeTemplates.index);
+                $(container).empty();
+                container.innerHTML = Mustache.render(homeTemplates.index);
 
-            var tweetsIndex = new tweetsViews.Index({
-                model: tweets,
-                el: document.getElementById("tweets-container"),
-            });
+                tweetsIndex = new tweetsViews.Index({
+                    model: tweets,
+                    el: document.getElementById("tweets-container")
+                });
 
-            var postsIndex = new postsViews.Index({
-                model: posts,
-                el: document.getElementById("posts-container"),
-            });
+                postsIndex = new postsViews.Index({
+                    model: posts,
+                    el: document.getElementById("posts-container")
+                });
 
-            posts.fetch({data: {count: 3}});
-            tweets.fetch();
-        }
-    }
 
-    return home;
+
+                posts.fetch({data: {count: 3}});
+                tweets.fetch();
+            }
+        };
+
+        return home;
 });
 

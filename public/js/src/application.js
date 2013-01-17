@@ -1,3 +1,4 @@
+/*global define */
 define([
     'backbone',
     'controllers/home',
@@ -17,7 +18,7 @@ define([
             router.route("!/404", "not-found", errorsController.notFound);
             Backbone.history.start();
         }
-    }
+    };
 
     return app;
 });
