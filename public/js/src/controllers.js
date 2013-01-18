@@ -8,6 +8,7 @@ define([],
             homeController = null;
 
         postsController = {
+
             index: function ($http, $scope) {
                 $http
                     .get('/posts')
@@ -23,9 +24,11 @@ define([],
                         $scope.post = post;
                     });
             }
+
         };
 
         homeController = {
+
             index: function ($http, $scope) {
                 $http.get('/posts?limit=3').success(function (posts) {
                     $scope.posts = posts;
@@ -35,6 +38,7 @@ define([],
                     $scope.tweets = [];
                 });
             }
+
         };
 
         return {

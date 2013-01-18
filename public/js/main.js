@@ -1,18 +1,22 @@
-/*global require, define*/
+/*global require, define, angular*/
 
 require.config({
     baseUrl: 'js/src',
     paths: {
-        angular: '../lib/angular.min'
-    },
-    shim: {
-        'angular': {
-            exports: "Angular"  //attaches "Backbone" to the window object
-        }
+        angular: '../lib/angular.amd'
     }
 });
 
-require(['angular', 'application'], function (Angular, application) {
+require(['angular', 'controllers'], function (Angular, controllers) {
     'use strict';
-    application.initialize();
+    Angular
+        .module('blog', [])
+        .config(['$routeProvider', function ($routeProvider) {
+            $routeProvider
+                .when('/', {templateUrl: 'views/home',   controller: controllers.home.index})
+                .when('/posts', {templateUrl: 'views/posts',   controller: controllers.posts.index})
+                .when('/posts/:postSlug', {templateUrl: 'views/post', controller: controllers.posts.show})
+                .otherwise({redirectTo: '/'});
+        }]);
+        angular.bootstrap(window.document, ['blog']);
 });
