@@ -3,17 +3,32 @@
 define([],
     function () {
         'use strict';
-        var services = {
+        var app = { 'apikey': 'felix' },
+            urlBuilder = null;
 
-            application: function () {
-                return {
-                    'apikey' : null
-                };
-            }
+        urlBuilder = function (application) {
+            this.application = application;
+            this.build = function (url, queryParams) {
+                var queryStr = '';
+                if (queryParams === undefined) {
+                    queryParams = [];
+                }
+                if (this.application.apikey !== null) {
+                    queryParams.push('apikey=' + this.application.apikey);
+                }
+                if (queryParams.length > 0) {
+                    queryStr = '?' + queryParams.join('&');
+                }
+                return url + queryStr;
+            };
 
+            return this;
         };
 
-        return services;
+        return {
+            application: app,
+            urlBuilder: urlBuilder
+        };
     }
 );
 
