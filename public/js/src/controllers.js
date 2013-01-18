@@ -25,9 +25,11 @@ define([],
                     });
             },
 
-            create: function ($scope, $http) {
+            create: function ($scope, $http, $location) {
                 $scope.save = function (post) {
-                    $http.post('/posts', post);
+                    $http.post('/posts', post).success(function (post) {
+                        $location.url('/posts');
+                    });
                 };
             }
 

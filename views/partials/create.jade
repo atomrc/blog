@@ -3,5 +3,6 @@
     form
         fieldset
             input(type='text', ng-model='post.title')
+            textarea(ng-model='post.description')
             textarea(ng-model='post.body')
             input(type='submit', ng-click='save(post)')
