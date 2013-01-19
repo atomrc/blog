@@ -10,6 +10,12 @@ var Unauthorized = function(msg) {
     Error.captureStackTrace(this, arguments.callee);
 }
 
+var ValidationError = function(msg) {
+    this.name = 'Validation Failed';
+    Error.call(this, msg);
+    Error.captureStackTrace(this, arguments.callee);
+}
+
 exports.Unauthorized = Unauthorized;
 exports.NotFound = NotFound;
 

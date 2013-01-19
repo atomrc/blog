@@ -28,6 +28,13 @@ define([],
                         $scope.post = post;
                     });
 
+                $scope.publishPost = function (post) {
+                    post.published = !post.published;
+                    $http.put('/posts/' + post.slug, { published: post.published }).success(function (post) {
+                        $scope.post = post;
+                    });
+                };
+
                 $scope.saveComment = function (comment) {
                     $http
                         .post(postUrl + '/comments', comment)

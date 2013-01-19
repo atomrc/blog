@@ -50,12 +50,12 @@ exports.deleteComment = function(req, res) {
     );
 }
 
-exports.update = function(req, res) {
-    Post.findByIdAndUpdate(
-        req.params.post_id,
+exports.update = function(req, res, next) {
+    Post.findOneAndUpdate(
+        { slug: req.params.post_slug},
         req.body,
         function( err, post ) {
-            if( err ) return next(new NotFound);
+            if( err ) return next(err);
             if( !post ) return next(new NotFound);
             res.send(post);
         }
