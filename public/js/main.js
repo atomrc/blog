@@ -19,9 +19,10 @@ require(['angular', 'controllers', 'services'], function (Angular, controllers, 
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                     .when('/', {templateUrl: 'views/home',   controller: controllers.home.index})
-                    .when('/posts', {templateUrl: 'views/posts',   controller: controllers.posts.index})
-                    .when('/posts/create', {templateUrl: 'views/create', controller: controllers.posts.create})
-                    .when('/posts/:postSlug', {templateUrl: 'views/post', controller: controllers.posts.show})
+                    .when('/posts', {templateUrl: 'views/posts_index',   controller: controllers.posts.index})
+                    .when('/posts/create', {templateUrl: 'views/posts_create', controller: controllers.posts.create})
+                    .when('/posts/:postSlug/edit', {templateUrl: 'views/posts_create', controller: controllers.posts.edit})
+                    .when('/posts/:postSlug', {templateUrl: 'views/posts_show', controller: controllers.posts.show})
                     .otherwise({redirectTo: '/'});
             }]);
         Angular.bootstrap(window.document, ['blog']);

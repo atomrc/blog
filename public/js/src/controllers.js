@@ -1,7 +1,7 @@
 /*global define*/
 
-define([],
-    function () {
+define(['angular'],
+    function (Angular) {
         'use strict';
         var postsController = null,
             homeController = null;
@@ -17,6 +17,29 @@ define([],
                     .success(function (posts) {
                         $scope.posts = posts;
                     });
+
+                $scope.publishPost = function (post) {
+                    post.published = !post.published;
+                    $http.put('/posts/' + post.slug, { published: post.published }).success(function (post) {
+                        $scope.post = post;
+                    });
+                };
+
+                $scope.deletePost = function (post) {
+                    if (window.confirm('sure bro ?')) {
+                        $http
+                            .delete('/posts/' + post.slug)
+                            .success(function (delPost) {
+                                var posts = $scope.posts;
+                                $scope.posts = [];
+                                Angular.forEach(posts, function (postElement) {
+                                    if (postElement._id !== delPost._id) {
+                                        $scope.posts.push(postElement);
+                                    }
+                                });
+                            });
+                    }
+                };
             },
 
             show: function ($http, $scope, $routeParams) {
@@ -27,13 +50,6 @@ define([],
                     .success(function (post) {
                         $scope.post = post;
                     });
-
-                $scope.publishPost = function (post) {
-                    post.published = !post.published;
-                    $http.put('/posts/' + post.slug, { published: post.published }).success(function (post) {
-                        $scope.post = post;
-                    });
-                };
 
                 $scope.saveComment = function (comment) {
                     $http
@@ -59,6 +75,24 @@ define([],
                     $http.post('/posts', post).success(function (post) {
                         $location.url('/posts');
                     });
+                };
+            },
+
+            edit: function ($scope, $http, $routeParams) {
+                var postUrl = '/posts/' + $routeParams.postSlug;
+                $http
+                    .get(postUrl)
+                    .success(function (post) {
+                        $scope.post = post;
+                    });
+
+                $scope.save = function (post) {
+                    delete post._id;
+                    $http
+                        .put(postUrl, post)
+                        .success(function (post) {
+                            $location.url('/posts');
+                        });
                 };
             }
 

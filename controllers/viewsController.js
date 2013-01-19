@@ -1,3 +1,4 @@
 exports.show = function(req, res) {
-    res.render('partials/' + req.params.view_id, {auth: req.session.auth });
+    var path = req.params.view_id.replace('_', '/');
+    res.render('partials/' + path, {auth: req.session.auth });
 }

@@ -1,0 +1,10 @@
+h3 Commentaires
+ul#comments-list(ng-repeat='comment in post.comments')
+    li.comment(id='{{ comment.id }}-comment-element')
+        span.name {{ comment.name }} 
+        span.pubdate {{ comment.pubdate | date }}
+        p {{ comment.comment }}
+
+        -if (auth)
+            .edit-panel
+                a.delete(ng-click='deleteComment(comment)')

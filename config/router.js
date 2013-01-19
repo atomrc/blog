@@ -27,11 +27,6 @@ var loadPost = function(req, res, next) {
 // Routes
 module.exports = function(app) {
 
-    var defaultAction = function(req, res) {
-        console.log(req.params);
-        res.end("ok");
-    }
-
     app.get('/', controllers.homeController.index);
 
 

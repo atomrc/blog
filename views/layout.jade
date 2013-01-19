@@ -5,6 +5,8 @@ html(lang="en", ng-app="blog")
 
         title= "Why So Curious ?"
         link(href="css/application.css", type="text/css", rel="stylesheet")
+        - if (auth)
+            link(href="css/admin.css", type="text/css", rel="stylesheet")
         script(src="/js/lib/require.min.js", data-main="/js/main")
 
     body()

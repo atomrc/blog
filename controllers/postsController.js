@@ -3,7 +3,15 @@ var Comment  = require('../models/Comment');
 var NotFound = require('../libs/errors').NotFound;
 
 exports.index = function(req, res) {
-    var posts = Post.find({}, '-comments', function (err, posts) {
+    var condition = req.session.auth ?
+        {} :
+        { published: true };
+
+    var options = req.query.limit ?
+        { limit: req.query.limit } :
+        {};
+
+    var posts = Post.find(condition, '-comments', options, function (err, posts) {
         if( err ) throw new NotFound;
         res.send(posts);
     });
