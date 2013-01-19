@@ -41,8 +41,8 @@ exports.comment = function(req, res) {
 }
 
 exports.deleteComment = function(req, res) {
-    Post.findByIdAndUpdate(
-        req.params.post_id,
+    Post.findOneAndUpdate(
+        { slug: req.params.post_slug },
         {$pull : {comments: { _id: req.params.comment_id }}},
         function( err, post ) {
             res.send(post);

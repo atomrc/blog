@@ -4,7 +4,7 @@ var NotFound     = require('../libs/errors').NotFound;
 var Post         = require('../models/Post');
 
 var isAuthenticated = function(req, res, next) {
-    if(!req.session.auth) return next(new Unauthorized);
+    if(!req.session || !req.session.auth) { return next(new Unauthorized); }
     return next();
 };
 
@@ -12,7 +12,7 @@ var authenticateApp = function (req, res, next) {
     if(req.query.apikey != null) {
         req.session.auth = true;
     }
-    res.send('ok');
+    res.redirect('/');
 };
 
 var loadPost = function(req, res, next) {

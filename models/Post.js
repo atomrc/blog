@@ -10,7 +10,7 @@ var PostSchema = new Schema({
     description:  String,
     body:         String,
     slug:         String,
-    created_at:   {type: Date, default: Date.now},
+    pubdate:   {type: Date, default: Date.now},
     comments:     [Comment.schema],
 }, { versionKey:  "version" });
 

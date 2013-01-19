@@ -18,11 +18,29 @@ define([],
             },
 
             show: function ($http, $scope, $routeParams) {
+                var postUrl = '/posts/' + $routeParams.postSlug;
                 $http
-                    .get('/posts/' + $routeParams.postSlug)
+                    .get(postUrl)
                     .success(function (post) {
                         $scope.post = post;
                     });
+
+                $scope.saveComment = function (comment) {
+                    $http
+                        .post(postUrl + '/comments', comment)
+                        .success(function (post) {
+                            $scope.post = post;
+                        });
+                };
+
+                $scope.deleteComment = function (comment) {
+                    $http
+                        .delete(postUrl + '/comments/' + comment._id)
+                        .success(function (post) {
+                            $scope.post = post;
+                        });
+                };
+
             },
 
             create: function ($scope, $http, $location) {
@@ -31,7 +49,7 @@ define([],
                         $location.url('/posts');
                     });
                 };
-            }
+            },
 
         };
 

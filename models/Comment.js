@@ -8,7 +8,7 @@ var CommentSchema = new Schema({
     email:       String,
     comment:     String,
     post_slug:   String,
-    created_at:  { type: Date, default: Date.now }
+    pubdate:  { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Comment', CommentSchema);

@@ -7,8 +7,8 @@ var express = require('express')
   , http = require('http')
   , path = require('path')
   , mongoose = require('mongoose')
-  , postsController = require('./controllers/postsController');
-
+  , postsController = require('./controllers/postsController')
+  , errorHandler = require('./libs/errors').handler;
 var app = express();
 
 app.configure(function(){
@@ -22,6 +22,7 @@ app.configure(function(){
     app.use(express.session({secret: 'supersecretkeygoeshere'}));
     app.use(express.methodOverride());
     app.use(app.router);
+    app.use(errorHandler);
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
@@ -41,7 +42,7 @@ else{
     "username":"",
     "password":"",
     "name":"",
-    "db":"db"
+    "db":"blog"
     }
 }
 
