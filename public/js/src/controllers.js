@@ -1,12 +1,14 @@
 /*global define*/
 
 define([],
-
     function () {
         'use strict';
         var postsController = null,
             homeController = null;
 
+        /****************
+         * POSTS CONTROLLER
+         * **************/
         postsController = {
 
             index: function ($http, $scope) {
@@ -19,6 +21,7 @@ define([],
 
             show: function ($http, $scope, $routeParams) {
                 var postUrl = '/posts/' + $routeParams.postSlug;
+                $scope.commentAdded = false;
                 $http
                     .get(postUrl)
                     .success(function (post) {
@@ -30,6 +33,7 @@ define([],
                         .post(postUrl + '/comments', comment)
                         .success(function (post) {
                             $scope.post = post;
+                            $scope.commentAdded = true;
                         });
                 };
 
@@ -49,10 +53,14 @@ define([],
                         $location.url('/posts');
                     });
                 };
-            },
+            }
 
         };
 
+
+        /****************
+         * HOME CONTROLLER
+         * **************/
         homeController = {
             index: function ($http, $scope, urlBuilder) {
                 $http.get('/posts/?limit=3').success(function (posts) {

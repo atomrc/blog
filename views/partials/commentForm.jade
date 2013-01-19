@@ -1,16 +1,20 @@
-form(ng-submit='saveComment(comment)')
-    fieldset
+ng-switch(on='commentAdded')
+    div(ng-switch-when='true')
         div#comment-form-notice
-        legend Laisser un commentaire
+            p Merci, je prendrai bonne note de votre commentaire ;)
+    div(ng-switch-when='false')
+        form(ng-submit='saveComment(comment)')
+            fieldset
+                legend Laisser un commentaire
 
-        label(for='name-field') Nom
-        input#name-field(type='text', ng-model='comment.name')
+                label(for='name-field') Nom
+                input#name-field(type='text', ng-model='comment.name')
 
-        label(for='email-field') Email
-        input#email-field(type='text', ng-model='comment.email')
+                label(for='email-field') Email
+                input#email-field(type='text', ng-model='comment.email')
 
-        label(for='comment-field') Commentaire
-        textarea#comment-field(cols='30', rows='10', ng-model='comment.comment')
+                label(for='comment-field') Commentaire
+                textarea#comment-field(cols='30', rows='10', ng-model='comment.comment')
 
-        input(type='submit')
+                input(type='submit')
 
