@@ -62,13 +62,13 @@ define([],
          * HOME CONTROLLER
          * **************/
         homeController = {
-            index: function ($http, $scope, urlBuilder) {
+            index: function ($http, $scope, tweetsNormalizer) {
                 $http.get('/posts/?limit=3').success(function (posts) {
                     $scope.posts = posts;
                 });
 
-                $http.get().success(function (tweets) {
-                    $scope.tweets = [];
+                $http.jsonp('http://api.twitter.com/1/statuses/user_timeline.json?count=10&include_rts=true&screen_name=thomasbelin4&callback=JSON_CALLBACK').success(function (tweets) {
+                    $scope.tweets = tweetsNormalizer.normalize(tweets);
                 });
             }
 
