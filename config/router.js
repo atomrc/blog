@@ -1,19 +1,19 @@
-var controllers  = require('../controllers');
-var Unauthorized = require('../libs/errors').Unauthorized;
-var NotFound     = require('../libs/errors').NotFound;
-var Post         = require('../models/Post');
+var controllers  = require('../controllers'),
+    express      = require('express'),
+    Unauthorized = require('../libs/errors').Unauthorized,
+    NotFound     = require('../libs/errors').NotFound,
+    params       = require('../config/parameters'),
+    Post         = require('../models/Post');
+
 
 var isAuthenticated = function(req, res, next) {
     if(!req.session || !req.session.auth) { return next(new Unauthorized); }
     return next();
 };
 
-var authenticateApp = function (req, res, next) {
-    if(req.query.apikey != null) {
-        req.session.auth = true;
-    }
-    res.redirect('/');
-};
+var authenticateApp =  express.basicAuth( function (user, pass) {
+    return (user == params.user.username && pass == params.user.password);
+});
 
 var loadPost = function(req, res, next) {
     Post.findOne({slug: req.params.post_slug}, function(err, post) {
@@ -30,7 +30,10 @@ module.exports = function(app) {
     app.get('/', controllers.homeController.index);
 
 
-    app.get('/login', authenticateApp);
+    app.get('/login', authenticateApp, function (req, res) {
+        req.session.auth = true;
+        res.redirect('/');
+    });
 
     //VIEWS
     app.get('/views/:view_id', controllers.viewsController.show);

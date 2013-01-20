@@ -61,22 +61,21 @@ input[type=submit] { float:right; }
 #posts-list li { position:relative; }
 #posts-list li>a{ display:block; padding:5px; border-top:solid 1px #ccc }
 #posts-list li:hover>a,
-#comment:nth-child(odd),
-article .edition-panel, .widget, aside { background:rgba(255,255,255, 0.5);}
+#comments-list li:nth-child(even),
+article .edition-panel, .widget { background:rgba(255,255,255, 0.5);}
 #posts-list h2 { color:#F06; margin:0; }
 
 /* full article */
-aside { position: absolute; right:105%; top:0; padding:10px; border:solid 1px #CCC; border-right:none; border-radius:3px; }
 article { text-align:justify; border-bottom:solid 1px #ccc; position:relative; }
-article h1 { font-size: 2em; margin:0; }
+article h1 { font-size: 2em; margin:0 }
 article .body { margin:20px 0; }
 
 a.button {display:inline-block; margin:10px}
 input[type=submit], button, .button { border:solid #3079ED 1px; border-radius:3px; padding:5px; color:white; font-size:12pt; background:#4D90FE; }
 
 /* tags */
-#tags-list {}
-#tags-list li { background-color:white; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
+#tags-list { margin: 5px 0; }
+#tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
 
 /* Comments */
 #commentsContainer .name { font-weight:bold; }

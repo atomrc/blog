@@ -1,7 +1,7 @@
 ng-switch(on='commentAdded')
     div(ng-switch-when='true')
         div#comment-form-notice
-            p Merci, je prendrai bonne note de votre commentaire ;)
+            p Merci, je prendrais bonne note de votre commentaire ;)
     div(ng-switch-when='false')
         form(ng-submit='saveComment(comment)')
             fieldset
@@ -20,4 +20,3 @@ ng-switch(on='commentAdded')
                 br
 
                 input(type='submit', value='Envoyer')
-

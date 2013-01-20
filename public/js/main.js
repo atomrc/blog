@@ -4,11 +4,12 @@ require.config({
     baseUrl: 'js/src',
     paths: {
         angular: '../lib/angular.amd',
+        wysiwyg: '../lib/wysiwyg.min',
         ngSanitize: '../lib/angular.sanitize.min'
     }
 });
 
-require(['angular', 'controllers', 'services'], function (Angular, controllers, services) {
+require(['angular', 'controllers', 'services', 'directives'], function (Angular, controllers, services, directives) {
     'use strict';
     var nbSanitize = require(['ngSanitize'], function () {
         Angular
@@ -16,6 +17,7 @@ require(['angular', 'controllers', 'services'], function (Angular, controllers, 
                 $provide.factory('application', function () { return services.application; });
                 $provide.factory('tweetsNormalizer', services.tweetsNormalizer);
             })
+            .directive('draggable', directives.draggable)
             .config(['$routeProvider', function ($routeProvider) {
                 $routeProvider
                     .when('/', {templateUrl: 'views/home',   controller: controllers.home.index})

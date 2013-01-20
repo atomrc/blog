@@ -57,6 +57,7 @@ define(['angular'],
                         .post(postUrl + '/tags', tag)
                         .success(function (post) {
                             $scope.post = post;
+                            $scope.tag = {};
                         });
                 };
 

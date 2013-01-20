@@ -1,6 +1,6 @@
-aside#tags-list
-    ul
-        li(ng-repeat='tag in post.tags')
+aside
+    div#tags-list
+        span.tag(ng-repeat='tag in post.tags')
             {{ tag.name }}
             - if (auth)
                 .edit-panel

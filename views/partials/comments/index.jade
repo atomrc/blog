@@ -2,7 +2,7 @@ h3 Commentaires
 ul#comments-list
     li.empty(ng-show='!post.comments.length') Aucun commentaire pour le moment
     li.comment(ng-repeat='comment in post.comments', id='{{ comment.id }}-comment-element')
-        span.name {{ comment.name }} 
+        span.name {{ comment.name }} - 
         span.pubdate {{ comment.pubdate | date }}
         p {{ comment.comment }}
 

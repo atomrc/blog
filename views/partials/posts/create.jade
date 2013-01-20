@@ -1,8 +1,11 @@
 - if (auth)
     include _content
-    form(ng-submit='save(post)')
+    form(ng-submit='save(post)', draggable)
         fieldset
             input(type='text', ng-model='post.title')
+            br
             textarea(ng-model='post.description')
+            br
             textarea(ng-model='post.body')
+            br
             input(type='submit')
