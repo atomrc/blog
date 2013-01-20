@@ -1,6 +1,6 @@
 article.full-article
     header
         h1 {{ post.title }}
+    include ../tags/index
     span.pubdate {{ post.pubdate | date }}
-    aside#tags-container
     div.body(ng-bind-html='post.body')

@@ -9,12 +9,15 @@ ng-switch(on='commentAdded')
 
                 label(for='name-field') Nom
                 input#name-field(type='text', ng-model='comment.name')
+                br
 
                 label(for='email-field') Email
                 input#email-field(type='text', ng-model='comment.email')
+                br
 
                 label(for='comment-field') Commentaire
                 textarea#comment-field(cols='30', rows='10', ng-model='comment.comment')
+                br
 
-                input(type='submit')
+                input(type='submit', value='Envoyer')
 

@@ -1,5 +1,6 @@
 var Post     = require('../models/Post');
 var Comment  = require('../models/Comment');
+var Tag  = require('../models/Tag');
 var NotFound = require('../libs/errors').NotFound;
 
 exports.index = function(req, res) {
@@ -31,21 +32,11 @@ exports.create = function(req, res) {
 exports.comment = function(req, res) {
     var post = req.post;
     var comment = new Comment(req.body);
-    comment.post_slug = post.slug;
     post.comments.push(comment);
     post.save(function( err, post) {
         if(err) res.send(err);
         res.send(post);
     });
-
-    /*Post.findByIdAndUpdate(
-        req.params.post_id,
-        {$push : {comments: req.body}},
-        function( err, post ) {
-            if( err ) throw new NotFound;
-            res.send(post);
-        }
-    );*/
 }
 
 exports.deleteComment = function(req, res) {
@@ -57,6 +48,27 @@ exports.deleteComment = function(req, res) {
         }
     );
 }
+
+exports.tag = function (req, res) {
+    var post = req.post;
+    var tag = new Tag(req.body);
+    post.tags.push(tag);
+    post.save(function( err, post) {
+        if(err) res.send(err);
+        res.send(post);
+    });
+};
+
+exports.deleteTag = function (req, res) {
+    Post.findOneAndUpdate(
+        { slug: req.params.post_slug },
+        {$pull : {tags: { _id: req.params.tag_id }}},
+        function( err, post ) {
+            if(err) res.send(err);
+            res.send(post);
+        }
+    );
+};
 
 exports.update = function(req, res, next) {
     Post.findOneAndUpdate(

@@ -1,4 +1,4 @@
-/*global define*/
+/*global define, window*/
 
 define(['angular'],
     function (Angular) {
@@ -44,12 +44,29 @@ define(['angular'],
 
             show: function ($http, $scope, $routeParams) {
                 var postUrl = '/posts/' + $routeParams.postSlug;
+                $scope.tag = {};
                 $scope.commentAdded = false;
                 $http
                     .get(postUrl)
                     .success(function (post) {
                         $scope.post = post;
                     });
+
+                $scope.addTag = function (tag) {
+                    $http
+                        .post(postUrl + '/tags', tag)
+                        .success(function (post) {
+                            $scope.post = post;
+                        });
+                };
+
+                $scope.deleteTag = function (tag) {
+                    $http
+                        .delete(postUrl + '/tags/' + tag._id)
+                        .success(function (post) {
+                            $scope.post = post;
+                        });
+                };
 
                 $scope.saveComment = function (comment) {
                     $http
@@ -61,11 +78,13 @@ define(['angular'],
                 };
 
                 $scope.deleteComment = function (comment) {
-                    $http
-                        .delete(postUrl + '/comments/' + comment._id)
-                        .success(function (post) {
-                            $scope.post = post;
-                        });
+                    if (window.confirm('Sure bro ?')) {
+                        $http
+                            .delete(postUrl + '/comments/' + comment._id)
+                            .success(function (post) {
+                                $scope.post = post;
+                            });
+                    }
                 };
 
             },

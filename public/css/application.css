@@ -6,6 +6,7 @@ label { float:left; display:block; width:100px;  }
 fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
 legend { font-weight:bold; }
 ul { list-style: none; padding:0; }
+input[type=submit] { float:right; }
 
 #header { background:url('/images/tom.png') no-repeat center 5px ; /*background-color:#4D90FE;*/
   padding-top:5px; height:4em; font-size:11pt; text-shadow:0px 1px 0px white;
@@ -48,22 +49,21 @@ ul { list-style: none; padding:0; }
 .widget-title { font-size:20pt; font-weight:bold;  }
 .widget-container { padding-top:0 }
 
-.tweets-list .tweet { padding:10px; border-top:solid 1px #ccc;  }
-.tweets-list { margin-top:0; }
+#tweets-list .tweet { padding:10px; border-top:solid 1px #ccc;  }
+#tweets-list { margin-top:0; }
 
 
 .pubdate { font-size:10pt; color:#888 }
 .error404 { font-size:50pt; text-align:center; font-weight:bold; padding:50px 0; }
 
 /* Posts list */
-.posts-list { margin:0; padding:0; }
-.posts-list li { position:relative; }
-.posts-list li>a{ display:block; padding:5px; border-top:solid 1px #ccc }
-.posts-list li:hover>a,
-.comment:nth-child(odd),
+#posts-list { margin:0; padding:0; }
+#posts-list li { position:relative; }
+#posts-list li>a{ display:block; padding:5px; border-top:solid 1px #ccc }
+#posts-list li:hover>a,
+#comment:nth-child(odd),
 article .edition-panel, .widget, aside { background:rgba(255,255,255, 0.5);}
-.posts-list li:hover .edit-panel { display:block; }
-.posts-list h2 { color:#F06; margin:0; }
+#posts-list h2 { color:#F06; margin:0; }
 
 /* full article */
 aside { position: absolute; right:105%; top:0; padding:10px; border:solid 1px #CCC; border-right:none; border-radius:3px; }
@@ -76,7 +76,7 @@ input[type=submit], button, .button { border:solid #3079ED 1px; border-radius:3p
 
 /* tags */
 #tags-list {}
-#tags-list li { background-color:white; border-radius:5px; padding:3px; border:solid 1px #ccc; }
+#tags-list li { background-color:white; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
 
 /* Comments */
 #commentsContainer .name { font-weight:bold; }

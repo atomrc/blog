@@ -1,0 +1,9 @@
+aside#tags-list
+    ul
+        li(ng-repeat='tag in post.tags')
+            {{ tag.name }}
+            - if (auth)
+                .edit-panel
+                    a.delete(ng-click='deleteTag(tag)')
+    -if (auth)
+        include form

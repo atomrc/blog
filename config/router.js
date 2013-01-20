@@ -39,10 +39,14 @@ module.exports = function(app) {
     app.get('/posts', controllers.postsController.index);
     app.post('/posts', isAuthenticated, controllers.postsController.create);
     app.get('/posts/:post_slug', loadPost, controllers.postsController.show);
-    app.delete('/posts/:post_slug', isAuthenticated, loadPost, controllers.postsController.delete);
     app.put('/posts/:post_slug', isAuthenticated, controllers.postsController.update);
+    app.delete('/posts/:post_slug', isAuthenticated, loadPost, controllers.postsController.delete);
 
     //COMMENTS
     app.post('/posts/:post_slug/comments', loadPost, controllers.postsController.comment);
     app.delete('/posts/:post_slug/comments/:comment_id', isAuthenticated, loadPost, controllers.postsController.deleteComment);
+
+    //TAGS
+    app.post('/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.tag);
+    app.delete('/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
 }
