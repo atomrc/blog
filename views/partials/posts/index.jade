@@ -1,5 +1,6 @@
 - if (auth)
-    a(href='/#/posts/create', class='button') Nouveau post
+    admin
+        a(href='/#/posts/create', class='button') Nouveau post
 ul#posts-list
     li(ng-repeat='post in posts', class='published {{ post.published }}')
         a(href="/#/posts/{{ post.slug }}")
@@ -7,7 +8,7 @@ ul#posts-list
                 div.pubdate {{ post.pubdate | date }}
                 p.description {{ post.description }}
                 - if (auth)
-                    .edit-panel
+                    .edit-panel.admin
                         a.publish(ng-click='publishPost(post)')
                         a.edit(href='/#/posts/{{post.slug}}/edit')
                         a.delete(ng-click='deletePost(post)')

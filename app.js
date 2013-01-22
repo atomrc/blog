@@ -11,6 +11,14 @@ var express = require('express')
   , errorHandler = require('./libs/errors').handler;
 var app = express();
 
+var rewriteRules = function (req, res, next) {
+    if (req.query.escaped_fragment) {
+        req.url = '/snapshots/';
+        req.query.page = req.query.escaped_fragment;
+    }
+    next();
+}
+
 app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
@@ -21,13 +29,14 @@ app.configure(function(){
     app.use(express.cookieParser());
     app.use(express.session({secret: 'supersecretkeygoeshere'}));
     app.use(express.methodOverride());
+    app.use(rewriteRules);
     app.use(app.router);
     app.use(errorHandler);
     app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 });
 
 
