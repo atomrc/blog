@@ -3,18 +3,38 @@
 require.config({
     baseUrl: 'js/src',
     paths: {
-        angular: '../lib/angular.amd',
-        wysiwyg: '../lib/wysiwyg.min',
+        angular: '../lib/angular.min',
         ngSanitize: '../lib/angular.sanitize.min'
+    },
+
+    shim: {
+        angular: {
+            exports: 'Angular',
+            init: function () { return angular; }
+        },
+
+        ngSanitize: {
+            exports: 'ngSanitize',
+            deps: ['angular']
+        }
     }
 });
 
-require(['angular', 'controllers', 'services', 'directives'], function (Angular, controllers, services, directives) {
+require(
+    ['application'],
+    function (application) {
+        'use strict';
+        application.init();
+        application.run();
+    }
+);
+
+
+/*require(['angular', 'controllers', 'services', 'directives'], function (Angular, controllers, services, directives) {
     'use strict';
     var nbSanitize = require(['ngSanitize'], function () {
         Angular
             .module('blog', ['ngSanitize'], function ($provide) {
-                $provide.factory('application', function () { return services.application; });
                 $provide.factory('tweetsNormalizer', services.tweetsNormalizer);
             })
             .directive('draggable', directives.draggable)
@@ -29,4 +49,4 @@ require(['angular', 'controllers', 'services', 'directives'], function (Angular,
             }]);
         Angular.bootstrap(window.document, ['blog']);
     });
-});
+});*/

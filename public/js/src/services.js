@@ -3,8 +3,7 @@
 define([],
     function () {
         'use strict';
-        var app = { 'apikey': 'felix' },
-            TweetsNormalizer = null;
+        var TweetsNormalizer = null;
 
         TweetsNormalizer = function () { };
         TweetsNormalizer.prototype = {
@@ -33,7 +32,6 @@ define([],
         };
 
         return {
-            application: app,
             tweetsNormalizer: function () { return new TweetsNormalizer(); }
         };
     }
