@@ -16,7 +16,11 @@ var authenticateApp =  express.basicAuth( function (user, pass) {
 });
 
 var loadPost = function(req, res, next) {
-    Post.findOne({slug: req.params.post_slug}, function(err, post) {
+    var condition = {slug: req.params.post_slug};
+    if ( !req.session.auth ) {
+        condition.published = true;
+    }
+    Post.findOne(condition, function(err, post) {
         if( err ) return next(new NotFound);
         if( post === null ) return next(new NotFound);
         req.post = post;
