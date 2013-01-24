@@ -1,6 +1,6 @@
-/*global require, define, angular, window*/
+/*global require*/
 require(
-    ['config/public', 'config/loader'],
+    ['config/admin', 'config/loader'],
     function (config, loader) {
         'use strict';
         loader.load(config);

@@ -1,6 +1,6 @@
 - if (auth)
     admin
-        a(href='/#/posts/create', class='button') Nouveau post
+        a(href='/#/post/create', class='button') Nouveau post
 ul#posts-list
     li(ng-repeat='post in posts', class='published {{ post.published }}')
         a(href="/#/posts/{{ post.slug }}")

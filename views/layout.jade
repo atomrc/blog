@@ -31,4 +31,4 @@ html(lang="en", ng-app="blog")
             p ThomasBelin4@gmail.com
             - if (auth)
                 admin
-                    a.button(ng-controller='snapshots', ng-click='snapshot()') Snapshot
+                    a.button(ng-controller='$rootScope.snapshots', ng-click='snapshot()') Snapshot
