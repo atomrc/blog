@@ -18,10 +18,10 @@ html(lang="en", ng-app="blog")
                 .menu
                     ul
                         li
-                            a(href="/#/")#home.state
+                            a(href="/#!/")#home.state
                                 p Home
                         li
-                            a(href="/#/posts")#posts.state
+                            a(href="/#!/posts")#posts.state
                                 p Articles
         #main
             .container
@@ -29,6 +29,3 @@ html(lang="en", ng-app="blog")
         #footer
             p Thomas Belin
             p ThomasBelin4@gmail.com
-            - if (auth)
-                admin
-                    a.button(ng-controller='$rootScope.snapshots', ng-click='snapshot()') Snapshot

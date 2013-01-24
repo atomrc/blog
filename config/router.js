@@ -57,6 +57,6 @@ module.exports = function(app) {
     app.post('/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.tag);
     app.delete('/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
 
-    app.post('/snapshot', isAuthenticated, controllers.snapshotsController.snapshot);
+    app.post('/snapshot', controllers.snapshotsController.snapshot);
     app.get('/snapshots', controllers.snapshotsController.serveStatic);
 }

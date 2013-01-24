@@ -1,9 +1,10 @@
 /*global define*/
 
-define([],
-    function () {
+define(['angular'],
+    function (Angular) {
         'use strict';
-        var TweetsNormalizer = null;
+        var TweetsNormalizer = null,
+            SnapshotManager = null;
 
         TweetsNormalizer = function () { };
         TweetsNormalizer.prototype = {
@@ -31,8 +32,23 @@ define([],
             }
         };
 
+        SnapshotManager = function ($http, $window) {
+            this.http = $http;
+            this.window = $window;
+        };
+        SnapshotManager.prototype = {
+            takeSnapshot: function () {
+                var snap = function () {
+                    var content = Angular.element(this.window.document.documentElement);
+                    this.http.post('/snapshot', { 'html': content.html(), 'page': this.window.document.location.hash });
+                }.bind(this);
+                this.window.setTimeout(snap, 1000);
+            }
+        };
+
         return {
-            tweetsNormalizer: function () { return new TweetsNormalizer(); }
+            tweetsNormalizer: function () { return new TweetsNormalizer(); },
+            snapshotManager: function ($http, $window) { return new SnapshotManager($http, $window); }
         };
     }
 );

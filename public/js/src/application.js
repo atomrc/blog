@@ -28,6 +28,9 @@ define(
             },
 
             initRoutes: function () {
+                this.module.config(['$locationProvider', function ($locationProvider) {
+                    $locationProvider.hashPrefix('!');
+                }]);
                 this.module.config(['$routeProvider', function ($routeProvider) {
                     for (var route in routes) {
                         $routeProvider.when(route, routes[route]);

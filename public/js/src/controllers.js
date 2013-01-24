@@ -11,11 +11,12 @@ define(['angular'],
          * **************/
         postsController = {
 
-            index: function ($http, $scope) {
+            index: function ($http, $scope, snapshotManager) {
                 $http
                     .get('/posts')
                     .success(function (posts) {
                         $scope.posts = posts;
+                        snapshotManager.takeSnapshot();
                     });
 
                 $scope.publishPost = function (post) {
@@ -42,7 +43,7 @@ define(['angular'],
                 };
             },
 
-            show: function ($http, $scope, $routeParams) {
+            show: function ($http, $scope, $routeParams, snapshotManager) {
                 var postUrl = '/posts/' + $routeParams.postSlug;
                 $scope.tag = {};
                 $scope.commentAdded = false;
@@ -50,6 +51,7 @@ define(['angular'],
                     .get(postUrl)
                     .success(function (post) {
                         $scope.post = post;
+                        snapshotManager.takeSnapshot();
                     });
 
                 $scope.addTag = function (tag) {
@@ -96,9 +98,10 @@ define(['angular'],
          * HOME CONTROLLER
          * **************/
         homeController = {
-            index: function ($http, $scope, tweetsNormalizer) {
+            index: function ($http, $scope, tweetsNormalizer, snapshotManager) {
                 $http.get('/posts/?limit=3').success(function (posts) {
                     $scope.posts = posts;
+                    snapshotManager.takeSnapshot();
                 });
 
                 $http.jsonp('http://api.twitter.com/1/statuses/user_timeline.json?count=10&include_rts=true&screen_name=thomasbelin4&callback=JSON_CALLBACK').success(function (tweets) {
