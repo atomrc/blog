@@ -1,16 +1,29 @@
 /*global require*/
-require(
-    ['config/admin', 'config/loader'],
-    function (config, loader) {
-        'use strict';
-        loader.load(config);
+require.config({
+    baseUrl: 'js/src/admin',
+    paths: {
+        angular: '../../lib/angular.min',
+        ngSanitize: '../../lib/angular.sanitize.min'
+    },
 
-        require(
-            ['application'],
-            function (application) {
-                application.init();
-                application.run();
-            }
-        );
+    shim: {
+        angular: {
+            exports: 'Angular',
+            init: function () { return angular; }
+        },
+
+        ngSanitize: {
+            exports: 'ngSanitize',
+            deps: ['angular']
+        }
+    }
+});
+
+require(
+    ['application'],
+    function (application) {
+        'use strict';
+        application.init();
+        application.run();
     }
 );
