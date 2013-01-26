@@ -90,9 +90,11 @@ define(['angular'],
                     }
                 };
 
-            },
+            }
         };
 
+        postsController.index.$inject = ['$http', '$scope', 'snapshotManager'];
+        postsController.show.$inject = ['$http', '$scope', '$routeParams', 'snapshotManager'];
 
         /****************
          * HOME CONTROLLER
@@ -110,6 +112,8 @@ define(['angular'],
             }
 
         };
+
+        homeController.index.$inject = ['$http', '$scope', 'tweetsNormalizer', 'snapshotManager'];
 
         return {
             home: homeController,

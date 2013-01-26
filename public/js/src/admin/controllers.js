@@ -11,6 +11,7 @@ define(['../controllers'],
                 });
             };
         };
+        controllers.posts.create.$inject = ['$scope', '$http', '$location'];
 
         controllers.posts.edit = function ($scope, $http, $routeParams) {
             var postUrl = '/posts/' + $routeParams.postSlug;
@@ -29,6 +30,7 @@ define(['../controllers'],
                     });
             };
         };
+        controllers.posts.edit.$inject = ['$scope', '$http', '$routeParams'];
 
         return controllers;
     }

@@ -1,6 +1,6 @@
 /*global require, define, angular, window*/
 
-require.config({
+requirejs.config({
     baseUrl: 'js/src',
     paths: {
         angular: '../lib/angular.min',

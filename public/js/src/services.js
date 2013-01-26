@@ -46,10 +46,12 @@ define(['angular'],
             }
         };
 
-        return {
+        var services = {
             tweetsNormalizer: function () { return new TweetsNormalizer(); },
             snapshotManager: function ($http, $window) { return new SnapshotManager($http, $window); }
         };
+        services.snapshotManager.$inject = ['$http', '$window'];
+        return services;
     }
 );
 

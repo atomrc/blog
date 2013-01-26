@@ -7,9 +7,15 @@ html(lang="en", ng-app="blog")
         link(href="css/application.css", type="text/css", rel="stylesheet")
         - if (auth)
             link(href="css/admin.css", type="text/css", rel="stylesheet")
-            script(src="/js/lib/require.min.js", data-main="/js/admin-main")
-        - else
-            script(src="/js/lib/require.min.js", data-main="/js/main")
+            -if (prod)
+                script(src="/js/lib/require.min.js", data-main="/js/build/application.admin")
+            -else
+                script(src="/js/lib/require.min.js", data-main="/js/main.admin")
+        -else
+            - if (prod)
+                script(src="/js/lib/require.min.js", data-main="/js/build/application")
+            - else
+                script(src="/js/lib/require.min.js", data-main="/js/main")
 
     body()
         #header

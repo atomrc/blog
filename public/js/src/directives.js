@@ -32,6 +32,8 @@ define([],
                 }
             };
 
+        draggable.$inject = ['$document'];
+
         };
         return {
             draggable: draggable

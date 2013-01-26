@@ -1,4 +1,6 @@
+.afignore
 parameters.js
+build
 .DS_Store
 *.swp
 

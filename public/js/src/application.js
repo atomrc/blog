@@ -14,11 +14,11 @@ define(
             },
 
             initModule: function () {
-                this.module = Angular.module('blog', ['ngSanitize'], function ($provide) {
+                this.module = Angular.module('blog', ['ngSanitize'], ['$provide', function ($provide) {
                     for (var service in services) {
                         $provide.factory(service, services[service]);
                     }
-                });
+                }]);
             },
 
             initDirectives: function () {
