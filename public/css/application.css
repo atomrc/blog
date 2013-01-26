@@ -35,7 +35,7 @@ input[type=submit] { float:right; }
 #home:hover { background:url('/images/sprite.png') 150px 62px; }
 
 
-#main-content { padding: 30px 40px; }
+#main-content { padding: 30px 0; }
 
 #welcome { font-size: 30pt; font-weight:bold; margin: 10px 0 30px 0}
 
