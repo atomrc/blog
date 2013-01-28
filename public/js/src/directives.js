@@ -7,7 +7,7 @@ define([],
             var startX = 0, startY = 0, x = 0, y = 0;
             return function (scope, element, attr) {
                 element.css({
-                    position: 'absolute',
+                    position: 'relative',
                     cursor: 'move'
                 });
                 element.bind('mousedown', function(event) {

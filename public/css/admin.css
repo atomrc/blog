@@ -10,4 +10,4 @@ article .edition-panel { position:absolute; left:100%; padding:10px; border:soli
 .publish.true { background-color: #7A0026; border-color:grey; }
 .comment:hover .edit-panel {display:block; }
 #posts-list li:hover .edit-panel { display:block; }
-#tags-list li:hover .edit-panel { display:block; }
+#tags-list .tag:hover .edit-panel { display:block; }
