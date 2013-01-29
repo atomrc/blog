@@ -11,12 +11,11 @@ define(['angular'],
          * **************/
         postsController = {
 
-            index: function ($http, $scope, snapshotManager) {
+            index: function ($http, $scope) {
                 $http
                     .get('/posts')
                     .success(function (posts) {
                         $scope.posts = posts;
-                        snapshotManager.takeSnapshot();
                     });
 
                 $scope.publishPost = function (post) {
@@ -43,7 +42,7 @@ define(['angular'],
                 };
             },
 
-            show: function ($http, $scope, $routeParams, snapshotManager) {
+            show: function ($http, $scope, $routeParams) {
                 var postUrl = '/posts/' + $routeParams.postSlug;
                 $scope.tag = {};
                 $scope.commentAdded = false;
@@ -51,7 +50,6 @@ define(['angular'],
                     .get(postUrl)
                     .success(function (post) {
                         $scope.post = post;
-                        snapshotManager.takeSnapshot();
                     });
 
                 $scope.addTag = function (tag) {
@@ -93,17 +91,16 @@ define(['angular'],
             }
         };
 
-        postsController.index.$inject = ['$http', '$scope', 'snapshotManager'];
-        postsController.show.$inject = ['$http', '$scope', '$routeParams', 'snapshotManager'];
+        postsController.index.$inject = ['$http', '$scope', 'snapshotManager', 'analyticsTracker'];
+        postsController.show.$inject = ['$http', '$scope', '$routeParams', 'snapshotManager', 'analyticsTracker'];
 
         /****************
          * HOME CONTROLLER
          * **************/
         homeController = {
-            index: function ($http, $scope, tweetsNormalizer, snapshotManager) {
+            index: function ($http, $scope, tweetsNormalizer) {
                 $http.get('/posts/?limit=3').success(function (posts) {
                     $scope.posts = posts;
-                    snapshotManager.takeSnapshot();
                 });
 
                 $http.jsonp('http://api.twitter.com/1/statuses/user_timeline.json?count=10&include_rts=true&screen_name=thomasbelin4&callback=JSON_CALLBACK').success(function (tweets) {
@@ -113,7 +110,7 @@ define(['angular'],
 
         };
 
-        homeController.index.$inject = ['$http', '$scope', 'tweetsNormalizer', 'snapshotManager'];
+        homeController.index.$inject = ['$http', '$scope', 'tweetsNormalizer', 'snapshotManager', 'analyticsTracker'];
 
         return {
             home: homeController,

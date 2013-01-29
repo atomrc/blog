@@ -1,10 +1,11 @@
 /*global define*/
 
-define(['angular'],
-    function (Angular) {
+define(['angular', 'analytics'],
+    function (Angular, analytics) {
         'use strict';
         var TweetsNormalizer = null,
-            SnapshotManager = null;
+            SnapshotManager = null,
+            AnalyticsTracker = null;
 
         TweetsNormalizer = function () { };
         TweetsNormalizer.prototype = {
@@ -32,9 +33,10 @@ define(['angular'],
             }
         };
 
-        SnapshotManager = function ($http, $window) {
+        SnapshotManager = function ($http, $window, $rootScope) {
             this.http = $http;
             this.window = $window;
+            $rootScope.$on('$viewContentLoaded', this.takeSnapshot.bind(this));
         };
         SnapshotManager.prototype = {
             takeSnapshot: function () {
@@ -46,11 +48,23 @@ define(['angular'],
             }
         };
 
+        AnalyticsTracker = function ($location, $rootScope) {
+            this.location = $location;
+            $rootScope.$on('$viewContentLoaded', this.track);
+        };
+        AnalyticsTracker.prototype = {
+            track: function () {
+                analytics.push(['_trackPageview', this.location.path()]);
+            }
+        };
+
         var services = {
             tweetsNormalizer: function () { return new TweetsNormalizer(); },
-            snapshotManager: function ($http, $window) { return new SnapshotManager($http, $window); }
+            snapshotManager: function ($http, $window, $rootScope) { return new SnapshotManager($http, $window, $rootScope); },
+            analyticsTracker: function ($location, $rootScope) { return new AnalyticsTracker($location, $rootScope); }
         };
-        services.snapshotManager.$inject = ['$http', '$window'];
+        services.snapshotManager.$inject = ['$http', '$window', '$rootScope'];
+        services.analyticsTracker.$inject = ['$location', '$rootScope'];
         return services;
     }
 );
