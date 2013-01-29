@@ -50,7 +50,7 @@ define(['angular', 'analytics'],
 
         AnalyticsTracker = function ($location, $rootScope) {
             this.location = $location;
-            $rootScope.$on('$viewContentLoaded', this.track);
+            $rootScope.$on('$viewContentLoaded', this.track.bind(this));
         };
         AnalyticsTracker.prototype = {
             track: function () {
