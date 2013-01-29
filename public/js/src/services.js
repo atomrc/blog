@@ -40,11 +40,8 @@ define(['angular', 'analytics'],
         };
         SnapshotManager.prototype = {
             takeSnapshot: function () {
-                var snap = function () {
-                    var content = Angular.element(this.window.document.documentElement);
-                    this.http.post('/snapshot', { 'html': content.html(), 'page': this.window.document.location.hash });
-                }.bind(this);
-                this.window.setTimeout(snap, 1000);
+                var content = Angular.element(this.window.document.documentElement);
+                this.http.post('/snapshot', { 'html': content.html(), 'page': this.window.document.location.hash });
             }
         };
 

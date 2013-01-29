@@ -15,7 +15,7 @@ input[type=submit] { float:right; }
 
 #footer { font-size:11pt; text-align:center; border-top:solid 1px #CCC; margin:auto;}
 
-.container { width:650px; margin:auto; }
+.container { width:700px; margin:auto; position:relative; }
 
 #header .container > div { float:left; width:50%; height:100%; }
 #header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; }
@@ -66,8 +66,10 @@ article .edition-panel, .widget { background:rgba(255,255,255, 0.5);}
 #posts-list h2 { color:#F06; margin:0; }
 
 /* full article */
-article { text-align:justify; border-bottom:solid 1px #ccc; position:relative; }
-article h1 { font-size: 1.5em; margin:0 }
+.share-panel { position: absolute; left: 100%; padding:10px; }
+.share-container { position:fixed; border-radius:5px; padding:10px; box-shadow:#CCC -1px 1px 4px 0px inset; }
+article { text-align:justify; border-bottom:solid 1px #ccc; }
+article h1 { text-align:left; font-size: 1.5em; margin:0 }
 article h2 { font-size: 1em; margin:0; font-variant:small-caps; }
 article .body { margin:20px 0; font-size:14pt; line-height:1.5em; }
 code { white-space:pre; background-color:white; border-radius:10px; box-shadow: #CCC 2px 2px 10px 0px inset; display: block; padding:10px; overflow: scroll; }

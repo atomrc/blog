@@ -11,7 +11,8 @@ define(['angular'],
          * **************/
         postsController = {
 
-            index: function ($http, $scope) {
+            index: function ($http, $scope, $window) {
+                $window.document.title = "Why So Curious ?";
                 $http
                     .get('/posts')
                     .success(function (posts) {
@@ -42,13 +43,14 @@ define(['angular'],
                 };
             },
 
-            show: function ($http, $scope, $routeParams) {
+            show: function ($http, $scope, $routeParams, $window) {
                 var postUrl = '/posts/' + $routeParams.postSlug;
                 $scope.tag = {};
                 $scope.commentAdded = false;
                 $http
                     .get(postUrl)
                     .success(function (post) {
+                        $window.document.title = post.title;
                         $scope.post = post;
                     });
 
@@ -91,14 +93,15 @@ define(['angular'],
             }
         };
 
-        postsController.index.$inject = ['$http', '$scope', 'snapshotManager', 'analyticsTracker'];
-        postsController.show.$inject = ['$http', '$scope', '$routeParams', 'snapshotManager', 'analyticsTracker'];
+        postsController.index.$inject = ['$http', '$scope', '$window', 'snapshotManager', 'analyticsTracker'];
+        postsController.show.$inject = ['$http', '$scope', '$routeParams', '$window', 'snapshotManager', 'analyticsTracker'];
 
         /****************
          * HOME CONTROLLER
          * **************/
         homeController = {
-            index: function ($http, $scope, tweetsNormalizer) {
+            index: function ($http, $scope, tweetsNormalizer, $window) {
+                $window.document.title = "Why So Curious ?";
                 $http.get('/posts/?limit=3').success(function (posts) {
                     $scope.posts = posts;
                 });
@@ -110,7 +113,7 @@ define(['angular'],
 
         };
 
-        homeController.index.$inject = ['$http', '$scope', 'tweetsNormalizer', 'snapshotManager', 'analyticsTracker'];
+        homeController.index.$inject = ['$http', '$scope', 'tweetsNormalizer', '$window', 'snapshotManager', 'analyticsTracker'];
 
         return {
             home: homeController,

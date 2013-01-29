@@ -10,7 +10,6 @@ requirejs.config({
 
     shim: {
         angular: {
-            exports: 'Angular',
             init: function () { return angular; }
         },
 
