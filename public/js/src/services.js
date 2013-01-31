@@ -51,6 +51,7 @@ define(['angular', 'analytics'],
         };
         AnalyticsTracker.prototype = {
             track: function () {
+                analytics.push(['_setAccount', 'UA-34218773-1']);
                 analytics.push(['_trackPageview', this.location.path()]);
             }
         };
