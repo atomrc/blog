@@ -31,10 +31,8 @@ define([],
                     $document.unbind('mouseup', mouseup);
                 }
             };
-
-        draggable.$inject = ['$document'];
-
         };
+        draggable.$inject = ['$document'];
         return {
             draggable: draggable
         };
