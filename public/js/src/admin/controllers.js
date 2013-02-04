@@ -26,7 +26,7 @@ define(['../controllers'],
                 $http
                     .put(postUrl, post)
                     .success(function (post) {
-                        $location.url('/posts');
+                        console.log('saved');
                     });
             };
         };
