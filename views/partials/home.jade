@@ -4,7 +4,7 @@
     .widget-title Mes derniers articles
     #posts-container.widget-container
         ul#posts-list
-            li.post(ng-repeat="post in posts")
+            li.post(data-ng-repeat="post in posts")
                 a(href="/#!/posts/{{ post.slug }}")
                     h2{{ post.title }}
                     span.pubdate {{ post.pubdate | date }}
@@ -14,5 +14,5 @@
     .widget-title Mes derniers tweets
     .tweets-container.widget-container
         ul#tweets-list
-            li.tweet(ng-repeat="tweet in tweets")
-                span(ng-bind-html='tweet.text')
+            li.tweet(data-ng-repeat="tweet in tweets")
+                span(data-ng-bind-html='tweet.text')

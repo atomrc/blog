@@ -4,7 +4,8 @@ require.config({
     paths: {
         angular: '../../lib/angular.min',
         ngSanitize: '../../lib/angular.sanitize.min',
-        analytics: 'http://www.google-analytics.com/ga'
+        analytics: 'http://www.google-analytics.com/ga',
+        twitter: 'http://platform.twitter.com/widgets'
     },
 
     shim: {
@@ -19,6 +20,10 @@ require.config({
 
         analytics: {
             init: function () { return window._gaq; }
+        },
+
+        twitter: {
+            init: function () { return twttr; }
         }
     }
 });

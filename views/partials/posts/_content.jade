@@ -1,9 +1,9 @@
 .share-panel
     .share-container
-        a(href="https://twitter.com/share", class="twitter-share-button", data-via="ThomasBelin4", data-lang="fr", data-count="none", data-dnt="true") Tweeter
+        a(href="https://twitter.com/share", class="twitter-share-button", data-via="ThomasBelin4", data-lang="fr", data-count="none", data-dnt="true", data-twitter) Tweeter
 article.full-article
     header
         h1 {{ post.title }}
     include ../tags/index
     span.pubdate {{ post.pubdate | date }}
-    div.body(ng-bind-html='post.body')
+    div.body(data-ng-bind-html='post.body')

@@ -87,4 +87,3 @@ exports.delete = function(req, res) {
     post.remove();
     res.send(post);
 }
-
