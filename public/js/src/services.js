@@ -1,4 +1,4 @@
-/*global define*/
+/*global define, window*/
 
 define(['angular', 'analytics'],
     function (Angular, analytics) {
@@ -36,12 +36,15 @@ define(['angular', 'analytics'],
         SnapshotManager = function ($http, $window, $rootScope) {
             this.http = $http;
             this.window = $window;
-            $rootScope.$on('$viewContentLoaded', this.takeSnapshot.bind(this));
+            $rootScope.$on('$viewContentLoaded', function () {
+                window.setTimeout(this.takeSnapshot.bind(this), 1000);
+            }.bind(this));
         };
         SnapshotManager.prototype = {
             takeSnapshot: function () {
                 var content = Angular.element(this.window.document.documentElement);
-                this.http.post('/snapshot', { 'html': content.html(), 'page': this.window.document.location.hash });
+                var url = this.window.document.location.hash.replace('!', '');
+                this.http.post('/snapshot', { 'html': content.html(), 'page': url });
             }
         };
 
