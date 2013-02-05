@@ -19,14 +19,34 @@ var rewriteRules = function (req, res, next) {
     next();
 }
 
+var staticCaching = function(req, res, next) {
+    var extension = req.url.substring(req.url.lastIndexOf('.') + 1);
+    var cache = {
+        'css': 86400,
+        'png': 604800,
+        'jpeg': 604800,
+        'jpg': 604800,
+        'js': 86400,
+        'ico': 604800
+    };
+
+    var maxAge = cache[extension];
+    if(maxAge) {
+        res.setHeader('Cache-Control', 'max-age=' + maxAge);
+    } else {
+        res.setHeader('Cache-Control', 'max-age=0');
+    }
+    next();
+};
+
 app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.compress());
+    app.use(staticCaching);
     app.use(express.favicon(__dirname + '/public/favicon.ico'));
-    app.use(express.logger('dev'));
-    app.use(express.static(path.join(__dirname, 'public'), {maxAge: 604800}));
+    app.use(express.static(path.join(__dirname, 'public')));
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session({secret: 'supersecretkeygoeshere'}));
@@ -37,6 +57,7 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
+    app.use(express.logger('dev'));
     app.use(express.errorHandler());
 });
 
