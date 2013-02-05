@@ -2,10 +2,10 @@
     include _content
     form(ng-submit='save(post)', draggable)
         fieldset
-            input(type='text', ng-model='post.title')
+            input(type='text', data-ng-model='post.title')
             br
-            textarea(ng-model='post.description')
+            textarea(data-ng-model='post.description')
             br
-            textarea(ng-model='post.body')
+            textarea(data-ng-model='post.body')
             br
             input(type='submit')

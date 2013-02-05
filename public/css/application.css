@@ -50,6 +50,7 @@ input[type=submit] { float:right; }
 .widget-container { padding-top:0 }
 
 #tweets-list .tweet { padding:10px; border-top:solid 1px #ccc;  }
+#tweets-list .tweet a { color:#0084b4; }
 #tweets-list { margin-top:0; }
 
 
@@ -69,10 +70,11 @@ article .edition-panel, .widget { background:rgba(255,255,255, 0.5);}
 .share-panel { position: absolute; left: 100%; padding:10px; }
 .share-container { position:fixed; border-radius:5px; padding:10px; box-shadow:#CCC -1px 1px 4px 0px inset; }
 article { text-align:justify; border-bottom:solid 1px #ccc; }
-article a { color:#0084b4; }
 article h1 { text-align:left; font-size: 2em; margin:0 }
 article h2 { font-size: 1.5em; color:#666; margin:0; text-decoration: underline; margin-top: 1.5em; }
 article .body { margin:20px 0; font-size:14pt; line-height:1.5em; }
+article a { color:#0084b4; }
+article ul { margin: 0 30px; list-style:disc;}
 code { white-space:pre; background-color:white; border-radius:10px; box-shadow: #CCC 2px 2px 10px 0px inset; display: block; padding:10px; overflow: scroll; }
 
 a.button {display:inline-block; margin:10px}

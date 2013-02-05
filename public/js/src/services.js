@@ -23,8 +23,8 @@ define(['angular', 'analytics'],
 
             normalizeSingle: function (tweet) {
                 var parsedText = tweet.text,
-                    refReg = /(@[^ ]+)/,
-                    linkReg = /(http:\/\/[^ ]+)/;
+                    refReg = /(@[^ ]+)/g,
+                    linkReg = /(http[s]?:\/\/[^ ]+)/g;
                 parsedText = parsedText.replace(refReg, "<span class=\"tweet-ref\">$1</span>");
                 parsedText = parsedText.replace(linkReg, "<a href=$1>$1</a>");
 
