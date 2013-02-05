@@ -12,9 +12,9 @@ var express = require('express')
 var app = express();
 
 var rewriteRules = function (req, res, next) {
-    if (req.query.escaped_fragment) {
+    if (req.query._escaped_fragment_) {
         req.url = '/snapshots/';
-        req.query.page = req.query.escaped_fragment;
+        req.query.page = req.query._escaped_fragment_;
     }
     next();
 }

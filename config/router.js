@@ -33,6 +33,7 @@ module.exports = function(app) {
 
     app.get('/', controllers.homeController.index);
 
+    app.get('/sitemap.xml', controllers.sitemapController.index);
 
     app.get('/login', authenticateApp, function (req, res) {
         req.session.auth = true;
