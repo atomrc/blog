@@ -23,8 +23,10 @@ app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
+    app.use(express.compress());
     app.use(express.favicon(__dirname + '/public/favicon.ico'));
     app.use(express.logger('dev'));
+    app.use(express.static(path.join(__dirname, 'public'), {maxAge: 604800}));
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session({secret: 'supersecretkeygoeshere'}));
@@ -32,7 +34,6 @@ app.configure(function(){
     app.use(rewriteRules);
     app.use(app.router);
     app.use(errorHandler);
-    app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
