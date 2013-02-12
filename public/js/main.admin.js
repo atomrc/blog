@@ -4,6 +4,7 @@ require.config({
     paths: {
         angular: '../../lib/angular.min',
         ngSanitize: '../../lib/angular.sanitize.min',
+        ngResource: '../../lib/angular.resource.min',
         analytics: 'http://www.google-analytics.com/ga',
         twitter: 'http://platform.twitter.com/widgets'
     },
@@ -17,6 +18,12 @@ require.config({
             exports: 'ngSanitize',
             deps: ['angular']
         },
+
+        ngResource: {
+            exports: 'ngResource',
+            deps: ['angular']
+        },
+
 
         analytics: {
             init: function () { return window._gaq; }

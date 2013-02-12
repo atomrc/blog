@@ -39,12 +39,20 @@ var staticCaching = function(req, res, next) {
     next();
 };
 
+app.configure('dev', function(){
+    app.use(express.logger('dev'));
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('prod', function () {
+    app.use(staticCaching);
+});
+
 app.configure(function(){
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.compress());
-    app.use(staticCaching);
     app.use(express.favicon(__dirname + '/public/favicon.ico'));
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(express.bodyParser());
@@ -53,14 +61,15 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(rewriteRules);
     app.use(app.router);
+});
+
+app.configure('dev', function(){
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('prod', function () {
     app.use(errorHandler);
 });
-
-app.configure('development', function(){
-    app.use(express.logger('dev'));
-    app.use(express.errorHandler());
-});
-
 
 if(process.env.VCAP_SERVICES){
     var env = JSON.parse(process.env.VCAP_SERVICES);
@@ -97,7 +106,7 @@ require('./config/router')(app);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
-    console.log("Express server listening on port " + app.get('port'));
+    console.log("Express server listening on port " + app.get('port') + ' environment ' + app.get('env'));
 });
 
 module.exports=server;

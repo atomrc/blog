@@ -35,7 +35,7 @@ exports.comment = function(req, res) {
     post.comments.push(comment);
     post.save(function( err, post) {
         if(err) res.send(err);
-        res.send(post);
+        res.send(post.comments.pop());
     });
 }
 
@@ -71,6 +71,7 @@ exports.deleteTag = function (req, res) {
 };
 
 exports.update = function(req, res, next) {
+    delete req.body._id;
     Post.findOneAndUpdate(
         { slug: req.params.post_slug},
         req.body,

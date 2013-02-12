@@ -1,7 +1,7 @@
 /*global define, window*/
 
 define(['angular'],
-    function (Angular) {
+    function (Angular, models) {
         'use strict';
         var postsController = null,
             homeController = null;
@@ -11,109 +11,59 @@ define(['angular'],
          * **************/
         postsController = {
 
-            index: function ($http, $scope, $window) {
-                $window.document.title = "Why So Curious ?";
-                $http
-                    .get('/posts')
-                    .success(function (posts) {
-                        $scope.posts = posts;
-                    });
+            index: ['$scope', 'posts', function ($scope, posts) {
+                $scope.posts = posts;
+            }],
 
-                $scope.publishPost = function (post) {
-                    post.published = !post.published;
-                    $http.put('/posts/' + post.slug, { published: post.published }).success(function (post) {
-                        $scope.post = post;
-                    });
-                };
-
-                $scope.deletePost = function (post) {
-                    if (window.confirm('sure bro ?')) {
-                        $http
-                            .delete('/posts/' + post.slug)
-                            .success(function (delPost) {
-                                var posts = $scope.posts;
-                                $scope.posts = [];
-                                Angular.forEach(posts, function (postElement) {
-                                    if (postElement._id !== delPost._id) {
-                                        $scope.posts.push(postElement);
-                                    }
-                                });
-                            });
-                    }
-                };
-            },
-
-            show: function ($http, $scope, $routeParams, $window) {
-                var postUrl = '/posts/' + $routeParams.postSlug;
-                $scope.tag = {};
+            show: ['$scope', 'post', function ($scope, post) {
+                $scope.post = post;
                 $scope.commentAdded = false;
-                $http
-                    .get(postUrl)
-                    .success(function (post) {
-                        $window.document.title = post.title;
-                        $scope.post = post;
-                    });
-
-                $scope.addTag = function (tag) {
-                    $http
-                        .post(postUrl + '/tags', tag)
-                        .success(function (post) {
-                            $scope.post = post;
-                            $scope.tag = {};
-                        });
-                };
-
-                $scope.deleteTag = function (tag) {
-                    $http
-                        .delete(postUrl + '/tags/' + tag._id)
-                        .success(function (post) {
-                            $scope.post = post;
-                        });
-                };
 
                 $scope.saveComment = function (comment) {
-                    $http
-                        .post(postUrl + '/comments', comment)
-                        .success(function (post) {
-                            $scope.post = post;
-                            $scope.commentAdded = true;
-                        });
+                    $scope.commentAdded = true;
+                    post.addComment(comment);
                 };
-
-                $scope.deleteComment = function (comment) {
-                    if (window.confirm('Sure bro ?')) {
-                        $http
-                            .delete(postUrl + '/comments/' + comment._id)
-                            .success(function (post) {
-                                $scope.post = post;
-                            });
-                    }
-                };
-
-            }
+            }]
         };
 
-        postsController.index.$inject = ['$http', '$scope', '$window', 'snapshotManager', 'analyticsTracker'];
-        postsController.show.$inject = ['$http', '$scope', '$routeParams', '$window', 'snapshotManager', 'analyticsTracker'];
+        postsController.indexResolve = {
+            posts: ['Post', '$q', function (Post, q) {
+                var deferred = q.defer();
+                Post.query(function (posts) { deferred.resolve(posts) });
+                return deferred.promise;
+            }]
+        };
+
+        postsController.showResolve = {
+            post: ['Post', '$route', '$q', function (Post, route, q) {
+                var deferred = q.defer();
+                Post.get({slug: route.current.params.postSlug}, function (post) {
+                    deferred.resolve(post);
+                });
+                return deferred.promise;
+            }]
+        };
 
         /****************
          * HOME CONTROLLER
          * **************/
         homeController = {
-            index: function ($http, $scope, tweetsNormalizer, $window) {
-                $window.document.title = "Why So Curious ?";
-                $http.get('/posts/?limit=3').success(function (posts) {
-                    $scope.posts = posts;
-                });
-
-                $http.jsonp('http://api.twitter.com/1/statuses/user_timeline.json?count=10&include_rts=true&screen_name=thomasbelin4&callback=JSON_CALLBACK').success(function (tweets) {
+            index: ['$scope', '$http', 'tweetsNormalizer', '$window', 'posts', 'Tweet', function ($scope, http, tweetsNormalizer, $window, posts, Tweet) {
+                $scope.posts = posts;
+                Tweet.query(function (tweets) {
                     $scope.tweets = tweetsNormalizer.normalize(tweets);
                 });
-            }
+            }]
 
         };
 
-        homeController.index.$inject = ['$http', '$scope', 'tweetsNormalizer', '$window', 'snapshotManager', 'analyticsTracker'];
+        homeController.indexResolve = {
+            posts: ['Post', '$q', function (Post, q) {
+                var deferred = q.defer();
+                Post.query({limit: 3}, function (posts) { deferred.resolve(posts) });
+                return deferred.promise;
+            }]
+        };
 
         return {
             home: homeController,
