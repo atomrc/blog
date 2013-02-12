@@ -4,60 +4,39 @@ define(['../controllers'],
     function (controllers) {
         'use strict';
 
-        controllers.posts.index = ['$scope', 'posts', function ($scope, posts) {
+        controllers.posts.index = ['$scope', 'posts', 'Post', function ($scope, posts, Post) {
             $scope.posts = posts;
 
             $scope.publishPost = function (post) {
                 post.published = !post.published;
-                $http.put('/posts/' + post.slug, { published: post.published }).success(function (post) {
-                    $scope.post = post;
-                });
+                var newPost = new Post(post);
+                newPost.$update();
             };
 
             $scope.deletePost = function (post) {
                 if (window.confirm('sure bro ?')) {
-                    $http
-                        .delete('/posts/' + post.slug)
-                        .success(function (delPost) {
-                            var posts = $scope.posts;
-                            $scope.posts = [];
-                            Angular.forEach(posts, function (postElement) {
-                                if (postElement._id !== delPost._id) {
-                                    $scope.posts.push(postElement);
-                                }
-                            });
-                        });
+                    var dPost = new Post(post);
+                    dPost.$delete(function () {
+                        posts.splice(posts.indexOf(post), 1);
+                    });
                 }
             };
         }];
 
-        controllers.posts.create = function ($scope, $http, $location) {
+        controllers.posts.create = ['$scope', 'Post', '$location', function ($scope, Post, $location) {
             $scope.save = function (post) {
-                $http.post('/posts', post).success(function (post) {
-                    $location.url('/posts');
-                });
+                var post = new Post(post);
+                post.$save();
             };
-        };
-        controllers.posts.create.$inject = ['$scope', '$http', '$location'];
+        }];
 
-        controllers.posts.edit = function ($scope, $http, $routeParams) {
-            var postUrl = '/posts/' + $routeParams.postSlug;
-            $http
-                .get(postUrl)
-                .success(function (post) {
-                    $scope.post = post;
-                });
-
-            $scope.save = function (post) {
-                delete post._id;
-                $http
-                    .put(postUrl, post)
-                    .success(function (post) {
-                        console.log('saved');
-                    });
+        controllers.posts.edit = ['$scope', '$routeParams', 'post', function ($scope, $routeParams, post) {
+            $scope.post = post;
+            $scope.save = function () {
+                post.$update();
             };
-        };
-        controllers.posts.edit.$inject = ['$scope', '$http', '$routeParams'];
+        }];
+        controllers.posts.editResolve = controllers.posts.showResolve;
 
         return controllers;
     }

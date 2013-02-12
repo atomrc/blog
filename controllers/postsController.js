@@ -71,6 +71,7 @@ exports.deleteTag = function (req, res) {
 };
 
 exports.update = function(req, res, next) {
+    delete req.body._id;
     Post.findOneAndUpdate(
         { slug: req.params.post_slug},
         req.body,

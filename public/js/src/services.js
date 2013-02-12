@@ -69,15 +69,22 @@ define(['angular', 'analytics'],
         };
 
         Post = function (resource, Comment) {
-            var Post = resource('/posts/:slug', { slug: '@slug' });
+            var Post = resource('/posts/:slug', { slug: '@slug' }, { update: { method: 'PUT' }});
+
             Post.prototype.addComment = function (comment) {
                 var com = new Comment(comment);
                 com.$save({slug: this.slug}, function (newComment) {
                     this.comments.push(newComment);
                 }.bind(this));
             };
+
+            Post.prototype.publish = function () {
+                this.published = !this.published;
+                this.$save();
+            };
             return Post;
         };
+
 
         Tweet = function (resource) {
             return resource('http://api.twitter.com/1/statuses/user_timeline.json?count=10&include_rts=true&screen_name=thomasbelin4&callback=JSON_CALLBACK',

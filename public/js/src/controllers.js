@@ -27,7 +27,7 @@ define(['angular'],
             }]
         };
 
-        postsController.index.resolve = {
+        postsController.indexResolve = {
             posts: ['Post', '$q', function (Post, q) {
                 var deferred = q.defer();
                 Post.query(function (posts) { deferred.resolve(posts) });
@@ -35,7 +35,7 @@ define(['angular'],
             }]
         };
 
-        postsController.show.resolve = {
+        postsController.showResolve = {
             post: ['Post', '$route', '$q', function (Post, route, q) {
                 var deferred = q.defer();
                 Post.get({slug: route.current.params.postSlug}, function (post) {
@@ -58,7 +58,7 @@ define(['angular'],
 
         };
 
-        homeController.index.resolve = {
+        homeController.indexResolve = {
             posts: ['Post', '$q', function (Post, q) {
                 var deferred = q.defer();
                 Post.query({limit: 3}, function (posts) { deferred.resolve(posts) });
