@@ -8,7 +8,7 @@ define(['twitter'],
 
         twitter = function () {
             return function (scope, element, attr) {
-                twttr.widgets.load();
+                window.setTimeout(twttr.widgets.load, 100);
             };
         };
 
