@@ -22,11 +22,11 @@ var rewriteRules = function (req, res, next) {
 var staticCaching = function(req, res, next) {
     var extension = req.url.substring(req.url.lastIndexOf('.') + 1);
     var cache = {
-        'css': 86400,
+        'css': 1800,
         'png': 604800,
         'jpeg': 604800,
         'jpg': 604800,
-        'js': 86400,
+        'js': 1800,
         'ico': 604800
     };
 
@@ -34,7 +34,7 @@ var staticCaching = function(req, res, next) {
     if(maxAge) {
         res.setHeader('Cache-Control', 'max-age=' + maxAge);
     } else {
-        res.setHeader('Cache-Control', 'max-age=0');
+        res.setHeader('Cache-Control', 'max-age=10');
     }
     next();
 };
@@ -106,7 +106,7 @@ require('./config/router')(app);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function(){
-    console.log("Express server listening on port " + app.get('port') + ' environment ' + app.get('env'));
+    console.log("Express server listening on port " + app.get('port') + ' env ' + app.get('env'));
 });
 
 module.exports=server;
