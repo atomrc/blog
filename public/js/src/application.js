@@ -1,24 +1,24 @@
 /*global require, define, angular, window*/
 
 define(
-    ['angular', 'routes', 'services', 'directives', 'ngSanitize'],
+    ['angular', 'routes', 'services', 'directives', 'ngSanitize', 'ngResource'],
     function (Angular, routes, services, directives, ngSanitize) {
         'use strict';
         var application = {
             module: null,
 
             init: function () {
-                this.initModule();
+                this.initModules();
                 this.initDirectives();
                 this.initRoutes();
             },
 
-            initModule: function () {
-                this.module = Angular.module('blog', ['ngSanitize'], ['$provide', function ($provide) {
+            initModules: function () {
+                this.module = Angular.module('blog', ['ngResource', 'ngSanitize'], ['$provide', function ($provide) {
                     for (var service in services) {
                         $provide.factory(service, services[service]);
                     }
-                }]);
+                }]).run(['analyticsTracker', 'snapshotManager', function () {}]);
             },
 
             initDirectives: function () {

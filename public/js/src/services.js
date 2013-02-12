@@ -5,7 +5,10 @@ define(['angular', 'analytics'],
         'use strict';
         var TweetsNormalizer = null,
             SnapshotManager = null,
-            AnalyticsTracker = null;
+            AnalyticsTracker = null,
+            Comment = null,
+            Post = null,
+            Tweet = null;
 
         TweetsNormalizer = function () { };
         TweetsNormalizer.prototype = {
@@ -33,6 +36,7 @@ define(['angular', 'analytics'],
             }
         };
 
+
         SnapshotManager = function ($http, $window, $rootScope) {
             this.http = $http;
             this.window = $window;
@@ -48,9 +52,10 @@ define(['angular', 'analytics'],
             }
         };
 
-        AnalyticsTracker = function ($location, $rootScope) {
-            this.location = $location;
-            $rootScope.$on('$viewContentLoaded', this.track.bind(this));
+
+        AnalyticsTracker = function (location, rootScope) {
+            this.location = location;
+            rootScope.$on('$viewContentLoaded', this.track.bind(this));
         };
         AnalyticsTracker.prototype = {
             track: function () {
@@ -59,13 +64,36 @@ define(['angular', 'analytics'],
             }
         };
 
+        Comment = function (resource) {
+            return resource('/posts/:slug/comments/:commentId', {});
+        };
+
+        Post = function (resource, Comment) {
+            var Post = resource('/posts/:slug', { slug: '@slug' });
+            Post.prototype.addComment = function (comment) {
+                var com = new Comment(comment);
+                com.$save({slug: this.slug}, function (newComment) {
+                    this.comments.push(newComment);
+                }.bind(this));
+            };
+            return Post;
+        };
+
+        Tweet = function (resource) {
+            return resource('http://api.twitter.com/1/statuses/user_timeline.json?count=10&include_rts=true&screen_name=thomasbelin4&callback=JSON_CALLBACK',
+                {},
+                { query: {method: 'JSONP', isArray: true}}
+            );
+        };
+
         var services = {
             tweetsNormalizer: function () { return new TweetsNormalizer(); },
-            snapshotManager: function ($http, $window, $rootScope) { return new SnapshotManager($http, $window, $rootScope); },
-            analyticsTracker: function ($location, $rootScope) { return new AnalyticsTracker($location, $rootScope); }
+            snapshotManager: ['$http', '$window', '$rootScope', function (felix, $window, $rootScope) { return new SnapshotManager(felix, $window, $rootScope); }],
+            analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
+            Comment: ['$resource', Comment],
+            Post: ['$resource', 'Comment', Post],
+            Tweet: ['$resource', Tweet]
         };
-        services.snapshotManager.$inject = ['$http', '$window', '$rootScope'];
-        services.analyticsTracker.$inject = ['$location', '$rootScope'];
         return services;
     }
 );

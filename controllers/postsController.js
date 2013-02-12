@@ -35,7 +35,7 @@ exports.comment = function(req, res) {
     post.comments.push(comment);
     post.save(function( err, post) {
         if(err) res.send(err);
-        res.send(post);
+        res.send(post.comments.pop());
     });
 }
 
