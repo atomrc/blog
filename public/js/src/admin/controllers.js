@@ -44,9 +44,9 @@ define(['../controllers'],
 
 
         controllers.posts.create = ['$scope', 'Post', '$location', function ($scope, Post, $location) {
-            $scope.save = function (post) {
-                var post = new Post(post);
-                post.$save();
+            $scope.post = new Post();
+            $scope.save = function () {
+                $scope.post.$save();
             };
         }];
 
