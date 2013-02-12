@@ -23,6 +23,26 @@ define(['../controllers'],
             };
         }];
 
+        controllers.posts.show = ['$scope', 'post', 'Comment', function ($scope, post, Comment) {
+            $scope.post = post;
+            $scope.commentAdded = false;
+
+            $scope.saveComment = function (comment) {
+                $scope.commentAdded = true;
+                post.addComment(comment);
+            };
+
+            $scope.deleteComment = function (comment) {
+                if (window.confirm('Sure bro ?') ) {
+                    var dComment = new Comment(comment);
+                    dComment.$delete({slug: post.slug, commentId: comment._id}, function () {
+                        post.comments.splice(post.comments.indexOf(comment), 1);
+                    });
+                }
+            };
+        }];
+
+
         controllers.posts.create = ['$scope', 'Post', '$location', function ($scope, Post, $location) {
             $scope.save = function (post) {
                 var post = new Post(post);
@@ -33,7 +53,9 @@ define(['../controllers'],
         controllers.posts.edit = ['$scope', '$routeParams', 'post', function ($scope, $routeParams, post) {
             $scope.post = post;
             $scope.save = function () {
-                post.$update();
+                post.$update(function () {
+                    console.log('saved');
+                });
             };
         }];
         controllers.posts.editResolve = controllers.posts.showResolve;

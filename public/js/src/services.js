@@ -40,12 +40,17 @@ define(['angular', 'analytics'],
         SnapshotManager = function ($http, $window, $rootScope) {
             this.http = $http;
             this.window = $window;
-            $rootScope.$on('$viewContentLoaded', function () {
+            $rootScope.$on('$viewContentLoaded', function (event) {
+                if (event.targetScope.post) {
+                    this.window.document.title = event.targetScope.post.title;
+                } else {
+                    this.window.document.title = "Why So Curious ?";
+                }
                 window.setTimeout(this.takeSnapshot.bind(this), 1000);
             }.bind(this));
         };
         SnapshotManager.prototype = {
-            takeSnapshot: function () {
+            takeSnapshot: function (event) {
                 var content = Angular.element(this.window.document.documentElement);
                 var url = this.window.document.location.hash.replace('!', '');
                 this.http.post('/snapshot', { 'html': content.html(), 'page': url });
@@ -65,7 +70,7 @@ define(['angular', 'analytics'],
         };
 
         Comment = function (resource) {
-            return resource('/posts/:slug/comments/:commentId', {});
+            return resource('/posts/:slug/comments/:commentId', {commentId: '@_id'});
         };
 
         Post = function (resource, Comment) {
