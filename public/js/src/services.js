@@ -4,7 +4,7 @@ define(['angular', 'analytics'],
     function (Angular, analytics) {
         'use strict';
         var TweetsNormalizer = null,
-            SnapshotManager = null,
+            StateManager = null,
             AnalyticsTracker = null,
             Comment = null,
             Post = null,
@@ -37,7 +37,7 @@ define(['angular', 'analytics'],
         };
 
 
-        SnapshotManager = function ($http, $window, $rootScope) {
+        StateManager = function ($http, $window, $rootScope) {
             this.http = $http;
             this.window = $window;
             $rootScope.$on('$viewContentLoaded', function (event) {
@@ -48,8 +48,18 @@ define(['angular', 'analytics'],
                 }
                 window.setTimeout(this.takeSnapshot.bind(this), 1000);
             }.bind(this));
+
+            $rootScope.$on('$routeChangeStart', function (event) {
+                var content = $window.document.getElementById('main-content');
+                content.className = 'hide';
+            });
+
+            $rootScope.$on('$routeChangeSuccess', function (event) {
+                var content = $window.document.getElementById('main-content');
+                content.className = '';
+            });
         };
-        SnapshotManager.prototype = {
+        StateManager.prototype = {
             takeSnapshot: function (event) {
                 var content = Angular.element(this.window.document.documentElement);
                 var url = this.window.document.location.hash.replace('!', '');
@@ -100,7 +110,7 @@ define(['angular', 'analytics'],
 
         var services = {
             tweetsNormalizer: function () { return new TweetsNormalizer(); },
-            snapshotManager: ['$http', '$window', '$rootScope', function (felix, $window, $rootScope) { return new SnapshotManager(felix, $window, $rootScope); }],
+            stateManager: ['$http', '$window', '$rootScope', function (felix, $window, $rootScope) { return new StateManager(felix, $window, $rootScope); }],
             analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
             Comment: ['$resource', Comment],
             Post: ['$resource', 'Comment', Post],
