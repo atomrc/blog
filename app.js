@@ -39,7 +39,7 @@ var staticCaching = function(req, res, next) {
     next();
 };
 
-app.configure('dev', function(){
+app.configure('development', function(){
     app.use(express.logger('dev'));
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });

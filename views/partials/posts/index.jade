@@ -10,5 +10,4 @@ ul#posts-list
                 - if (auth)
                     .edit-panel.admin
                         a.publish(data-ng-click='publishPost(post)')
-                        a.edit(href='/#!/posts/{{post.slug}}/edit')
                         a.delete(data-ng-click='deletePost(post)')
