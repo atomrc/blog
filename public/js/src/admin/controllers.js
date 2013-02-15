@@ -1,35 +1,44 @@
-/*global define, window*/
+/*global define, window, console*/
 
 define(['../controllers'],
     function (controllers) {
         'use strict';
 
-        controllers.posts.index = ['$scope', 'posts', 'Post', function ($scope, posts, Post) {
+        var publishPost = null,
+            savePost = null,
+            deletePost = null;
+
+        savePost = function (post) {
+            if( post._id ) {
+                return post.$update(function () { console.log('saved'); });
+            }
+            post.$save(function (post) { window.location.url('/posts/' + post.slug); });
+        };
+
+        publishPost = function (post) {
+            post.published = !post.published;
+            post.$update();
+        };
+
+        deletePost = function (post) {
+            if (window.confirm('sure bro ?')) {
+                post.$delete();
+            }
+        };
+
+
+
+        controllers.posts.index = ['$scope', 'posts', function ($scope, posts) {
             $scope.posts = posts;
-
-            $scope.publishPost = function (post) {
-                post.published = !post.published;
-                var newPost = new Post(post);
-                newPost.$update();
-            };
-
-            $scope.deletePost = function (post) {
-                if (window.confirm('sure bro ?')) {
-                    var dPost = new Post(post);
-                    dPost.$delete(function () {
-                        posts.splice(posts.indexOf(post), 1);
-                    });
-                }
-            };
+            $scope.publishPost = publishPost;
+            $scope.deletePost = deletePost;
         }];
 
         controllers.posts.show = ['$scope', 'post', 'Comment', function ($scope, post, Comment) {
             $scope.post = post;
             $scope.commentAdded = false;
-
-            $scope.save = function () {
-                $scope.post.$update(function () { console.log('saved'); });
-            };
+            $scope.publishPost = publishPost;
+            $scope.save = savePost;
 
             $scope.saveComment = function (comment) {
                 $scope.commentAdded = true;
@@ -49,24 +58,8 @@ define(['../controllers'],
 
         controllers.posts.create = ['$scope', 'Post', '$location', function ($scope, Post, $location) {
             $scope.post = new Post();
-
-            $scope.save = function () {
-                $scope.post.$save(function (post) {
-                    $location.url('/posts/' + post.slug);
-                });
-            };
-
+            $scope.save = savePost;
         }];
-
-        controllers.posts.edit = ['$scope', '$routeParams', 'post', function ($scope, $routeParams, post) {
-            $scope.post = post;
-            $scope.save = function () {
-                post.$update(function () {
-                    console.log('saved');
-                });
-            };
-        }];
-        controllers.posts.editResolve = controllers.posts.showResolve;
 
         return controllers;
     }
