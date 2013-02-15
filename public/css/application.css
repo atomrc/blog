@@ -6,7 +6,9 @@ label { float:left; display:block; width:100px;  }
 fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
 legend { font-weight:bold; }
 ul { list-style: none; padding:0; }
-input[type=submit] { float:right; }
+fieldset input[type=submit] { float:right; width: auto; padding: 8px;}
+fieldset input, fieldset textarea { width: 300px; border-radius: 5px; border:solid 1px #BBB; box-shadow: #BBB 1px 1px 5px inset; }
+fieldset input { padding: 5px; width: 290px; }
 
 #header { background:url('/images/tom.png') no-repeat center 5px ; /*background-color:#4D90FE;*/
   padding-top:5px; height:4em; font-size:11pt; text-shadow:0px 1px 0px white;
