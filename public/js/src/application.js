@@ -18,7 +18,7 @@ define(
                     for (var service in services) {
                         $provide.factory(service, services[service]);
                     }
-                }]).run(['analyticsTracker', 'snapshotManager', function () {}]);
+                }]).run(['analyticsTracker', 'stateManager', function () {}]);
             },
 
             initDirectives: function () {
