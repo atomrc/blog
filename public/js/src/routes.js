@@ -3,7 +3,7 @@
 define(['controllers'],
     function (controllers) {
         'use strict';
-        var animationDelay = null,
+        var animation = null,
             routes = null;
 
         routes = {
@@ -26,14 +26,25 @@ define(['controllers'],
             }
         };
 
-        animationDelay = ['$timeout', '$location', function (timeout, rootScope) {
-            console.log(rootScope);
-            return timeout(function () {}, 300);
+        //the function that will handle the animation
+        animation = ['$timeout', '$window', function (timeout, $window) {
+            var content = $window.document.getElementById('main-content');
+            //case of the first loading
+            if (content.className === 'hide') {
+                content.className = '';
+                return;
+            }
+
+            content.className = 'hide';
+            return timeout(function () {
+                content.className = '';
+            }, 300);
         }];
 
+        //add the animation transition resolution
         for (var routeIndex in routes) {
             var route = routes[routeIndex];
-            route.resolve.animationDelay = animationDelay;
+            route.resolve.animation = animation;
         }
 
         return routes;

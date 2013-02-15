@@ -48,16 +48,6 @@ define(['angular', 'analytics'],
                 }
                 window.setTimeout(this.takeSnapshot.bind(this), 1000);
             }.bind(this));
-
-            $rootScope.$on('$routeChangeStart', function (event) {
-                var content = $window.document.getElementById('main-content');
-                content.className = 'hide';
-            });
-
-            $rootScope.$on('$routeChangeSuccess', function (event) {
-                var content = $window.document.getElementById('main-content');
-                content.className = '';
-            });
         };
         StateManager.prototype = {
             takeSnapshot: function (event) {
