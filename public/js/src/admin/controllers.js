@@ -27,6 +27,10 @@ define(['../controllers'],
             $scope.post = post;
             $scope.commentAdded = false;
 
+            $scope.save = function () {
+                $scope.post.$update(function () { console.log('saved'); });
+            };
+
             $scope.saveComment = function (comment) {
                 $scope.commentAdded = true;
                 post.addComment(comment);
@@ -45,9 +49,13 @@ define(['../controllers'],
 
         controllers.posts.create = ['$scope', 'Post', '$location', function ($scope, Post, $location) {
             $scope.post = new Post();
+
             $scope.save = function () {
-                $scope.post.$save();
+                $scope.post.$save(function (post) {
+                    $location.url('/posts/' + post.slug);
+                });
             };
+
         }];
 
         controllers.posts.edit = ['$scope', '$routeParams', 'post', function ($scope, $routeParams, post) {
