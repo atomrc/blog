@@ -18,7 +18,9 @@ var PostSchema = new Schema({
 }, { versionKey:  "version" });
 
 PostSchema.pre('save', function(next) {
-    if( !this.title ) next();
+    if( !this.title || this.slug ) {
+        return next();
+    }
     this.slug = utils.slugify(this.title);
     next();
 });
