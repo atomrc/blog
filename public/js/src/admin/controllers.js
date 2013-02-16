@@ -8,11 +8,14 @@ define(['../controllers'],
             savePost = null,
             deletePost = null;
 
-        savePost = function (post) {
-            if( post._id ) {
-                return post.$update(function () { console.log('saved'); });
-            }
-            post.$save(function (post) { window.location.url('/posts/' + post.slug); });
+        savePost = function (callback) {
+            console.log(callback);
+            return function (post) {
+                if( post._id ) {
+                    return post.$update(function () { console.log('saved'); });
+                }
+                post.$save(callback);
+            };
         };
 
         publishPost = function (post) {
@@ -39,7 +42,7 @@ define(['../controllers'],
             $scope.commentAdded = false;
 
             $scope.publishPost = publishPost;
-            $scope.save = savePost;
+            $scope.save = savePost();
 
             $scope.addTag = function (tag) {
                 post.addTag(tag);
@@ -71,7 +74,7 @@ define(['../controllers'],
 
         controllers.posts.create = ['$scope', 'Post', '$location', function ($scope, Post, $location) {
             $scope.post = new Post();
-            $scope.save = savePost;
+            $scope.save = savePost(function (post) { $location.url('/posts/' + post.slug); });
         }];
 
         return controllers;
