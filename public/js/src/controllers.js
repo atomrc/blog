@@ -36,11 +36,12 @@ define(['angular'],
         };
 
         postsController.showResolve = {
-            post: ['Post', '$route', '$q', function (Post, route, q) {
+            post: ['Post', '$route', '$q', '$location', function (Post, route, q, $location) {
                 var deferred = q.defer();
                 Post.get({slug: route.current.params.postSlug}, function (post) {
                     deferred.resolve(post);
-                });
+                },
+                function () { console.log('error'); $location.url('/404'); } );
                 return deferred.promise;
             }]
         };
@@ -59,7 +60,7 @@ define(['angular'],
         };
 
         homeController.indexResolve = {
-            posts: ['Post', '$q', function (Post, q) {
+            posts: ['Post', '$q', '$location', function (Post, q, $location) {
                 var deferred = q.defer();
                 Post.query({limit: 3}, function (posts) { deferred.resolve(posts) });
                 return deferred.promise;
