@@ -41,7 +41,6 @@ var staticCaching = function(req, res, next) {
 
 app.configure('development', function(){
     app.use(express.logger('dev'));
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('prod', function () {
@@ -63,8 +62,9 @@ app.configure(function(){
     app.use(app.router);
 });
 
-app.configure('dev', function(){
+app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+    app.use(errorHandler);
 });
 
 app.configure('prod', function () {

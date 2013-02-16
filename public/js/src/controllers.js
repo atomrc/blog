@@ -41,7 +41,7 @@ define(['angular'],
                 Post.get({slug: route.current.params.postSlug}, function (post) {
                     deferred.resolve(post);
                 },
-                function () { console.log('error'); $location.url('/404'); } );
+                function () { $location.url('/404'); } );
                 return deferred.promise;
             }]
         };
