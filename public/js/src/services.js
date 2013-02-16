@@ -31,9 +31,7 @@ define(['angular', 'analytics'],
                     linkReg = /(http[s]?:\/\/[^ ]+)/g;
                 parsedText = parsedText.replace(refReg, "<span class=\"tweet-ref\">$1</span>");
                 parsedText = parsedText.replace(linkReg, "<a href=$1>$1</a>");
-
                 return { text: parsedText };
-
             }
         };
 

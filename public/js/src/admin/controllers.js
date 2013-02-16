@@ -23,16 +23,20 @@ define(['../controllers'],
             post.$update();
         };
 
-        deletePost = function (post) {
-            if (window.confirm('sure bro ?')) {
-                post.$delete();
+        deletePost = function (callback) {
+            return function (post) {
+                if (window.confirm('sure bro ?')) {
+                    post.$delete(callback);
+                }
             }
         };
 
         controllers.posts.index = ['$scope', 'posts', function ($scope, posts) {
             $scope.posts = posts;
             $scope.publishPost = publishPost;
-            $scope.deletePost = deletePost;
+            $scope.deletePost = deletePost(function (post) {
+                posts.splice(posts.indexOf(post), 1);
+            });
         }];
 
         controllers.posts.show = ['$scope', 'post', 'Comment', 'Tag', function ($scope, post, Comment, Tag) {
