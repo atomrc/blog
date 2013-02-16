@@ -15,8 +15,9 @@ define(['angular'],
                 $scope.posts = posts;
             }],
 
-            show: ['$scope', 'post', function ($scope, post) {
+            show: ['$scope', 'post', 'Comment', function ($scope, post, Comment) {
                 $scope.post = post;
+                $scope.newComment = new Comment();
                 $scope.commentAdded = false;
 
                 $scope.saveComment = function (comment) {
