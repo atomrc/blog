@@ -23,6 +23,10 @@ define(['controllers'],
                 templateUrl: 'views/posts_show',
                 controller: controllers.posts.show,
                 resolve: controllers.posts.showResolve
+            },
+
+            '/404': {
+                templateUrl: 'views/404'
             }
         };
 
@@ -44,6 +48,9 @@ define(['controllers'],
         //add the animation transition resolution
         for (var routeIndex in routes) {
             var route = routes[routeIndex];
+            if (!route.resolve) {
+                route.resolve = {};
+            }
             route.resolve.animation = animation;
         }
 
