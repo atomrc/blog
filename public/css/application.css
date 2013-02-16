@@ -6,8 +6,8 @@ label { float:left; display:block; width:100px;  }
 fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
 legend { font-weight:bold; }
 ul { list-style: none; padding:0; }
-fieldset input, fieldset textarea { width: 300px; border-radius: 5px; border:solid 1px #BBB; box-shadow: #BBB 1px 1px 5px inset; }
-fieldset input { padding: 5px; width: 290px; }
+form input, form textarea { width: 300px; border-radius: 5px; border:solid 1px #BBB; box-shadow: #BBB 1px 1px 5px inset; }
+form input { padding: 5px; width: 290px; }
 input[type=submit] { float:right; width: auto; padding: 8px; box-shadow:none; }
 input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 
