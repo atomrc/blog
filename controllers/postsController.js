@@ -55,7 +55,7 @@ exports.tag = function (req, res) {
     post.tags.push(tag);
     post.save(function( err, post) {
         if(err) res.send(err);
-        res.send(post);
+        res.send(post.tags.pop());
     });
 };
 
@@ -65,7 +65,7 @@ exports.deleteTag = function (req, res) {
         {$pull : {tags: { _id: req.params.tag_id }}},
         function( err, post ) {
             if(err) res.send(err);
-            res.send(post);
+            res.send();
         }
     );
 };

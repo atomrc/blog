@@ -8,6 +8,7 @@ define(['angular', 'analytics'],
             AnalyticsTracker = null,
             Comment = null,
             Post = null,
+            Tag = null,
             Tweet = null;
 
         TweetsNormalizer = function () { };
@@ -73,13 +74,22 @@ define(['angular', 'analytics'],
             return resource('/posts/:slug/comments/:commentId', {commentId: '@_id'});
         };
 
-        Post = function (resource, Comment) {
+        Tag = function (resource) {
+            return resource('/posts/:slug/tags/:tagId', {tagId: '@_id'});
+        };
+
+        Post = function (resource) {
             var Post = resource('/posts/:slug', { slug: '@slug' }, { update: { method: 'PUT' }});
 
             Post.prototype.addComment = function (comment) {
-                var com = new Comment(comment);
-                com.$save({slug: this.slug}, function (newComment) {
+                comment.$save({slug: this.slug}, function (newComment) {
                     this.comments.push(newComment);
+                }.bind(this));
+            };
+
+            Post.prototype.addTag = function (tag) {
+                tag.$save({slug: this.slug}, function (newTag) {
+                    this.tags.push(newTag);
                 }.bind(this));
             };
 
@@ -103,7 +113,8 @@ define(['angular', 'analytics'],
             stateManager: ['$http', '$window', '$rootScope', function (felix, $window, $rootScope) { return new StateManager(felix, $window, $rootScope); }],
             analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
             Comment: ['$resource', Comment],
-            Post: ['$resource', 'Comment', Post],
+            Tag: ['$resource', Tag],
+            Post: ['$resource', Post],
             Tweet: ['$resource', Tweet]
         };
         return services;

@@ -26,19 +26,32 @@ define(['../controllers'],
             }
         };
 
-
-
         controllers.posts.index = ['$scope', 'posts', function ($scope, posts) {
             $scope.posts = posts;
             $scope.publishPost = publishPost;
             $scope.deletePost = deletePost;
         }];
 
-        controllers.posts.show = ['$scope', 'post', 'Comment', function ($scope, post, Comment) {
+        controllers.posts.show = ['$scope', 'post', 'Comment', 'Tag', function ($scope, post, Comment, Tag) {
             $scope.post = post;
+            $scope.newComment = new Comment();
+            $scope.newTag = new Tag();
             $scope.commentAdded = false;
+
             $scope.publishPost = publishPost;
             $scope.save = savePost;
+
+            $scope.addTag = function (tag) {
+                post.addTag(tag);
+                $scope.newTag = new Tag();
+            };
+
+            $scope.deleteTag = function (tag) {
+                var dTag = new Tag(tag);
+                dTag.$delete({slug: post.slug, tagId: tag._id}, function () {
+                    post.tags.splice(post.tags.indexOf(tag), 1);
+                });
+            };
 
             $scope.saveComment = function (comment) {
                 $scope.commentAdded = true;
