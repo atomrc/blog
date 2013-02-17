@@ -1,4 +1,5 @@
 var controllers  = require('../controllers'),
+    nodemailer   = require('nodemailer'),
     express      = require('express'),
     Unauthorized = require('../libs/errors').Unauthorized,
     NotFound     = require('../libs/errors').NotFound,
@@ -28,6 +29,19 @@ var loadPost = function(req, res, next) {
     });
 };
 
+var sendCommentMail = function (req, res, next) {
+    var transport = nodemailer.createTransport('SMTP', params.mail);
+    transport.sendMail({
+        from: 'blog@thomasbelin.fr',
+        to: params.mail.auth.user,
+        subject: 'Nouveau commentaire sur ' + req.post.title,
+        text: JSON.stringify(req.body)
+    });
+
+    transport.close();
+    return next();
+};
+
 // Routes
 module.exports = function(app) {
 
@@ -51,7 +65,7 @@ module.exports = function(app) {
     app.delete('/posts/:post_slug', isAuthenticated, loadPost, controllers.postsController.delete);
 
     //COMMENTS
-    app.post('/posts/:post_slug/comments', loadPost, controllers.postsController.comment);
+    app.post('/posts/:post_slug/comments', loadPost, sendCommentMail, controllers.postsController.comment);
     app.delete('/posts/:post_slug/comments/:comment_id', isAuthenticated, loadPost, controllers.postsController.deleteComment);
 
     //TAGS
