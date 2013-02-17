@@ -12,7 +12,7 @@ exports.index = function(req, res) {
         { limit: req.query.limit } :
         {};
 
-    var posts = Post.find(condition, '-comments', options, function (err, posts) {
+    var posts = Post.find(condition, '-comments', options).sort({'pubdate': 'desc'}).exec(function (err, posts) {
         if( err ) throw new NotFound;
         res.send(posts);
     });
