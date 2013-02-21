@@ -1,10 +1,10 @@
 /*global define*/
 
-define(['twitter', 'disqus'],
-    function (twttr, disqus) {
+define(['twitter', 'rainbow'],
+    function (twttr, rainbow) {
         'use strict';
         var twitter,
-            draggable;
+            codecontainer;
 
         twitter = function () {
             return function (scope, element, attr) {
@@ -12,8 +12,17 @@ define(['twitter', 'disqus'],
             };
         };
 
+        codecontainer = function () {
+            return function (scope, element, attr) {
+                setTimeout( function () {
+                    rainbow.color(element[0]);
+                }, 10);
+            };
+        };
+
         return {
-            twitter: twitter
+            twitter: twitter,
+            codecontainer: codecontainer
         };
     }
 );

@@ -5,6 +5,7 @@ require.config({
         angular: '../../lib/angular.min',
         ngSanitize: '../../lib/angular.sanitize.min',
         ngResource: '../../lib/angular.resource.min',
+        rainbow: '../../lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
         twitter: 'http://platform.twitter.com/widgets',
         disqus: 'http://whysocurious.disqus.com/embed'
@@ -23,6 +24,10 @@ require.config({
         ngResource: {
             exports: 'ngResource',
             deps: ['angular']
+        },
+
+        rainbow: {
+            init: function () { return window.Rainbow; }
         },
 
         analytics: {

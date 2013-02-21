@@ -6,4 +6,4 @@ article.full-article
         h1 {{ post.title }}
     include ../tags/index
     span.pubdate {{ post.pubdate | date }}
-    div.body(data-ng-bind-html='post.body')
+    div.body(data-ng-bind-html-unsafe='post.body', data-codecontainer)
