@@ -39,6 +39,11 @@ define(['angular', 'analytics', 'disqus'],
         StateManager = function ($http, $window, $rootScope) {
             this.http = $http;
             this.window = $window;
+
+            $rootScope.$on('$routeChangeStart', function (event) {
+                Disqus.reset();
+            });
+
             $rootScope.$on('$viewContentLoaded', function (event) {
                 if (event.targetScope.post) {
                     this.window.document.title = event.targetScope.post.title;
