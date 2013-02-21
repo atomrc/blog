@@ -6,7 +6,8 @@ require.config({
         ngSanitize: '../../lib/angular.sanitize.min',
         ngResource: '../../lib/angular.resource.min',
         analytics: 'http://www.google-analytics.com/ga',
-        twitter: 'http://platform.twitter.com/widgets'
+        twitter: 'http://platform.twitter.com/widgets',
+        disqus: 'http://whysocurious.disqus.com/embed'
     },
 
     shim: {
@@ -24,14 +25,17 @@ require.config({
             deps: ['angular']
         },
 
-
         analytics: {
             init: function () { return window._gaq; }
         },
 
         twitter: {
             init: function () { return twttr; }
-        }
+        },
+
+        disqus: {
+            init: function () { return DISQUS; }
+        },
     }
 });
 
