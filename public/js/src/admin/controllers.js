@@ -9,7 +9,6 @@ define(['../controllers'],
             deletePost = null;
 
         savePost = function (callback) {
-            console.log(callback);
             return function (post) {
                 if( post._id ) {
                     return post.$update(function () { console.log('saved'); });
