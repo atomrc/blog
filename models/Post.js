@@ -2,7 +2,6 @@ var mongoose = require('mongoose'),
     utils    = require('../libs/utils'),
     Schema   = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    Comment  = require('../models/Comment'),
     Tag  = require('../models/Tag');
 
 var PostSchema = new Schema({
@@ -13,7 +12,6 @@ var PostSchema = new Schema({
     slug:         String,
     published:    {type: Boolean, default: false},
     pubdate:      {type: Date, default: Date.now},
-    comments:     [Comment.schema],
     tags:         [Tag.schema]
 }, { versionKey:  "version" });
 

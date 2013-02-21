@@ -1,7 +1,7 @@
 /*global define*/
 
-define(['twitter'],
-    function (twttr) {
+define(['twitter', 'disqus'],
+    function (twttr, disqus) {
         'use strict';
         var twitter,
             draggable;

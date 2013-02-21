@@ -1,12 +1,12 @@
 /*global define, window*/
 
-define(['angular', 'analytics'],
-    function (Angular, analytics) {
+define(['angular', 'analytics', 'disqus'],
+    function (Angular, analytics, Disqus) {
         'use strict';
         var TweetsNormalizer = null,
             StateManager = null,
             AnalyticsTracker = null,
-            Comment = null,
+            disqus = null,
             Post = null,
             Tag = null,
             Tweet = null;
@@ -56,6 +56,19 @@ define(['angular', 'analytics'],
             }
         };
 
+        disqus = ['$location', function ($location) {
+            return {
+                init: function (post) {
+                    Disqus.reset({
+                        reload: true,
+                        config: function () {
+                            this.page.indentifier = post.slug;
+                            this.page.url = $location.absUrl();
+                        }
+                    });
+                }
+            };
+        }];
 
         AnalyticsTracker = function (location, rootScope) {
             this.location = location;
@@ -68,22 +81,12 @@ define(['angular', 'analytics'],
             }
         };
 
-        Comment = function (resource) {
-            return resource('/posts/:slug/comments/:commentId', {commentId: '@_id'});
-        };
-
         Tag = function (resource) {
             return resource('/posts/:slug/tags/:tagId', {tagId: '@_id'});
         };
 
         Post = function (resource) {
             var Post = resource('/posts/:slug', { slug: '@slug' }, { update: { method: 'PUT' }});
-
-            Post.prototype.addComment = function (comment) {
-                comment.$save({slug: this.slug}, function (newComment) {
-                    this.comments.push(newComment);
-                }.bind(this));
-            };
 
             Post.prototype.addTag = function (tag) {
                 tag.$save({slug: this.slug}, function (newTag) {
@@ -110,7 +113,7 @@ define(['angular', 'analytics'],
             tweetsNormalizer: function () { return new TweetsNormalizer(); },
             stateManager: ['$http', '$window', '$rootScope', function (felix, $window, $rootScope) { return new StateManager(felix, $window, $rootScope); }],
             analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
-            Comment: ['$resource', Comment],
+            disqus: disqus,
             Tag: ['$resource', Tag],
             Post: ['$resource', Post],
             Tweet: ['$resource', Tweet]

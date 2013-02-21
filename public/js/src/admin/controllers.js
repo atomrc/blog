@@ -28,7 +28,7 @@ define(['../controllers'],
                 if (window.confirm('sure bro ?')) {
                     post.$delete(callback);
                 }
-            }
+            };
         };
 
         controllers.posts.index = ['$scope', 'posts', function ($scope, posts) {
@@ -39,11 +39,9 @@ define(['../controllers'],
             });
         }];
 
-        controllers.posts.show = ['$scope', 'post', 'Comment', 'Tag', function ($scope, post, Comment, Tag) {
+        controllers.posts.show = ['$scope', 'post', 'Tag', function ($scope, post, Tag) {
             $scope.post = post;
-            $scope.newComment = new Comment();
             $scope.newTag = new Tag();
-            $scope.commentAdded = false;
 
             $scope.publishPost = publishPost;
             $scope.save = savePost();
@@ -60,19 +58,6 @@ define(['../controllers'],
                 });
             };
 
-            $scope.saveComment = function (comment) {
-                $scope.commentAdded = true;
-                post.addComment(comment);
-            };
-
-            $scope.deleteComment = function (comment) {
-                if (window.confirm('Sure bro ?') ) {
-                    var dComment = new Comment(comment);
-                    dComment.$delete({slug: post.slug, commentId: comment._id}, function () {
-                        post.comments.splice(post.comments.indexOf(comment), 1);
-                    });
-                }
-            };
         }];
 
 

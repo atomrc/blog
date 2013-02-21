@@ -1,7 +1,7 @@
 /*global define, window*/
 
 define(['angular'],
-    function (Angular, models) {
+    function (Angular) {
         'use strict';
         var postsController = null,
             homeController = null;
@@ -15,15 +15,9 @@ define(['angular'],
                 $scope.posts = posts;
             }],
 
-            show: ['$scope', 'post', 'Comment', function ($scope, post, Comment) {
+            show: ['$scope', 'post', 'disqus', function ($scope, post, disqus) {
                 $scope.post = post;
-                $scope.newComment = new Comment();
-                $scope.commentAdded = false;
-
-                $scope.saveComment = function (comment) {
-                    $scope.commentAdded = true;
-                    post.addComment(comment);
-                };
+                disqus.init(post);
             }]
         };
 

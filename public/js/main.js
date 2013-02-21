@@ -7,7 +7,8 @@ requirejs.config({
         ngSanitize: '../lib/angular.sanitize.min',
         ngResource: '../lib/angular.resource.min',
         analytics: 'http://www.google-analytics.com/ga',
-        twitter: 'http://platform.twitter.com/widgets'
+        twitter: 'http://platform.twitter.com/widgets',
+        disqus: 'http://whysocurious.disqus.com/embed'
     },
 
     shim: {
@@ -27,6 +28,10 @@ requirejs.config({
 
         analytics: {
             init: function () { return window._gaq; }
+        },
+
+        disqus: {
+            init: function () { return DISQUS; }
         },
 
         twitter: {

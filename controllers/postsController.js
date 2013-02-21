@@ -1,5 +1,4 @@
 var Post     = require('../models/Post');
-var Comment  = require('../models/Comment');
 var Tag  = require('../models/Tag');
 var NotFound = require('../libs/errors').NotFound;
 
@@ -12,7 +11,7 @@ exports.index = function(req, res) {
         { limit: req.query.limit } :
         {};
 
-    var posts = Post.find(condition, '-comments', options).sort({'pubdate': 'desc'}).exec(function (err, posts) {
+    var posts = Post.find(condition, '', options).sort({'pubdate': 'desc'}).exec(function (err, posts) {
         if( err ) throw new NotFound;
         res.send(posts);
     });
@@ -27,26 +26,6 @@ exports.create = function(req, res) {
     post.save(function(err, post){
         res.send(post);
     });
-}
-
-exports.comment = function(req, res) {
-    var post = req.post;
-    var comment = new Comment(req.body);
-    post.comments.push(comment);
-    post.save(function( err, post) {
-        if(err) res.send(err);
-        res.send(post.comments.pop());
-    });
-}
-
-exports.deleteComment = function(req, res) {
-    Post.findOneAndUpdate(
-        { slug: req.params.post_slug },
-        {$pull : {comments: { _id: req.params.comment_id }}},
-        function( err, post ) {
-            res.send(post);
-        }
-    );
 }
 
 exports.tag = function (req, res) {

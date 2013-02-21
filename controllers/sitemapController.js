@@ -5,7 +5,7 @@ exports.index = function(req, res) {
         urls = ['/', '/posts'],
         sitemap = '',
         priority = 0.8;
-    var posts = Post.find({published: true}, '-comments', function (err, posts) {
+    var posts = Post.find({published: true}, function (err, posts) {
         if( err ) throw new NotFound;
         for(var i in posts) {
             var post = posts[i];
