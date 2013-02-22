@@ -17,6 +17,7 @@ define(['angular'],
 
             show: ['$scope', '$location', 'post', 'disqus', function ($scope, $location, post, disqus) {
                 $scope.post = post;
+                $scope.location = $location.absUrl();
                 $scope.escapedLocation = $location.absUrl().replace('#!', '?_escaped_fragment_=');
                 disqus.init(post);
             }]
