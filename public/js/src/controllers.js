@@ -15,8 +15,9 @@ define(['angular'],
                 $scope.posts = posts;
             }],
 
-            show: ['$scope', 'post', 'disqus', function ($scope, post, disqus) {
+            show: ['$scope', '$location', 'post', 'disqus', function ($scope, $location, post, disqus) {
                 $scope.post = post;
+                $scope.location = $location.absUrl();
                 disqus.init(post);
             }]
         };
