@@ -19,7 +19,7 @@ html(lang="en", data-ng-app="blog")
             - else
                 script(src="/js/lib/require.min.js", data-main="/js/main")
 
-    body()
+    body
         #header
             .container
                 .title { Thomas BELIN }
@@ -33,6 +33,13 @@ html(lang="en", data-ng-app="blog")
                                 p Articles
         #main
             .container
+                #find-me
+                    .content
+                        a(href='https://plus.google.com/118010420630912086698?rel=author', target='_blank', class='google')
+                        a(href='https://twitter.com/ThomasBelin4', target='blank', class='twitter')
+                        a(href='https://github.com/thomasbelin4', target='blank', class='github')
+                        a(href='https://developer.mozilla.org/en-US/profiles/ThomasBelin4', target='blank', class='mozilla')
+                    strong.title Retrouvez moi
                 #main-content(class='hide', data-ng-view)
         #footer
             p Thomas Belin
