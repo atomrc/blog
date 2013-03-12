@@ -9,8 +9,8 @@ exports.snapshot = function(req, res) {
 }
 
 exports.serveStatic = function (req, res, next) {
-    console.log(req.query);
-    Snapshot.findOne({page: req.query.page}, function (err, snapshot) {
+    var page = req.query.page === '' ? '/' : req.query.page;
+    Snapshot.findOne({page: page}, function (err, snapshot) {
         if (err || snapshot === null) { return next(new NotFound()); }
         res.send(snapshot.html);
     })
