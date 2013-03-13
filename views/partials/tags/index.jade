@@ -1,9 +1,11 @@
 aside
     div#tags-list
-        span.tag(data-ng-repeat='tag in post.tags')
-            {{ tag.name }}
-            - if (auth)
-                .edit-panel
-                    a.delete(data-ng-click='deleteTag(tag)')
+        span(data-ng-repeat='tag in post.tags')
+            span.tag
+                {{ tag.name }}
+                - if (auth)
+                    .edit-panel
+                        a.delete(data-ng-click='deleteTag(tag)')
+            &nbsp;
     -if (auth)
         include form

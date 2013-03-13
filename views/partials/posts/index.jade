@@ -6,8 +6,7 @@ ul#posts-list
         a(href="/#!/posts/{{ post.slug }}")
                 h2 {{ post.title }}
                 div#tags-list
-                    span.tag(data-ng-repeat='tag in post.tags')
-                        {{ tag.name }}
+                    include ../tags/index
                 div.pubdate {{ post.pubdate | date }}
                 p.description {{ post.description }}
                 - if (auth)
