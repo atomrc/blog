@@ -28,12 +28,25 @@ var loadPost = function(req, res, next) {
     });
 };
 
+var getSiteUrls = function (req, res, next) {
+    var urls = ['/', '/posts'];
+    Post.find({published: true}, function (err, posts) {
+        if( err ) throw new NotFound;
+        for(var i in posts) {
+            var post = posts[i];
+            urls.push('/posts/'+post.slug);
+        }
+        req.urls = urls;
+        next();
+    });
+};
+
 // Routes
 module.exports = function(app) {
 
     app.get('/', controllers.homeController.index);
 
-    app.get('/sitemap.xml', controllers.sitemapController.index);
+    app.get('/sitemap.xml', getSiteUrls, controllers.sitemapController.index);
 
     app.get('/login', authenticateApp, function (req, res) {
         req.session.auth = true;
@@ -56,4 +69,6 @@ module.exports = function(app) {
 
     app.post('/snapshot', controllers.snapshotsController.snapshot);
     app.get('/snapshots', controllers.snapshotsController.serveStatic);
+    app.get('/snapshots/stats', controllers.snapshotsController.stats);
+    app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);
 }

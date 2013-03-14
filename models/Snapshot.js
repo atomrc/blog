@@ -4,7 +4,8 @@ var mongoose = require('mongoose'),
 
 var SnapshotSchema = new Schema({
     page: String,
-    html: String
+    html: String,
+    visits: Number
 });
 
 module.exports = mongoose.model('Snapshot', SnapshotSchema);
