@@ -12,10 +12,12 @@ define(['angular'],
         postsController = {
 
             index: ['$scope', 'posts', function ($scope, posts) {
+                $scope.title = 'Articles - Why So Curious ?';
                 $scope.posts = posts;
             }],
 
             show: ['$scope', '$location', 'post', 'disqus', function ($scope, $location, post, disqus) {
+                $scope.title = post.title;
                 $scope.post = post;
                 $scope.location = $location.absUrl();
                 $scope.escapedLocation = $location.absUrl().replace('#!', '?_escaped_fragment_=');

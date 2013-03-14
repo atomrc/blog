@@ -45,8 +45,8 @@ define(['angular', 'analytics', 'disqus'],
             });
 
             $rootScope.$on('$viewContentLoaded', function (event) {
-                if (event.targetScope.post) {
-                    this.window.document.title = event.targetScope.post.title;
+                if (event.targetScope.title) {
+                    this.window.document.title = event.targetScope.title;
                 } else {
                     this.window.document.title = "Why So Curious ?";
                 }
