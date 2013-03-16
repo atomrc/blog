@@ -15,4 +15,4 @@
     .tweets-container.widget-container
         ul#tweets-list
             li.tweet(data-ng-repeat="tweet in tweets")
-                span(data-ng-bind-html='tweet.text')
+                span(data-ng-bind-html='tweet.text | urlconvert')

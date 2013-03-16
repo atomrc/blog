@@ -11,31 +11,6 @@ define(['angular', 'analytics', 'disqus'],
             Tag = null,
             Tweet = null;
 
-        TweetsNormalizer = function () { };
-        TweetsNormalizer.prototype = {
-
-            normalize: function (tweets) {
-                var i = 0,
-                    parsedTweets = [],
-                    tweet = null;
-                for (i = 0; i < tweets.length; i++) {
-                    tweet = tweets[i];
-                    parsedTweets.push(this.normalizeSingle(tweet));
-                }
-                return parsedTweets;
-            },
-
-            normalizeSingle: function (tweet) {
-                var parsedText = tweet.text,
-                    refReg = /(@[^ ]+)/g,
-                    linkReg = /(http[s]?:\/\/[^ ]+)/g;
-                parsedText = parsedText.replace(refReg, "<span class=\"tweet-ref\">$1</span>");
-                parsedText = parsedText.replace(linkReg, "<a href=$1>$1</a>");
-                return { text: parsedText };
-            }
-        };
-
-
         StateManager = function ($http, $window, $rootScope) {
             this.http = $http;
             this.window = $window;
@@ -115,7 +90,6 @@ define(['angular', 'analytics', 'disqus'],
         };
 
         var services = {
-            tweetsNormalizer: function () { return new TweetsNormalizer(); },
             stateManager: ['$http', '$window', '$rootScope', function (felix, $window, $rootScope) { return new StateManager(felix, $window, $rootScope); }],
             analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
             disqus: disqus,

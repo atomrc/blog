@@ -48,10 +48,10 @@ define(['angular'],
          * HOME CONTROLLER
          * **************/
         homeController = {
-            index: ['$scope', '$http', 'tweetsNormalizer', '$window', 'posts', 'Tweet', function ($scope, http, tweetsNormalizer, $window, posts, Tweet) {
+            index: ['$scope', '$http', '$window', 'posts', 'Tweet', function ($scope, http, $window, posts, Tweet) {
                 $scope.posts = posts;
                 Tweet.query(function (tweets) {
-                    $scope.tweets = tweetsNormalizer.normalize(tweets);
+                    $scope.tweets = tweets;
                 });
             }]
 
