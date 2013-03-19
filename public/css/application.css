@@ -126,7 +126,7 @@ article .edition-panel, .widget { background:rgba(255,255,255, 0.5);}
 article { text-align:justify; border-bottom:solid 1px #ccc; }
 article h1 { text-align:left; font-size: 2em; margin:0 }
 article h2 { font-size: 1.5em; color:#666; margin:0; text-decoration: underline; margin-top: 1.5em; }
-article .body { margin:20px 0; font-size:14pt; line-height:1.5em; }
+article .body { margin:20px 0; font-size:13pt; line-height:1.5em; }
 article a { color:#0084b4; }
 article ul { margin: 0 30px; list-style:disc;}
 code { white-space:pre; color: rgb(8, 160, 33);  background-color:black; border-radius:10px; display: block; padding:10px; overflow-x: scroll; }

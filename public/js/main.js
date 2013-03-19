@@ -14,7 +14,7 @@ requirejs.config({
 
     shim: {
         angular: {
-            init: function () { return angular; }
+            exports: "angular"
         },
 
         ngSanitize: {
@@ -28,19 +28,19 @@ requirejs.config({
         },
 
         analytics: {
-            init: function () { return window._gaq; }
+            exports: "_gaq"
         },
 
         rainbow: {
-            init: function () { return window.Rainbow; }
+            exports: "Rainbow"
         },
 
         disqus: {
-            init: function () { return window.DISQUS; }
+            exports: "DISQUS"
         },
 
         twitter: {
-            init: function () { return window.twttr; }
+            exports: "twttr"
         }
     }
 });
