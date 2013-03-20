@@ -28,6 +28,22 @@ var loadPost = function(req, res, next) {
     });
 };
 
+var loadPosts = function (req, res, next) {
+    var condition = req.session.auth ?
+        {} :
+        { published: true };
+
+    var options = req.query.limit ?
+        { limit: req.query.limit } :
+        {};
+
+    var posts = Post.find(condition, '', options).sort({'pubdate': 'desc'}).exec(function (err, posts) {
+        if( err ) throw new NotFound;
+        req.posts = posts;
+        next();
+    });
+};
+
 var getSiteUrls = function (req, res, next) {
     var urls = ['/', '/posts'];
     Post.find({published: true}, function (err, posts) {
@@ -53,11 +69,14 @@ module.exports = function(app) {
         res.redirect('/');
     });
 
+    //RSS FEED
+    app.get('/feed', loadPosts, controllers.postsController.feed);
+
     //VIEWS
     app.get('/views/:view_id', controllers.viewsController.show);
 
     //POSTS
-    app.get('/posts', controllers.postsController.index);
+    app.get('/posts', loadPosts, controllers.postsController.index);
     app.post('/posts', isAuthenticated, controllers.postsController.create);
     app.get('/posts/:post_slug', loadPost, controllers.postsController.show);
     app.put('/posts/:post_slug', isAuthenticated, controllers.postsController.update);

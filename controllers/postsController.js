@@ -1,32 +1,52 @@
-var Post     = require('../models/Post');
-var Tag  = require('../models/Tag');
-var NotFound = require('../libs/errors').NotFound;
+/*global require, exports*/
+var Post = require('../models/Post'),
+    Tag  = require('../models/Tag'),
+    NotFound = require('../libs/errors').NotFound,
+    RSS = require('rss');
 
-exports.index = function(req, res) {
-    var condition = req.session.auth ?
-        {} :
-        { published: true };
+exports.index = function (req, res) {
+    'use strict';
+    res.send(req.posts);
+};
 
-    var options = req.query.limit ?
-        { limit: req.query.limit } :
-        {};
+exports.feed = function(req, res) {
+    'use strict';
+    var feed = new RSS({
+        title: 'title',
+        description: 'description',
+        feed_url: 'http://example.com/rss.xml',
+        site_url: 'http://example.com',
+        image_url: 'http://example.com/icon.png',
+        author: 'Dylan Greene'
+    }); 
+    /* loop over data and add to feed */
+    for(var i = 0; i < req.posts.length; i++) {
+        var post = req.posts[i];
+        feed.item({
+            title:  post.title,
+            description: post.body,
+            url: 'http://thomasbelin.fr/#!/posts/' + post.slug, // link to the item
+            author: 'Thomas Belin', // optional - defaults to feed author property
+            date: post.publishedAt // any format that js Date can parse.
+        });
+    }
 
-    var posts = Post.find(condition, '', options).sort({'pubdate': 'desc'}).exec(function (err, posts) {
-        if( err ) throw new NotFound;
-        res.send(posts);
-    });
-}
+    var xml = feed.xml();
+
+    res.setHeader("Content-Type", "application/rss+xml; charset=utf-8");
+    res.send(xml);
+};
 
 exports.show = function(req, res, next) {
     res.send(req.post);
-}
+};
 
 exports.create = function(req, res) {
     var post = new Post(req.body);
     post.save(function(err, post){
         res.send(post);
     });
-}
+};
 
 exports.tag = function (req, res) {
     var post = req.post;
@@ -60,10 +80,10 @@ exports.update = function(req, res, next) {
             res.send(post);
         }
     );
-}
+};
 
 exports.delete = function(req, res) {
     var post = req.post;
     post.remove();
     res.send(post);
-}
+};
