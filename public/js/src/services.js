@@ -9,15 +9,12 @@ define(['angular', 'analytics', 'disqus'],
             disqus = null,
             Post = null,
             Tag = null,
-            Tweet = null;
+            Tweet = null,
+            services = null;
 
         StateManager = function ($http, $window, $rootScope) {
             this.http = $http;
             this.window = $window;
-
-            $rootScope.$on('$routeChangeStart', function (event) {
-                Disqus.reset();
-            });
 
             $rootScope.$on('$viewContentLoaded', function (event) {
                 if (event.targetScope.title) {
@@ -30,9 +27,9 @@ define(['angular', 'analytics', 'disqus'],
         };
         StateManager.prototype = {
             takeSnapshot: function (event) {
-                var content = Angular.element(this.window.document.documentElement);
-                var url = this.window.document.location.hash.replace('!', '');
-                this.http.post('/snapshot', { 'html': content.html(), 'page': url });
+                var content = this.window.document.documentElement,
+                    url = this.window.document.location.hash.replace('!', '');
+                this.http.post('/snapshot', { 'html': "<!DOCTYPE html>" + content.outerHTML, 'page': url });
             }
         };
 
@@ -89,7 +86,7 @@ define(['angular', 'analytics', 'disqus'],
             );
         };
 
-        var services = {
+        services = {
             stateManager: ['$http', '$window', '$rootScope', function (felix, $window, $rootScope) { return new StateManager(felix, $window, $rootScope); }],
             analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
             disqus: disqus,

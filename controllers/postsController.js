@@ -12,13 +12,14 @@ exports.index = function (req, res) {
 exports.feed = function(req, res) {
     'use strict';
     var feed = new RSS({
-        title: 'title',
-        description: 'description',
-        feed_url: 'http://example.com/rss.xml',
-        site_url: 'http://example.com',
-        image_url: 'http://example.com/icon.png',
-        author: 'Dylan Greene'
-    }); 
+        title: 'Why So Curious ?',
+        description: 'The web is my scene, HTML5/CSS3 are my sound engineers, JS is my guitar, the web standards are my tablature and last but not least you might be my audience ;)',
+        feed_url: 'http://thomasbelin.fr/feed',
+        site_url: 'http://thomasbelin.fr',
+        image_url: 'http://thomasbelin.fr/favicon.png',
+        author: 'Thomas Belin'
+    });
+
     /* loop over data and add to feed */
     for(var i = 0; i < req.posts.length; i++) {
         var post = req.posts[i];
@@ -27,13 +28,13 @@ exports.feed = function(req, res) {
             description: post.body,
             url: 'http://thomasbelin.fr/#!/posts/' + post.slug, // link to the item
             author: 'Thomas Belin', // optional - defaults to feed author property
-            date: post.publishedAt // any format that js Date can parse.
+            date: post.pubdate // any format that js Date can parse.
         });
     }
 
     var xml = feed.xml();
 
-    res.setHeader("Content-Type", "application/rss+xml; charset=utf-8");
+    res.setHeader("Content-Type", "text/xml; charset=utf-8");
     res.send(xml);
 };
 
