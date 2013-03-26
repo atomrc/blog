@@ -138,8 +138,8 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 
 
 /* tags */
-#tags-list { margin: 5px 0; }
-#tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
+.tags-list { margin: 5px 0; }
+.tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
 
 /* Comments */
 #commentsContainer .name { font-weight:bold; }

@@ -1,6 +1,12 @@
 /*global require, window*/
 require.config({
     baseUrl: 'js/src/admin',
+    config: {
+        gplus: {
+            parsetags: 'explicit'
+        }
+    },
+
     paths: {
         angular: '../../lib/angular.min',
         ngSanitize: '../../lib/angular.sanitize.min',
@@ -8,7 +14,8 @@ require.config({
         rainbow: '../../lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
         twitter: 'http://platform.twitter.com/widgets',
-        disqus: 'http://whysocurious.disqus.com/embed'
+        disqus: 'http://whysocurious.disqus.com/embed',
+        gplus: 'https://apis.google.com/js/plusone'
     },
 
     shim: {
@@ -36,6 +43,10 @@ require.config({
 
         twitter: {
             init: function () { return twttr; }
+        },
+
+        gplus: {
+            exports: "gapi"
         },
 
         disqus: {

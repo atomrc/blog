@@ -9,7 +9,8 @@ requirejs.config({
         rainbow: '../lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
         twitter: 'http://platform.twitter.com/widgets',
-        disqus: 'http://whysocurious.disqus.com/embed'
+        disqus: 'http://whysocurious.disqus.com/embed',
+        gplus: 'https://apis.google.com/js/plusone'
     },
 
     shim: {
@@ -37,6 +38,10 @@ requirejs.config({
 
         disqus: {
             exports: "DISQUS"
+        },
+
+        gplus: {
+            exports: "gapi"
         },
 
         twitter: {
