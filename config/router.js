@@ -60,7 +60,11 @@ var getSiteUrls = function (req, res, next) {
 // Routes
 module.exports = function(app) {
 
-    app.get('/', controllers.homeController.index);
+    //FRONT
+    //app.get('/', controllers.homeController.index);
+    app.get('/', controllers.snapshotsController.serveStatic);
+    app.get('/posts', controllers.snapshotsController.serveStatic);
+    app.get('/posts/:post_slug', controllers.snapshotsController.serveStatic);
 
     app.get('/sitemap.xml', getSiteUrls, controllers.sitemapController.index);
 
@@ -75,19 +79,19 @@ module.exports = function(app) {
     //VIEWS
     app.get('/views/:view_id', controllers.viewsController.show);
 
+    /************ API ****************/
     //POSTS
-    app.get('/posts', loadPosts, controllers.postsController.index);
-    app.post('/posts', isAuthenticated, controllers.postsController.create);
-    app.get('/posts/:post_slug', loadPost, controllers.postsController.show);
-    app.put('/posts/:post_slug', isAuthenticated, controllers.postsController.update);
-    app.delete('/posts/:post_slug', isAuthenticated, loadPost, controllers.postsController.delete);
+    app.get('/api/posts', loadPosts, controllers.postsController.index);
+    app.post('/api/posts', isAuthenticated, controllers.postsController.create);
+    app.get('/api/posts/:post_slug', loadPost, controllers.postsController.show);
+    app.put('/api/posts/:post_slug', isAuthenticated, controllers.postsController.update);
+    app.delete('/api/posts/:post_slug', isAuthenticated, loadPost, controllers.postsController.delete);
 
     //TAGS
-    app.post('/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.tag);
-    app.delete('/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
+    app.post('/api/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.tag);
+    app.delete('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
 
     app.post('/snapshot', controllers.snapshotsController.snapshot);
-    app.get('/snapshots', controllers.snapshotsController.serveStatic);
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
     app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);
 }

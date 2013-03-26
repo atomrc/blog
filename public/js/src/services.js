@@ -27,9 +27,9 @@ define(['angular', 'analytics', 'disqus'],
         };
         StateManager.prototype = {
             takeSnapshot: function (event) {
-                var content = this.window.document.documentElement,
-                    url = this.window.document.location.hash.replace('!', '');
-                this.http.post('/snapshot', { 'html': "<!DOCTYPE html>" + content.outerHTML, 'page': url });
+                var content = this.window.document.getElementById('main-content'),
+                    url = this.window.document.location.pathname;
+                this.http.post('/snapshot', { 'html': content.innerHTML, 'page': url });
             }
         };
 
@@ -59,11 +59,11 @@ define(['angular', 'analytics', 'disqus'],
         };
 
         Tag = function (resource) {
-            return resource('/posts/:slug/tags/:tagId', {tagId: '@_id'});
+            return resource('/api/posts/:slug/tags/:tagId', {tagId: '@_id'});
         };
 
         Post = function (resource) {
-            var Post = resource('/posts/:slug', { slug: '@slug' }, { update: { method: 'PUT' }});
+            var Post = resource('/api/posts/:slug', { slug: '@slug' }, { update: { method: 'PUT' }});
 
             Post.prototype.addTag = function (tag) {
                 tag.$save({slug: this.slug}, function (newTag) {

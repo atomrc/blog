@@ -5,10 +5,10 @@ html(lang="fr", data-ng-app="blog")
         meta(name='fragment', content='!')
 
         title= "Why So Curious ?"
-        link(href="css/application.css", type="text/css", rel="stylesheet")
-        link(href="css/code-themes/custom.css", type="text/css", rel="stylesheet")
+        link(href="/css/application.css", type="text/css", rel="stylesheet")
+        link(href="/css/code-themes/custom.css", type="text/css", rel="stylesheet")
         - if (auth)
-            link(href="css/admin.css", type="text/css", rel="stylesheet")
+            link(href="/css/admin.css", type="text/css", rel="stylesheet")
             -if (prod)
                 script(src="/js/lib/require.min.js", data-main="/js/build/application.admin")
             -else
@@ -26,10 +26,10 @@ html(lang="fr", data-ng-app="blog")
                 .menu
                     ul
                         li
-                            a(href="/#!/")#home.state
+                            a(href="/")#home.state
                                 p Home
                         li
-                            a(href="/#!/posts")#posts.state
+                            a(href="/posts")#posts.state
                                 p Articles
         #main
             .container
@@ -40,7 +40,7 @@ html(lang="fr", data-ng-app="blog")
                         a(href='https://github.com/thomasbelin4', target='_blank', class='github')
                         a(href='https://developer.mozilla.org/en-US/profiles/ThomasBelin4', target='_blank', class='mozilla')
                     strong.title Retrouvez moi
-                #main-content(class='hide', data-ng-view)
+                #main-content(data-ng-view) !{content}
         #footer
             p Thomas Belin
             p ThomasBelin4@gmail.com

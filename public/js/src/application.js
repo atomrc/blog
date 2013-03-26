@@ -35,10 +35,8 @@ define(
             },
 
             initRoutes: function () {
-                this.module.config(['$locationProvider', function ($locationProvider) {
-                    $locationProvider.hashPrefix('!');
-                }]);
-                this.module.config(['$routeProvider', function ($routeProvider) {
+                this.module.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+                    $locationProvider.html5Mode(true);
                     for (var route in routes) {
                         $routeProvider.when(route, routes[route]);
                     }

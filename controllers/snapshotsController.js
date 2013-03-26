@@ -1,18 +1,18 @@
 var Snapshot = require('../models/Snapshot'),
     NotFound = require('../libs/errors').NotFound;
 
+exports.serveStatic = function (req, res) {
+    'use strict';
+    Snapshot.findOneAndUpdate({page: req.url}, { $inc: { visits: 1 } }, {}, function (err, snapshot) {
+        var content = snapshot !== null ? snapshot.html : '';
+        res.render('index', { auth: req.session.auth, prod: req.app.get('env') === 'prod', content: content});
+    });
+}
+
 exports.snapshot = function(req, res) {
-    var page = req.body.page.replace('#', '');
+    var page = req.body.page;
     Snapshot.findOneAndUpdate({page: page}, {page: page, html: req.body.html}, {upsert: true}, function (err, snap) {
         res.send(snap);
-    });
-};
-
-exports.serveStatic = function (req, res, next) {
-    var page = req.query.page === '' ? '/' : req.query.page;
-    Snapshot.findOneAndUpdate({page: page}, { $inc: { visits: 1 } }, {}, function (err, snapshot) {
-        if (err || snapshot === null) { return next(new NotFound()); }
-        res.send(snapshot.html);
     });
 };
 

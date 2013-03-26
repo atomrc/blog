@@ -2,7 +2,7 @@ var Snapshot = require('../models/Snapshot'),
     Post = require('../models/Post');
 
 exports.index = function(req, res) {
-    var root = 'http://thomasbelin.fr/#!',
+    var root = 'http://thomasbelin.fr',
         sitemap = '',
         priority = 0.8;
 
