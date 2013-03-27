@@ -3,7 +3,7 @@ var Snapshot = require('../models/Snapshot'),
 
 exports.serveStatic = function (req, res) {
     'use strict';
-    Snapshot.findOneAndUpdate({page: req.url}, { $inc: { visits: 1 } }, {}, function (err, snapshot) {
+    Snapshot.findOne({page: req.url}, function (err, snapshot) {
         var content = snapshot !== null ? snapshot.html : '';
         res.render('index', { auth: req.session.auth, prod: req.app.get('env') === 'prod', content: content});
     });

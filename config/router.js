@@ -91,7 +91,7 @@ module.exports = function(app) {
     app.post('/api/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.tag);
     app.delete('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
 
-    app.post('/snapshot', controllers.snapshotsController.snapshot);
+    app.post('/api/snapshots', controllers.snapshotsController.snapshot);
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
     app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);
 }
