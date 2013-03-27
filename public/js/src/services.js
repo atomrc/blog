@@ -4,34 +4,12 @@ define(['angular', 'analytics', 'disqus'],
     function (Angular, analytics, Disqus) {
         'use strict';
         var TweetsNormalizer = null,
-            StateManager = null,
             AnalyticsTracker = null,
             disqus = null,
             Post = null,
             Tag = null,
             Tweet = null,
             services = null;
-
-        StateManager = function ($http, $window, $rootScope) {
-            this.http = $http;
-            this.window = $window;
-
-            $rootScope.$on('$viewContentLoaded', function (event) {
-                if (event.targetScope.title) {
-                    this.window.document.title = event.targetScope.title;
-                } else {
-                    this.window.document.title = "Why So Curious ?";
-                }
-                window.setTimeout(this.takeSnapshot.bind(this), 1000);
-            }.bind(this));
-        };
-        StateManager.prototype = {
-            takeSnapshot: function (event) {
-                var content = this.window.document.getElementById('main-content'),
-                    url = this.window.document.location.pathname;
-                this.http.post('/snapshot', { 'html': content.innerHTML, 'page': url });
-            }
-        };
 
         disqus = ['$location', function ($location) {
             return {
@@ -87,7 +65,6 @@ define(['angular', 'analytics', 'disqus'],
         };
 
         services = {
-            stateManager: ['$http', '$window', '$rootScope', function (felix, $window, $rootScope) { return new StateManager(felix, $window, $rootScope); }],
             analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
             disqus: disqus,
             Tag: ['$resource', Tag],

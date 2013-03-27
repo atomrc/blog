@@ -1,6 +1,6 @@
 /*global require, window*/
 require.config({
-    baseUrl: 'js/src/admin',
+    baseUrl: '/js/src/admin',
     config: {
         gplus: {
             parsetags: 'explicit'

@@ -1,7 +1,7 @@
 /*global require, define, angular, window*/
 
 requirejs.config({
-    baseUrl: 'js/src',
+    baseUrl: '/js/src',
     paths: {
         angular: '../lib/angular.min',
         ngSanitize: '../lib/angular.sanitize.min',
