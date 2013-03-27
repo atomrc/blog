@@ -66,7 +66,7 @@ module.exports = function(app) {
     app.get('/posts', controllers.snapshotsController.serveStatic);
     app.get('/posts/:post_slug', controllers.snapshotsController.serveStatic);
 
-    app.get('/sitemap.xml', getSiteUrls, controllers.sitemapController.index);
+    app.get('/sitemap.:format', getSiteUrls, controllers.sitemapController.index);
 
     app.get('/login', authenticateApp, function (req, res) {
         req.session.auth = true;
