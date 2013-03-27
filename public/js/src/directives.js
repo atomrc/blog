@@ -17,7 +17,7 @@ define(['twitter', 'rainbow', 'gplus'],
             return function (scope, element, attr) {
                 var i = 0;
                 for (i = 0; i < element.length; i++) {
-                    gplus.plusone.render(element[i], {annotation: "bubble", size: "medium", href: scope.escapedLocation});
+                    gplus.plusone.render(element[i], {annotation: "bubble", size: "medium", href: scope.location});
                 }
             };
         };

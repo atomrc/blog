@@ -20,7 +20,6 @@ define(['angular'],
                 $scope.title = post.title;
                 $scope.post = post;
                 $scope.location = $location.absUrl();
-                $scope.escapedLocation = $location.absUrl().replace('#!', '?_escaped_fragment_=');
                 disqus.init(post);
             }]
         };
