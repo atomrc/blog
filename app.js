@@ -11,14 +11,6 @@ var express = require('express')
   , errorHandler = require('./libs/errors').handler;
 var app = express();
 
-var rewriteRules = function (req, res, next) {
-    if (req.query._escaped_fragment_ !== undefined) {
-        req.url = '/snapshots/';
-        req.query.page = req.query._escaped_fragment_;
-    }
-    next();
-}
-
 var staticCaching = function(req, res, next) {
     var extension = req.url.substring(req.url.lastIndexOf('.') + 1);
     var cache = {
@@ -58,7 +50,6 @@ app.configure(function(){
     app.use(express.cookieParser());
     app.use(express.session({secret: 'supersecretkeygoeshere'}));
     app.use(express.methodOverride());
-    app.use(rewriteRules);
     app.use(app.router);
 });
 
