@@ -26,7 +26,7 @@ exports.feed = function(req, res) {
         feed.item({
             title:  post.title,
             description: post.body,
-            url: 'http://thomasbelin.fr/#!/posts/' + post.slug, // link to the item
+            url: 'http://thomasbelin.fr/posts/' + post.slug, // link to the item
             author: 'Thomas Belin', // optional - defaults to feed author property
             date: post.pubdate // any format that js Date can parse.
         });
