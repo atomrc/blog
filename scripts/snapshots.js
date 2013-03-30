@@ -1,4 +1,4 @@
-/*global require, console*/
+/*global require, console, phantom*/
 var page = require('webpage').create(),
     apikey = require('../config/parameters.js').apikey,
     root = 'http://thomasbelin.fr',
@@ -9,7 +9,7 @@ var page = require('webpage').create(),
 
 snapshot = function (urls) {
     'use strict';
-    if( urls.length === 0 ) { phantom.exit(); }
+    if (urls.length === 0) { phantom.exit(); }
 
     var url = root + urls.pop();
     console.log('TODO', url);
@@ -54,15 +54,3 @@ page.open(sitemap, function (status) {
         snapshot(urls);
     }
 });
-
-/*var ua = function () {
-    var data =  page.evaluate(function () {
-         var content, page;
-         content = document.getElementById('main-content').innerHTML;
-         page = window.location.pathname;
-         return { html: content, page: page };
-    });
-    console.log(data.page);
-    phantom.exit();
-};
-setTimeout(ua, 5000);*/

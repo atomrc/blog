@@ -12,6 +12,7 @@ JS Compilation
 =================
 
 Will build the public and the admin js files
+
     cd public/js
     make
 
