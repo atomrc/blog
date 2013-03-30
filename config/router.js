@@ -7,13 +7,21 @@ var controllers  = require('../controllers'),
 
 
 var isAuthenticated = function(req, res, next) {
+    'use strict';
     if(!req.session || !req.session.auth) { return next(new Unauthorized); }
     return next();
 };
 
-var authenticateApp =  express.basicAuth( function (user, pass) {
-    return (user == params.user.username && pass == params.user.password);
+var authenticateUser =  express.basicAuth( function (user, pass) {
+    'use strict';
+    return (user === params.user.username && pass === params.user.password);
 });
+
+var authenticateApp = function (req, res, next) {
+    'use strict';
+    if ((!req.query.apikey) || (req.query.apikey !== params.apikey)) { return next(new Unauthorized); }
+    return next();
+};
 
 var loadPost = function(req, res, next) {
     var condition = {slug: req.params.post_slug};
@@ -68,7 +76,7 @@ module.exports = function(app) {
 
     app.get('/sitemap.:format', getSiteUrls, controllers.sitemapController.index);
 
-    app.get('/login', authenticateApp, function (req, res) {
+    app.get('/login', authenticateUser, function (req, res) {
         req.session.auth = true;
         res.redirect('/');
     });
@@ -91,7 +99,7 @@ module.exports = function(app) {
     app.post('/api/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.tag);
     app.delete('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
 
-    app.post('/api/snapshots', controllers.snapshotsController.snapshot);
+    app.post('/api/snapshots', authenticateApp, controllers.snapshotsController.snapshot);
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
     app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);
 }
