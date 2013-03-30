@@ -3,13 +3,26 @@
 define(['angular', 'analytics', 'disqus'],
     function (Angular, analytics, Disqus) {
         'use strict';
-        var TweetsNormalizer = null,
+        var StateManager = null,
+            TweetsNormalizer = null,
             AnalyticsTracker = null,
             disqus = null,
             Post = null,
             Tag = null,
             Tweet = null,
             services = null;
+
+        StateManager = function ($window, $rootScope) {
+            this.window = $window;
+
+            $rootScope.$on('$viewContentLoaded', function (event) {
+                if (event.targetScope.title) {
+                    this.window.document.title = event.targetScope.title;
+                } else {
+                    this.window.document.title = "Why So Curious ?";
+                }
+            }.bind(this));
+        };
 
         disqus = ['$location', function ($location) {
             return {
@@ -65,6 +78,7 @@ define(['angular', 'analytics', 'disqus'],
         };
 
         services = {
+            stateManager: ['$window', '$rootScope', function ($window, $rootScope) { return new StateManager($window, $rootScope); }],
             analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
             disqus: disqus,
             Tag: ['$resource', Tag],

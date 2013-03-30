@@ -4,6 +4,7 @@ var mongoose = require('mongoose'),
 
 var SnapshotSchema = new Schema({
     page: String,
+    title: String,
     html: String,
     visits: Number
 });
