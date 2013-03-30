@@ -3,25 +3,31 @@
 define(['angular', 'analytics', 'disqus'],
     function (Angular, analytics, Disqus) {
         'use strict';
-        var StateManager = null,
-            TweetsNormalizer = null,
-            AnalyticsTracker = null,
+        var stateManager = null,
+            analyticsTracker = null,
             disqus = null,
             Post = null,
             Tag = null,
             Tweet = null,
             services = null;
 
-        StateManager = function ($window, $rootScope) {
-            this.window = $window;
-
-            $rootScope.$on('$viewContentLoaded', function (event) {
+        stateManager = function ($window, $rootScope) {
+            var setTitle = function (event) {
                 if (event.targetScope.title) {
-                    this.window.document.title = event.targetScope.title;
+                    $window.document.title = event.targetScope.title;
                 } else {
-                    this.window.document.title = "Why So Curious ?";
+                    $window.document.title = "Why So Curious ?";
                 }
-            }.bind(this));
+            };
+            $rootScope.$on('$viewContentLoaded', setTitle);
+        };
+
+        analyticsTracker = function (location, rootScope) {
+            var track = function () {
+                analytics.push(['_setAccount', 'UA-34218773-1']);
+                analytics.push(['_trackPageview', location.path()]);
+            };
+            rootScope.$on('$viewContentLoaded', track);
         };
 
         disqus = ['$location', function ($location) {
@@ -37,17 +43,6 @@ define(['angular', 'analytics', 'disqus'],
                 }
             };
         }];
-
-        AnalyticsTracker = function (location, rootScope) {
-            this.location = location;
-            rootScope.$on('$viewContentLoaded', this.track.bind(this));
-        };
-        AnalyticsTracker.prototype = {
-            track: function () {
-                analytics.push(['_setAccount', 'UA-34218773-1']);
-                analytics.push(['_trackPageview', this.location.path()]);
-            }
-        };
 
         Tag = function (resource) {
             return resource('/api/posts/:slug/tags/:tagId', {tagId: '@_id'});
@@ -74,12 +69,12 @@ define(['angular', 'analytics', 'disqus'],
             return resource('http://api.twitter.com/1/statuses/user_timeline.json?count=10&include_rts=true&screen_name=thomasbelin4&callback=JSON_CALLBACK',
                 {},
                 { query: {method: 'JSONP', isArray: true}}
-            );
+                );
         };
 
         services = {
-            stateManager: ['$window', '$rootScope', function ($window, $rootScope) { return new StateManager($window, $rootScope); }],
-            analyticsTracker: ['$location', '$rootScope', function (location, rootScope) { return new AnalyticsTracker(location, rootScope); }],
+            stateManager: ['$window', '$rootScope', stateManager],
+            analyticsTracker: ['$location', '$rootScope', analyticsTracker],
             disqus: disqus,
             Tag: ['$resource', Tag],
             Post: ['$resource', Post],
