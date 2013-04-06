@@ -11,6 +11,11 @@ form input { padding: 5px; width: 290px; }
 input[type=submit] { float:right; width: auto; padding: 8px; box-shadow:none; }
 input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 
+table { text-align: left; width: 100%; border-spacing: 0; }
+table, table td { border: 1px solid #DDD; }
+table td { padding: 5px; }
+table thead td { font-weight: bold; text-align: center; }
+
 #header { background:url('/images/tom.png') no-repeat center 5px ; /*background-color:#4D90FE;*/
   padding-top:5px; height:4em; font-size:11pt;
   position:relative; }
@@ -117,7 +122,7 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 #posts-list li>a{ display:block; padding:5px; border-top:solid 1px #ccc }
 #posts-list li:hover>a,
 #comments-list li:nth-child(even),
-article .edition-panel, .widget { background:rgba(255,255,255, 0.5);}
+article .edition-panel, .widget, table { background:rgba(255,255,255, 0.5);}
 #posts-list h2 { color:#F06; margin:0; }
 
 /* full article */
