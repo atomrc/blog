@@ -34,9 +34,7 @@ table thead td { font-weight: bold; text-align: center; }
 #header .container > div { float:left; width:50%; height:100%; }
 #header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; }
 #header .logo #id-image { height:3em; margin-top:0.5em; }
-#header .menu ul { float:right; margin:0;}
-#header .menu li { display:block; float:left; width:75px; text-align:center; }
-#header .menu li a.state { display:block; float:left; width:75px; text-align:center; }
+#header .menu a { display:block; float:right; width:75px; text-align:center; }
 #header .menu p { line-height:0; margin-top:3.25em; }
 
 #about { background:url('/images/sprite.png') 0 0; }
@@ -45,8 +43,8 @@ table thead td { font-weight: bold; text-align: center; }
 #posts { background:url('/images/sprite.png') 75px 0px; }
 #posts:hover { background:url('/images/sprite.png') 75px 62px; }
 
-#home { background:url('/images/sprite.png') 150px 0px; }
-#home:hover { background:url('/images/sprite.png') 150px 62px; }
+#home { background:url('/images/sprite.png') 75px 0px; }
+#home:hover { background:url('/images/sprite.png') 75px 62px; }
 
 #main-content {
     padding: 70px 0;
