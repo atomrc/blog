@@ -5,19 +5,17 @@ html(lang="fr", data-ng-app="blog")
 
         title #{title}
         link(href="/css/application.css", type="text/css", rel="stylesheet")
-        link(href="/css/code-themes/custom.css", type="text/css", rel="stylesheet")
         - if (auth)
             link(href="/css/admin.css", type="text/css", rel="stylesheet")
-            -if (prod)
-                script(src="/js/lib/require.min.js", data-main="/js/build/application.admin")
-            -else
-                script(src="/js/lib/require.min.js", data-main="/js/main.admin")
-        -else
-            - if (prod)
-                script(src="/js/lib/require.min.js", data-main="/js/build/application")
-            - else
-                script(src="/js/lib/require.min.js", data-main="/js/main")
-
+        link(href="/css/code-themes/custom.css", type="text/css", rel="stylesheet")
+        script(src="/js/lib/require.min.js")
+        script(src="/js/lib/angular.min.js")
+        script(src="/js/lib/angular.resource.min.js")
+        script(src="/js/lib/angular.sanitize.min.js")
+        script(src="/js/src/application.js")
+        - if (auth)
+            script(src="/js/src/application.admin.js")
+        script(src="/js/main.js")
     body
         #header
             .container

@@ -1,0 +1,12 @@
+article
+    time.pubdate(datetime="{{post.pubdate}}", pudate) {{ post.pubdate | date }}
+    block title
+        h1 {{post.title}}
+    aside
+        span.tags-list
+            span(data-ng-repeat='tag in post.tags')
+                span.tag
+                    {{ tag.name }}
+                &nbsp;
+    block content
+        p.description{{ post.description }}
