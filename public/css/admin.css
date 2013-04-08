@@ -38,3 +38,5 @@ article .edition-panel { position:absolute; left:100%; padding:10px; border:soli
     top: -100px;
     opacity: 0;
 }
+
+.full-article { margin-right: 0; }
