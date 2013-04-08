@@ -68,25 +68,6 @@ var getSiteUrls = function (req, res, next) {
 // Routes
 module.exports = function(app) {
 
-    //FRONT
-    //app.get('/', controllers.homeController.index);
-    app.get('/', controllers.snapshotsController.serveStatic);
-    app.get('/posts', controllers.snapshotsController.serveStatic);
-    app.get('/posts/:post_slug', controllers.snapshotsController.serveStatic);
-
-    app.get('/sitemap.:format', getSiteUrls, controllers.sitemapController.index);
-
-    app.get('/login', authenticateUser, function (req, res) {
-        req.session.auth = true;
-        res.redirect('/');
-    });
-
-    //RSS FEED
-    app.get('/feed', loadPosts, controllers.postsController.feed);
-
-    //VIEWS
-    app.get('/views/:view_id', controllers.viewsController.show);
-
     /************ API ****************/
     //POSTS
     app.get('/api/posts', loadPosts, controllers.postsController.index);
@@ -102,4 +83,24 @@ module.exports = function(app) {
     app.post('/api/snapshots', authenticateApp, controllers.snapshotsController.snapshot);
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
     app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);
+
+    //FRONT
+    //app.get('/', controllers.homeController.index);
+    app.get('/', controllers.snapshotsController.serveStatic);
+    app.get('/posts/:post_slug', controllers.snapshotsController.serveStatic);
+    app.get('/404', controllers.snapshotsController.serveStatic);
+
+    app.get('/sitemap.:format', getSiteUrls, controllers.sitemapController.index);
+
+    app.get('/login', authenticateUser, function (req, res) {
+        req.session.auth = true;
+        res.redirect('/');
+    });
+
+    //RSS FEED
+    app.get('/feed', loadPosts, controllers.postsController.feed);
+
+    //VIEWS
+    app.get('/views/:view_id', controllers.viewsController.show);
+
 }

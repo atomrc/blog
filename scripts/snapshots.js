@@ -51,6 +51,7 @@ page.open(sitemap, function (status) {
             return document.body.innerText;
         });
         urls = JSON.parse(content);
+        urls.push('/404');
         snapshot(urls);
     }
 });

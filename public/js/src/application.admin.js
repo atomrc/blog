@@ -46,10 +46,11 @@ routes['/posts/:postSlug'].controller = ['$scope', 'post', 'Tag', function ($sco
 
 }];
 
-routes['/posts/create'] = {
+routes['/post/create'] = {
     templateUrl: '/views/posts_show',
 
     controller: ['$scope', 'Post', '$location', function ($scope, Post, $location) {
+        'use strict';
         $scope.post = new Post();
         $scope.save = savePost(function (post) { $location.url('/posts/' + post.slug); });
     }],

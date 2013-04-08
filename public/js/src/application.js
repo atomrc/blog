@@ -193,6 +193,7 @@ routes = {
         templateUrl: '/views/posts_show',
 
         controller: ['$scope', '$location', 'post', 'disqus', function ($scope, $location, post, disqus) {
+            'use strict';
             $scope.title = post.title;
             $scope.post = post;
             $scope.location = $location.absUrl();
@@ -201,6 +202,7 @@ routes = {
 
         resolve: {
             post: ['Post', '$route', '$q', '$location', function (Post, route, q, $location) {
+                'use strict';
                 var deferred = q.defer();
                 Post.get({slug: route.current.params.postSlug}, function (post) {
                     deferred.resolve(post);

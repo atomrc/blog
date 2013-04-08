@@ -30,6 +30,21 @@ table thead td { font-weight: bold; text-align: center; }
 #footer { font-size:11pt; text-align:center; border-top:solid 1px #CCC; margin:auto;}
 
 .container { width:80%; margin:auto; position:relative; }
+@media all and (max-width: 800px) {
+    .container { width: 100%; }
+}
+@media all and (max-width: 500px) {
+    .card { width: 90%; height: auto; }
+}
+@media all and (min-width: 500px) and (max-width: 1000px) {
+    .card { width: 46%; }
+}
+@media all and (min-width: 1000px) {
+    .card { width: 29%; }
+}
+@media all and (min-width: 1500px) {
+    .card { width: 20%; }
+}
 
 #header .container > div { float:left; width:50%; height:100%; }
 #header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; }
@@ -109,9 +124,12 @@ table thead td { font-weight: bold; text-align: center; }
 
 /* Posts list */
 #posts-container { text-align: center; }
-.card { text-align: left; padding: 10px; display:inline-block; vertical-align: top; width: 300px; height: 200px; border-radius: 5px; margin: 5px; position: relative; }
-.card h2 { font-size: 14pt; }
 
+.card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 200px; border-radius: 5px; margin: 1%; position: relative; }
+.card:hover {
+    box-shadow:#DDD 0px 0px 20px 0px;
+}
+.card h2 { font-size: 14pt; }
 .card,
 article .edition-panel, .widget, table { background:rgba(255,255,255, 0.5);}
 
@@ -121,8 +139,8 @@ article .edition-panel, .widget, table { background:rgba(255,255,255, 0.5);}
 .share-container { position:fixed; border-radius:5px; padding:10px; box-shadow:#CCC -1px 1px 4px 0px inset; background-color: #EEE; }
 .full-article article { text-align:justify; border-bottom:solid 1px #ccc; }
 article h1 { text-align:left; font-size: 2em; margin:0; }
-article h2 { text-indent: 1em; }
-article h3 { text-indent: 2em; }
+.full-article article h2 { text-indent: 1em; }
+.full-article article h3 { text-indent: 2em; }
 .full-article article h2 { font-size: 1.5em; margin:0; margin-top: 1.5em; }
 article .body { margin:20px 0; font-size:13pt; line-height:1.5em; }
 article a { color:#0084b4; }
@@ -147,3 +165,19 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 /* ABOUT */
 #idpic {border-radius: 5px; height:150px; float:left; margin:0 10px; }
 #about-contact a { font-weight:bold; }
+
+/************ANIMATIONS**********/
+.fade-enter-setup {
+     -webkit-transition: 1s linear all; /* Safari/Chrome */
+    -moz-transition: 1s linear all; /* Firefox */
+    -ms-transition: 1s linear all; /* IE10 */
+    -o-transition: 1s linear all; /* Opera */
+    transition: 1s linear all; /* Future Browsers */
+    position: relative;
+}
+.fade-enter-setup {
+    opacity: 0;
+}
+.fade-enter-start {
+    opacity: 1;
+}
