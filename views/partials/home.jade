@@ -1,9 +1,6 @@
 #posts-container.widget-container
     include posts/index
 
-//.widget
-    .widget-title Mes derniers tweets
-    .tweets-container.widget-container
-        ul#tweets-list
-            li.tweet(data-ng-repeat="tweet in tweets")
-                span(data-ng-bind-html='tweet.text | urlconvert')
+ul#tweets-list
+    li.tweet(data-ng-repeat="tweet in tweets")
+        span(data-ng-bind-html='tweet.text | urlconvert')

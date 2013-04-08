@@ -53,7 +53,7 @@ var loadPosts = function (req, res, next) {
 };
 
 var getSiteUrls = function (req, res, next) {
-    var urls = ['/', '/posts'];
+    var urls = ['/'];
     Post.find({published: true}, function (err, posts) {
         if( err ) throw new NotFound;
         for(var i in posts) {
