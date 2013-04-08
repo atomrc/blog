@@ -1,6 +1,11 @@
 -if (auth)
     a.button(href="/post/create") Create
     br
-a.card(data-ng-repeat="post in posts", data-ng-animate="'fade'", href="/posts/{{ post.slug }}")
-    include _list
+.card(data-ng-repeat="post in posts", data-ng-animate="'fade'")
+    a(href="/posts/{{ post.slug }}", class="published {{ post.published }}")
+        include _list
+    -if (auth)
+        span.edit-panel
+            button.publish(data-ng-click='publishPost(post)', class='publish {{ post.published }}') publish
+            button.delete(data-ng-click='deletePost(post)') delete
 div(style="clear:both;")

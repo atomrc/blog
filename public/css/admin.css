@@ -1,12 +1,18 @@
-.edit-panel a.publish:before { content:"✓"; }
-.edit-panel a.delete:before { content:"×"; }
-.edit-panel a.edit:before { content:"✍"; }
-.edit-panel {display:none; position:absolute; top:5px; right:5px; font-size:14pt; font-weight:bold; }
-.edit-panel a{ display:block; float:left; height:1em; width:1em;}
+.edit-panel { height: 0; position:absolute; bottom:0; left:0; font-size:14pt; font-weight:bold; text-align: right; background-color:black; width: 100%; overflow: hidden; opacity: 0;
+     -webkit-transition: 0.2s linear all; /* Safari/Chrome */
+    -moz-transition: 0.2s linear all; /* Firefox */
+    -ms-transition: 0.2s linear all; /* IE10 */
+    -o-transition: 0.2s linear all; /* Opera */
+    transition: 0.2s linear all; /* Future Browsers */
+}
+.edit-panel span.publish:before { content:"✓"; }
+.edit-panel span.delete:before { content:"×"; }
+.edit-panel span { height:1em; width:1em; }
+.card:hover .edit-panel { height: 34px; opacity: 1; }
 
 .published.false { opacity:0.5; }
 
-button.publish.true { background-color: #7A0026; border: solid 1px #7A0026; }
+button.publish.true, button.delete { background-color: #7A0026; border: solid 1px #7A0026;}
 
 article .edition-panel { position:absolute; left:100%; padding:10px; border:solid #ccc 1px; border-left:0; border-radius:3px; }
 .comment:hover .edit-panel {display:block; }
@@ -18,3 +24,17 @@ article .edition-panel { position:absolute; left:100%; padding:10px; border:soli
 .edit-form textarea
 { width: 90%; }
 .edit-form textarea.article-body { height: 400px; }
+
+.fade-leave-setup {
+     -webkit-transition: 1s linear all; /* Safari/Chrome */
+    -moz-transition: 1s linear all; /* Firefox */
+    -ms-transition: 1s linear all; /* IE10 */
+    -o-transition: 1s linear all; /* Opera */
+    transition: 1s linear all; /* Future Browsers */
+    position: relative;
+    opacity: 1;
+}
+.fade-leave-start {
+    top: -100px;
+    opacity: 0;
+}

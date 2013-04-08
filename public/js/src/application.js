@@ -88,6 +88,7 @@ services = {
 
 
     Post : ['$resource', function (resource) {
+        'use strict';
         var Post = resource('/api/posts/:slug', { slug: '@slug' }, { update: { method: 'PUT' }});
 
         Post.prototype.addTag = function (tag) {
@@ -174,7 +175,7 @@ filters = {
 routes = {
     '/': {
         templateUrl: '/views/home',
-        controller: ['$scope', '$http', '$window', 'posts', 'Tweet', function ($scope, http, $window, posts, Tweet) {
+        controller: ['$scope', 'posts', 'Tweet', function ($scope, posts, Tweet) {
             $scope.posts = posts;
             Tweet.query(function (tweets) {
                 $scope.tweets = tweets;

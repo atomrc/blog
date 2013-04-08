@@ -16,7 +16,7 @@ var publishPost = function (post) {
 var deletePost = function (callback) {
     return function (post) {
         if (window.confirm('sure bro ?')) {
-            post.$delete(callback);
+            post.$delete({slug: post.slug}, callback);
         }
     };
 };
@@ -24,6 +24,18 @@ var deletePost = function (callback) {
 /***************************************/
 /*************** ROUTES ***************/
 /***************************************/
+routes['/'].controller = ['$scope', 'posts', 'Tweet', function ($scope, posts, Tweet) {
+    'use strict';
+    $scope.posts = posts;
+    $scope.deletePost = deletePost(function (post) {
+        posts.splice(posts.indexOf(post), 1);
+    });
+    $scope.publishPost = publishPost;
+    Tweet.query(function (tweets) {
+        $scope.tweets = tweets;
+    });
+}];
+
 routes['/posts/:postSlug'].controller = ['$scope', 'post', 'Tag', function ($scope, post, Tag) {
     'use strict';
     $scope.post = post;
