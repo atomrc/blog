@@ -1,6 +1,7 @@
 #posts-container.widget-container
     include posts/index
 
+.section Mes Tweets
 ul#tweets-list
     li.tweet(data-ng-repeat="tweet in tweets")
         span(data-ng-bind-html='tweet.text | urlconvert')

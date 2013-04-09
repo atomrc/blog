@@ -17,20 +17,19 @@ html(lang="fr", data-ng-app="blog")
             script(src="/js/src/application.admin.js")
         script(src="/js/main.js")
     body
-        #header
-            .container
-                .title
-                    a(href="/"){ Thomas BELIN }
-        #main
-            .container
-                #find-me
-                    .content
-                        a(href='https://plus.google.com/118010420630912086698?rel=author', target='_blank', class='google')
-                        a(href='https://twitter.com/ThomasBelin4', target='_blank', class='twitter')
-                        a(href='https://github.com/thomasbelin4', target='_blank', class='github')
-                        a(href='https://developer.mozilla.org/en-US/profiles/ThomasBelin4', target='_blank', class='mozilla')
-                    strong.title Retrouvez moi
-                #main-content(data-ng-view) !{content}
+        .top-container
+            #header
+                .container
+                    .title
+                        a(href="/"){ Thomas BELIN }
+            #main
+                .container
+                    //#find-me
+                        .content
+                            include _social
+                        strong.title Retrouvez moi
+                    #main-content(data-ng-view) !{content}
+            .push
         #footer
-            p Thomas Belin
-            p ThomasBelin4@gmail.com
+            .container
+                include _social
