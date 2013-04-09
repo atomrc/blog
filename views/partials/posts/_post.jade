@@ -1,5 +1,8 @@
 article
-    time.pubdate(datetime="{{post.pubdate}}", pudate) {{ post.pubdate | date }}
+    time.pubdate(datetime="{{post.pubdate}}", pudate) 
+        div.day {{ post.pubdate | date:'d' }}
+        div.month {{ post.pubdate | date:'MMM' }}
+        div.year {{ post.pubdate | date:'yyyy' }}
     block title
         h1 {{post.title}}
     aside
