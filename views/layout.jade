@@ -9,13 +9,19 @@ html(lang="fr", data-ng-app="blog")
             link(href="/css/admin.css", type="text/css", rel="stylesheet")
         link(href="/css/code-themes/custom.css", type="text/css", rel="stylesheet")
         script(src="/js/lib/require.min.js")
-        script(src="/js/lib/angular.min.js")
-        script(src="/js/lib/angular.resource.min.js")
-        script(src="/js/lib/angular.sanitize.min.js")
-        script(src="/js/src/application.js")
-        - if (auth)
-            script(src="/js/src/application.admin.js")
-        script(src="/js/main.js")
+        - if (prod)
+            - if (auth)
+                script(src="/js/build/application.admin.js")
+            - else
+                script(src="/js/build/application.js")
+        - else
+            script(src="/js/lib/angular.min.js")
+            script(src="/js/lib/angular.resource.min.js")
+            script(src="/js/lib/angular.sanitize.min.js")
+            script(src="/js/src/application.js")
+            - if (auth)
+                script(src="/js/src/application.admin.js")
+            script(src="/js/main.js")
     body
         .top-container
             #header

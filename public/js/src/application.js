@@ -1,7 +1,11 @@
 /*global require, define, angular, window*/
 require.config({
+    baseUrl: '/',
     paths: {
-        rainbow: '/js/lib/rainbow.min',
+        angular: './js/lib/angular.min',
+        ngResource: './js/lib/angular.resource.min',
+        ngSanitize: './js/lib/angular.sanitize.min',
+        rainbow: './js/lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
         twitter: 'http://platform.twitter.com/widgets',
         disqus: 'http://whysocurious.disqus.com/embed',
@@ -9,6 +13,10 @@ require.config({
     },
 
     shim: {
+        angular: {
+            exports: "angular"
+        },
+
         analytics: {
             exports: "_gaq"
         },
@@ -30,6 +38,8 @@ require.config({
         }
     }
 });
+
+require(['angular', 'ngSanitize', 'ngResource'], function (a,b,c) { console.log(a,b,c); });
 
 var services,
     directives,

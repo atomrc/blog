@@ -1,7 +1,11 @@
 all: public admin
 
 public:
-	r.js -o build.js
+	cat src/application.js main.js > temp.js
+	r.js -o name=js/temp out=build/application.js mainConfigFile=temp.js baseUrl=../
+	rm temp.js
 
 admin:
-	r.js -o build.admin.js
+	cat src/application.js src/application.admin.js main.js > temp.js
+	r.js -o name=js/temp out=build/application.admin.js mainConfigFile=temp.js baseUrl=../
+	rm temp.js
