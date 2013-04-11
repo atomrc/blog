@@ -73,6 +73,7 @@ module.exports = function(app) {
     app.get('/api/posts', loadPosts, controllers.postsController.index);
     app.post('/api/posts', isAuthenticated, controllers.postsController.create);
     app.get('/api/posts/:post_slug', loadPost, controllers.postsController.show);
+    app.put('/api/posts/:post_slug/resetslug', isAuthenticated, loadPost, controllers.postsController.resetSlug);
     app.put('/api/posts/:post_slug', isAuthenticated, controllers.postsController.update);
     app.delete('/api/posts/:post_slug', isAuthenticated, loadPost, controllers.postsController.delete);
 

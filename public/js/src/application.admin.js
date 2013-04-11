@@ -15,8 +15,17 @@ var publishPost = function (post) {
 
 var deletePost = function (callback) {
     return function (post) {
-        if (window.confirm('sure bro ?')) {
+        if (window.confirm('Sure bro ?')) {
             post.$delete({slug: post.slug}, callback);
+        }
+    };
+};
+
+var resetSlug = function (callback) {
+    'use strict';
+    return function (post) {
+        if (window.confirm('It might probably change the url of the post. Are you sure you want to do that ?')) {
+            post.$resetSlug({slug: post.slug}, callback);
         }
     };
 };
@@ -36,13 +45,14 @@ routes['/'].controller = ['$scope', 'posts', 'Tweet', function ($scope, posts, T
     });
 }];
 
-routes['/posts/:postSlug'].controller = ['$scope', 'post', 'Tag', function ($scope, post, Tag) {
+routes['/posts/:postSlug'].controller = ['$scope', 'post', 'Tag', '$location', function ($scope, post, Tag, $location) {
     'use strict';
     $scope.post = post;
     $scope.newTag = new Tag();
 
     $scope.publishPost = publishPost;
     $scope.save = savePost();
+    $scope.resetSlug = resetSlug(function (post) { $location.url('/posts/' + post.slug); });
 
     $scope.addTag = function (tag) {
         post.addTag(tag);

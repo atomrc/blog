@@ -2,3 +2,12 @@ extends _post
 
 block content
     .body(data-ng-bind-html-unsafe='post.body', data-codecontainer)
+
+block tag_edit
+    - if (auth)
+        .edit-panel
+            button.delete(data-ng-click='deleteTag(tag)')
+block tag_form
+    - if (auth)
+        form(data-ng-submit='addTag(newTag)')
+            input(type='text', data-ng-model='newTag.name')

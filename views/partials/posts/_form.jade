@@ -1,5 +1,6 @@
 .edit-form
     button(data-ng-click='publishPost(post)', class='publish {{ post.published }}') Publish
+    button(data-ng-click='resetSlug(post)') Reset slug
     form(data-ng-submit='save(post)', draggable)
         input(type='text', data-ng-model='post.title')
         br
