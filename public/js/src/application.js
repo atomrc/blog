@@ -1,7 +1,11 @@
 /*global require, define, angular, window*/
+
+require(['angular', 'requirejslib',  'ngSanitize', 'ngResource']);
+
 require.config({
     baseUrl: '/',
     paths: {
+        requirejslib: './js/lib/require.min',
         angular: './js/lib/angular.min',
         ngResource: './js/lib/angular.resource.min',
         ngSanitize: './js/lib/angular.sanitize.min',
@@ -39,7 +43,6 @@ require.config({
     }
 });
 
-require(['angular', 'ngSanitize', 'ngResource'], function (a,b,c) { console.log(a,b,c); });
 
 var services,
     directives,
@@ -186,15 +189,18 @@ routes = {
     '/': {
         templateUrl: '/views/home',
         controller: ['$scope', 'posts', 'Tweet', function ($scope, posts, Tweet) {
+            'use strict';
             $scope.posts = posts;
             Tweet.query(function (tweets) {
                 $scope.tweets = tweets;
             });
         }],
         resolve: {
-            posts: ['Post', '$q', '$location', function (Post, q, $location) {
+            posts: ['$rootScope', 'Post', '$q', function ($rootScope, Post, q) {
+                'use strict';
+                if ($rootScope.posts) { return $rootScope.posts; } //caching
                 var deferred = q.defer();
-                Post.query(function (posts) { deferred.resolve(posts) });
+                Post.query(function (posts) { $rootScope.posts = posts;  deferred.resolve($rootScope.posts) });
                 return deferred.promise;
             }]
         }
@@ -215,10 +221,15 @@ routes = {
             post: ['Post', '$route', '$q', '$location', function (Post, route, q, $location) {
                 'use strict';
                 var deferred = q.defer();
-                Post.get({slug: route.current.params.postSlug}, function (post) {
-                    deferred.resolve(post);
-                },
-                function () { $location.url('/404'); });
+                Post.get(
+                    {slug: route.current.params.postSlug},
+                    function (post) {
+                        deferred.resolve(post);
+                    },
+                    function () {
+                        $location.url('/404');
+                    }
+                );
                 return deferred.promise;
             }]
         }

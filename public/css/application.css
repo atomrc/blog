@@ -219,12 +219,11 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 
 /************ANIMATIONS**********/
 .fade-enter-setup {
-     -webkit-transition: 1s linear all; /* Safari/Chrome */
-    -moz-transition: 1s linear all; /* Firefox */
-    -ms-transition: 1s linear all; /* IE10 */
-    -o-transition: 1s linear all; /* Opera */
-    transition: 1s linear all; /* Future Browsers */
-    position: relative;
+     -webkit-transition: 0.5s linear all; /* Safari/Chrome */
+    -moz-transition: 0.5s linear all; /* Firefox */
+    -ms-transition: 0.5s linear all; /* IE10 */
+    -o-transition: 0.5s linear all; /* Opera */
+    transition: 0.5s linear all; /* Future Browsers */
 }
 .fade-enter-setup {
     opacity: 0;
