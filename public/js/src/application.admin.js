@@ -21,11 +21,11 @@ var deletePost = function (callback) {
     };
 };
 
-var resetSlug = function (callback) {
+var reset = function (callback) {
     'use strict';
     return function (post) {
         if (window.confirm('It might probably change the url of the post. Are you sure you want to do that ?')) {
-            post.$resetSlug({slug: post.slug}, callback);
+            post.$reset({slug: post.slug}, callback);
         }
     };
 };
@@ -52,7 +52,7 @@ routes['/posts/:postSlug'].controller = ['$scope', 'post', 'Tag', '$location', f
 
     $scope.publishPost = publishPost;
     $scope.save = savePost();
-    $scope.resetSlug = resetSlug(function (post) { $location.url('/posts/' + post.slug); });
+    $scope.reset = reset(function (post) { $location.url('/posts/' + post.slug); });
 
     $scope.addTag = function (tag) {
         post.addTag(tag);

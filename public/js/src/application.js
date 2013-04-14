@@ -104,7 +104,7 @@ services = {
         'use strict';
         var Post = resource('/api/posts/:slug/:action', { slug: '@slug' }, {
             update: { method: 'PUT' },
-            resetSlug: { method: 'PUT', params: { action: 'resetslug'} }
+            reset: { method: 'PUT', params: { action: 'reset'} }
         });
 
         Post.prototype.addTag = function (tag) {

@@ -49,9 +49,10 @@ exports.create = function(req, res) {
     });
 };
 
-exports.resetSlug = function (req, res) {
+exports.reset= function (req, res) {
     var post = req.post;
     post.slug = null;
+    post.pubdate = null;
     post.save(function (err, post) {
         if(err) res.send(err);
         res.send(post);

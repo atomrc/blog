@@ -16,6 +16,7 @@ var PostSchema = new Schema({
 }, { versionKey:  "version" });
 
 PostSchema.pre('save', function(next) {
+    if ( !this.pubdate ) { this.pubdate = Date.now(); }
     if( !this.title || this.slug ) {
         return next();
     }
