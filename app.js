@@ -2,6 +2,9 @@
 /**
  * Module dependencies.
  */
+class_name.prototype.method_name = function(first_argument) {
+    // body...
+};
 
 var express = require('express')
   , http = require('http')
@@ -10,7 +13,9 @@ var express = require('express')
   , postsController = require('./controllers/postsController')
   , errorHandler = require('./libs/errors').handler;
 var app = express();
-
+class_name.prototype.method_name = function(first_argument) {
+    // body...
+};
 var staticCaching = function(req, res, next) {
     var extension = req.url.substring(req.url.lastIndexOf('.') + 1);
     var cache = {

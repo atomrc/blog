@@ -13,7 +13,8 @@ require.config({
         analytics: 'http://www.google-analytics.com/ga',
         twitter: 'http://platform.twitter.com/widgets',
         disqus: 'http://whysocurious.disqus.com/embed',
-        gplus: 'https://apis.google.com/js/plusone'
+        gplus: 'https://apis.google.com/js/plusone',
+        facebook: 'https://connect.facebook.net/fr_FR/all.js#xfbml=1'
     },
 
     shim: {
@@ -37,12 +38,15 @@ require.config({
             exports: "gapi"
         },
 
+        facebook: {
+            exports: "FB"
+        },
+
         twitter: {
             exports: "twttr"
         }
     }
 });
-
 
 var services,
     directives,
@@ -149,6 +153,26 @@ directives = {
                 var i = 0;
                 for (i = 0; i < element.length; i++) {
                     gplus.plusone.render(element[i], {annotation: "bubble", size: "medium", href: scope.location});
+                }
+            });
+        };
+    },
+
+    facebook: function () {
+        'use strict';
+        return function (scope, element, attr) {
+            require(['facebook'], function (fb) {
+                var i = 0,
+                    fbButton;
+                for (i = 0; i < element.length; i++) {
+                    fbButton = window.document.createElement("fb:like");
+                    fbButton.setAttribute("href", scope.location);
+                    fbButton.setAttribute("layout", "button_count");
+                    fbButton.setAttribute("show_faces", "false");
+                    fbButton.setAttribute("show_send", "false");
+                    fbButton.setAttribute("width", "400");
+                    element[i].appendChild(fbButton);
+                    fb.XFBML.parse(fbButton);
                 }
             });
         };
