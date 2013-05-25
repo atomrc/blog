@@ -90,61 +90,6 @@ var Blog = (function () {
             };
         }],
 
-        shareManager: ['$interpolate', '$http', function ($interpolate, $http) {
-            return {
-                getCountUrl: function (provider) {
-                    var url = '';
-                    switch (provider) {
-                    case 'twitter':
-                        url = 'http://urls.api.twitter.com/1/urls/count.json?url={{link}}&callback=JSON_CALLBACK';
-                        break;
-                    case 'facebook':
-                        url = false;
-                        break;
-                    case 'googleplus':
-                        url = false;
-                        break;
-                    }
-                    return $interpolate(url);
-                },
-
-                getShareUrl: function (provider) {
-                    var url = '';
-                    switch (provider) {
-                    case 'twitter':
-                        url = 'https://twitter.com/intent/tweet?text={{text}}&url={{link}}&via=ThomasBelin4';
-                        break;
-                    case 'facebook':
-                        url = 'http://www.facebook.com/share.php?u={{link}}';
-                        break;
-                    case 'googleplus':
-                        url = 'https://plus.google.com/share?url={{link}}';
-                        break;
-                    }
-                    return $interpolate(url);
-                },
-
-                getCount: function (provider, url) {
-                    var countUrl = this.getCountUrl(provider),
-                        fullCountUrl = countUrl({link: encodeURIComponent(url)});
-                    if (!fullCountUrl) { return; }
-                    return $http({
-                        method: 'JSONP',
-                        url: fullCountUrl
-                    });
-                },
-
-                generateLink: function (provider, post, url) {
-                    var text = encodeURIComponent(post.title),
-                        shareUrl = this.getShareUrl(provider, url),
-                        href = '',
-                        link = encodeURIComponent(url);
-                    return shareUrl({ text: text, link: link });
-                }
-            };
-        }],
-
-
         Tag: ['$resource', function (resource) {
             return resource('/api/posts/:slug/tags/:tagId', {tagId: '@_id'});
         }],
@@ -207,29 +152,6 @@ var Blog = (function () {
             };
         }],
 
-        socialButton: ['$window', '$location', 'shareManager', function ($window, $location, shareManager) {
-            return function (scope, element, attrs) {
-                var options = scope.$eval(attrs.socialButton),
-                    href = shareManager.generateLink(options.provider, options.resource, $location.absUrl()),
-                    countRequest = shareManager.getCount(options.provider, $location.absUrl());
-                if (countRequest) {
-                    countRequest.success(function (response) {
-                        scope.shareCount = response;
-                    });
-                }
-                element.attr('href', href);
-                element.attr('onclick', 'return false;');
-                element.bind('click', function () {
-                    var url = element.attr('href'),
-                        width = 500,
-                        height = 500,
-                        left = ($window.screen.width / 2) - (width / 2),
-                        top = ($window.screen.height / 2) - (height / 2);
-                    return $window.open(url, 'share', 'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
-                });
-            };
-        }],
-
         codecontainer: function () {
             return function (scope, element, attr) {
                 require(['rainbow'], function (rainbow) {
@@ -256,6 +178,53 @@ var Blog = (function () {
         }
     };
 
+    /***************************************/
+    /*************** CONTROLLERS ***************/
+    /***************************************/
+    application.controllers.socialController = ['$scope', '$location', '$interpolate', '$window', '$http', function ($scope, $location, $interpolate, $window, $http) {
+        $scope.providers = [
+            {
+                name: 'twitter',
+                shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
+                countUrl: 'http://urls.api.twitter.com/1/urls/count.json?url={{url}}&callback=JSON_CALLBACK'
+            },
+            {
+                name: 'google-plus',
+                shareUrl: 'https://plus.google.com/share?url={{url}}',
+                countUrl: false
+            },
+            {
+                name: 'facebook',
+                shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
+                countUrl: false
+            }
+        ];
+
+        for (var i = 0; i < $scope.providers.length; i++) {
+            var pro = $scope.providers[i],
+                url = encodeURIComponent($location.absUrl()),
+                countUrl = $interpolate(pro.countUrl)({url :url});
+            if (pro.countUrl) {
+                (function (provider) {
+                    $http({
+                        method: 'JSONP',
+                        url: countUrl
+                    }).success(function (response) {
+                        provider.count = response.count;
+                    });
+                }(pro));
+            }
+        }
+
+        $scope.share = function (provider, post) {
+            var url = $interpolate(provider.shareUrl)({ url: encodeURIComponent($location.absUrl()), text: encodeURIComponent(post.title) }),
+                width = 500,
+                height = 500,
+                left = ($window.screen.width / 2) - (width / 2),
+                top = ($window.screen.height / 2) - (height / 2);
+            return $window.open(url, 'share', 'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
+        };
+    }];
 
     /***************************************/
     /*************** ROUTES ***************/

@@ -87,16 +87,14 @@ table thead td { font-weight: bold; text-align: center; }
 }
 
 .github { color: rgba(57, 223 ,255, 1);}
-.github:after { content: 'e'; }
 
 .twitter { color: rgba(19, 157, 233, 1);}
-.twitter:after { content: 'l'; }
 
 .doyoubuzz { color: rgba(255, 136, 0, 1);}
-.doyoubuzz:after { content: 'd'; }
 
-.google{ color: rgba(212, 11, 13, 1);}
-.google:after { content: 'g' }
+.google-plus{ color: rgba(212, 11, 13, 1);}
+
+.facebook { color: rgba(36, 71, 134, 1);}
 
 #footer .social { text-align: right; }
 #footer .social a { font-size: 100px;  text-shadow:#666 1px 1px 10px;

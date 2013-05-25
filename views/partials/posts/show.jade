@@ -4,25 +4,21 @@
 .full-article
     .actions-panel(data-sticky='{ start: 200 }')
         .actions-container
-            a(href='/', class='button') back
+            a(href='/', class='button') 
+                i.icon-chevron-left  Tous les articles
             .share
                 div.button.share-opener
-                    i.icon-share Partager
-                .buttons-container
-                    a.twitter-button(data-social-button="{ provider: 'twitter', resource: post }")
-                        i.icon-twitter
-                        span Twitter
-                        span.count(data-ng-bind='shareCount.count')
-                    br
-                    a.fb-button(data-social-button="{ provider: 'facebook', resource: post }")
-                        i.icon-facebook
-                        span Facebook
-                        span.count 0
-                    br
-                    a.gplus-button(data-social-button="{ provider: 'googleplus', resource: post }")
-                        i.icon-google-plus
-                        span Google+
-                        span.count 0
+                    i.icon-share  Partager
+                .buttons-container(data-ng-controller="socialController")
+                    a(data-ng-repeat="provider in providers",
+                        class="{{provider.name}}",
+                        href="javascript:void(0);",
+                        data-ng-click="share(provider, post)"
+                    )
+                        i(class="icon-{{provider.name}}")
+                        span(data-ng-bind="provider.name")
+                        span.count(data-ng-bind='provider.count')
+                        br
     include _show
 
 section

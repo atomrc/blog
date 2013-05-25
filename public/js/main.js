@@ -23,6 +23,12 @@
         }
     }
 
+    for (element in Blog.controllers) {
+        if (Blog.controllers.hasOwnProperty(element)) {
+            application.controller(element, Blog.controllers[element]);
+        }
+    }
+
     application.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
         var el;
         $locationProvider.html5Mode(true);
