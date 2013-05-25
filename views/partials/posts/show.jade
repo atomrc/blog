@@ -2,17 +2,27 @@
     include _form
 
 .full-article
-    .share-panel(data-sticky='{ start: 200 }')
-        .share-container
+    .actions-panel(data-sticky='{ start: 200 }')
+        .actions-container
             a(href='/', class='button') back
             .share
-                button share
+                button
+                    i.icon-share Partager
                 .buttons-container
-                    span.twitter(data-social-button="{ provider: 'twitter', resource: post }") Twitter
+                    a.twitter-button(data-social-button="{ provider: 'twitter', resource: post }")
+                        i.icon-twitter
+                        span Twitter
+                        span.count(data-ng-bind='shareCount.count')
                     br
-                    span.fb(data-social-button="{ provider: 'facebook', resource: post }") Facebook
+                    a.fb-button(data-social-button="{ provider: 'facebook', resource: post }")
+                        i.icon-facebook
+                        span Facebook
+                        span.count 0
                     br
-                    span.gplus(data-social-button="{ provider: 'googleplus', resource: post }") Google+
+                    a.gplus-button(data-social-button="{ provider: 'googleplus', resource: post }")
+                        i.icon-google-plus
+                        span Google+
+                        span.count 0
     include _show
 
 section

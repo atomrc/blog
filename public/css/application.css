@@ -86,45 +86,6 @@ table thead td { font-weight: bold; text-align: center; }
     overflow: hidden;
 }
 
-#find-me {
-    position: absolute;
-    width: 100%;
-    z-index: 10;
-    padding: 5px;
-    text-align: center;
-}
-#find-me:hover .content { height: 50px; }
-#find-me:hover a { top: 0; left: 0; }
-#find-me .title {
-    border-radius: 0 0 5px 5px;
-    padding: 5px;
-}
-#find-me .content {
-    background-color: #EEE;
-    height: 0;
-    overflow: hidden;
-    border-radius: 5px;
-    box-shadow:#CCC -1px 1px 4px 0px inset;
-    transition: height 0.3s;
-    -moz-transition: height 0.3s;
-    -webkit-transition: height 0.3s;
-    -o-transition: height 0.3s;
-}
-
-#find-me .social { font-size: 50px; }
-#find-me a {
-    margin: 0 50px;
-    position: relative;
-    transition: top 0.3s ease 0.2s;
-    -moz-transition: top 0.3s ease 0.2s;
-    -webkit-transition: top 0.3s ease 0.2s;
-    -o-transition: top 0.3s ease 0.2s;
-}
-#find-me .google { top: -50px; }
-#find-me .twitter { top: -100px; }
-#find-me .github { top: -150px; }
-#find-me .doyoubuzz { top: -200px; }
-
 .github { color: rgba(57, 223 ,255, 1);}
 .github:after { content: 'e'; }
 
@@ -185,14 +146,16 @@ article .edition-panel, .widget, table, .pubdate, #tweets-list { background:rgba
 .card .pubdate { top: -33px; background-color: white; }
 
 /* full article */
-.full-article, #disqus_thread, .share-panel.sticky .share-container { width: 750px; margin: auto; position: relative; }
+.full-article, #disqus_thread, .actions-panel.sticky .actions-container { width: 750px; margin: auto; position: relative; }
 .full-article .pubdate { padding: 10px; margin: 0px 10px; }
-.share-panel { padding:10px; position: relative; }
-.share-panel .share { position: absolute; right: 0; top: 0; }
-.share-panel .share .buttons-container { display: none; position: absolute; z-index: 10; background-color: white; }
-.share-panel .share:hover .buttons-container { display: block; }
+.actions-panel { padding:10px; position: relative; }
+.actions-panel .share { position: absolute; right: 0; top: 0; }
+.actions-panel .share .buttons-container { display: none; position: absolute; z-index: 10; background-color: white; }
+.actions-panel .share:hover .buttons-container { display: block; }
+.buttons-container { font-size: 14pt; width: 300px; }
+.buttons-container a i { display: inline-block; width: 20px; }
 
-.share-panel.sticky {
+.actions-panel.sticky {
     width: 100%;
     background-color: white;
     position: fixed;
@@ -205,12 +168,11 @@ article .edition-panel, .widget, table, .pubdate, #tweets-list { background:rgba
     -o-transition: 0.5s all; /* Opera */
     transition: 0.5s all; /* Future Browsers */
 }
-.share-panel.sticky.hidden {
+.actions-panel.sticky.hidden {
     top: -60px;
 }
 
 
-/*.share-container { position:fixed; border-radius:5px; padding:10px; box-shadow:#CCC -1px 1px 4px 0px inset; background-color: #EEE; }*/
 .full-article article { text-align:justify; border-bottom:solid 1px #ccc; }
 article h1 { text-align:left; font-size: 2em; margin:0; }
 .full-article article h2 { text-indent: 1em; }

@@ -90,23 +90,56 @@ var Blog = (function () {
             };
         }],
 
-        shareManager: [ function () {
+        shareManager: ['$interpolate', '$http', function ($interpolate, $http) {
             return {
-                generateLink: function (provider, post, url) {
-                    var text = encodeURIComponent(post.title),
-                        href = '',
-                        link = encodeURIComponent(url);
+                getCountUrl: function (provider) {
+                    var url = '';
                     switch (provider) {
                     case 'twitter':
-                        href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + link + '&via=ThomasBelin4';
+                        url = 'http://urls.api.twitter.com/1/urls/count.json?url={{link}}&callback=JSON_CALLBACK';
                         break;
                     case 'facebook':
-                        href = 'http://www.facebook.com/share.php?u=' + link;
+                        url = false;
                         break;
                     case 'googleplus':
-                        href = 'https://plus.google.com/share?url=' + link;
+                        url = false;
+                        break;
                     }
-                    return href;
+                    return $interpolate(url);
+                },
+
+                getShareUrl: function (provider) {
+                    var url = '';
+                    switch (provider) {
+                    case 'twitter':
+                        url = 'https://twitter.com/intent/tweet?text={{text}}&url={{link}}&via=ThomasBelin4';
+                        break;
+                    case 'facebook':
+                        url = 'http://www.facebook.com/share.php?u={{link}}';
+                        break;
+                    case 'googleplus':
+                        url = 'https://plus.google.com/share?url={{link}}';
+                        break;
+                    }
+                    return $interpolate(url);
+                },
+
+                getCount: function (provider, url) {
+                    var countUrl = this.getCountUrl(provider),
+                        fullCountUrl = countUrl({link: encodeURIComponent(url)});
+                    if (!fullCountUrl) { return; }
+                    return $http({
+                        method: 'JSONP',
+                        url: fullCountUrl
+                    });
+                },
+
+                generateLink: function (provider, post, url) {
+                    var text = encodeURIComponent(post.title),
+                        shareUrl = this.getShareUrl(provider, url),
+                        href = '',
+                        link = encodeURIComponent(url);
+                    return shareUrl({ text: text, link: link });
                 }
             };
         }],
@@ -175,17 +208,23 @@ var Blog = (function () {
 
         socialButton: ['$window', '$location', 'shareManager', function ($window, $location, shareManager) {
             return function (scope, element, attrs) {
-                var href,
-                    options = scope.$eval(attrs.socialButton),
-                    provider = options.provider,
-                    resource = options.resource;
+                var options = scope.$eval(attrs.socialButton),
+                    href = shareManager.generateLink(options.provider, options.resource, $location.absUrl()),
+                    countRequest = shareManager.getCount(options.provider, $location.absUrl());
+                if (countRequest) {
+                    countRequest.success(function (response) {
+                        scope.shareCount = response;
+                    });
+                }
+                element.attr('href', href);
+                element.attr('onclick', 'return false;');
                 element.bind('click', function () {
-                    var url = shareManager.generateLink(provider, resource, $location.absUrl()),
+                    var url = element.attr('href'),
                         width = 500,
                         height = 500,
                         left = ($window.screen.width / 2) - (width / 2),
                         top = ($window.screen.height / 2) - (height / 2);
-                    return $window.open(url, 'share', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
+                    return $window.open(url, 'share', 'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
                 });
             };
         }],
