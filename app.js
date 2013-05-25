@@ -2,20 +2,15 @@
 /**
  * Module dependencies.
  */
-class_name.prototype.method_name = function(first_argument) {
-    // body...
-};
+var express = require('express'),
+    http = require('http'),
+    path = require('path'),
+    mongoose = require('mongoose'),
+    postsController = require('./controllers/postsController'),
+    errorHandler = require('./libs/errors').handler;
 
-var express = require('express')
-  , http = require('http')
-  , path = require('path')
-  , mongoose = require('mongoose')
-  , postsController = require('./controllers/postsController')
-  , errorHandler = require('./libs/errors').handler;
 var app = express();
-class_name.prototype.method_name = function(first_argument) {
-    // body...
-};
+
 var staticCaching = function(req, res, next) {
     var extension = req.url.substring(req.url.lastIndexOf('.') + 1);
     var cache = {
@@ -93,9 +88,9 @@ var generate_mongo_url = function(obj){
         return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
     }
 }
+
 var mongourl = generate_mongo_url(mongo);
 mongoose.connect(mongourl);
-
 
 
 require('./config/router')(app);

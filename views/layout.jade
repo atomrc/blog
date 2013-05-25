@@ -15,9 +15,9 @@ html(lang="fr", data-ng-app="blog")
             link(href="/css/application.css", type="text/css", rel="stylesheet")
             link(href="/css/code-themes/custom.css", type="text/css", rel="stylesheet")
             script(src="/js/lib/require.min.js")
-            script(src="/js/lib/angular.min.js")
-            script(src="/js/lib/angular.resource.min.js")
-            script(src="/js/lib/angular.sanitize.min.js")
+            script(src="/js/lib/angular/1.1.5/angular.min.js")
+            script(src="/js/lib/angular/1.1.5/angular.sanitize.min.js")
+            script(src="/js/lib/angular/1.1.5/angular.resource.min.js")
             script(src="/js/src/application.js")
             - if (auth)
                 link(href="/css/admin.css", type="text/css", rel="stylesheet")
@@ -29,12 +29,11 @@ html(lang="fr", data-ng-app="blog")
                 .container
                     .title
                         a(href="/"){ Thomas BELIN }
+                        br
+                        span developpeur @ DoYouBuzz
+
             #main
                 .container
-                    //#find-me
-                        .content
-                            include _social
-                        strong.title Retrouvez moi
                     #main-content(data-ng-view) !{content}
             .push
         #footer

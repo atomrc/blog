@@ -1,7 +1,7 @@
 -if (auth)
     a.button(href="/post/create") Create
     br
-.card(data-ng-repeat="post in posts", data-ng-animate="'fade'")
+.card(data-ng-repeat="post in posts")
     a(href="/posts/{{ post.slug }}", class="published {{ post.published }}")
         include _list
     -if (auth)
