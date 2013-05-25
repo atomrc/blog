@@ -14,10 +14,7 @@ require.config({
         ngSanitize: './js/lib/angular.sanitize.min',
         rainbow: './js/lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
-        twitter: 'http://platform.twitter.com/widgets',
-        disqus: 'http://whysocurious.disqus.com/embed',
-        gplus: 'https://apis.google.com/js/plusone',
-        facebook: 'https://connect.facebook.net/fr_FR/all.js#xfbml=1'
+        disqus: 'http://whysocurious.disqus.com/embed'
     },
 
     shim: {
@@ -35,18 +32,6 @@ require.config({
 
         disqus: {
             exports: "DISQUS"
-        },
-
-        gplus: {
-            exports: "gapi"
-        },
-
-        facebook: {
-            exports: "FB"
-        },
-
-        twitter: {
-            exports: "twttr"
         }
     }
 });
@@ -105,6 +90,27 @@ var Blog = (function () {
             };
         }],
 
+        shareManager: [ function () {
+            return {
+                generateLink: function (provider, post, url) {
+                    var text = encodeURIComponent(post.title),
+                        href = '',
+                        link = encodeURIComponent(url);
+                    switch (provider) {
+                    case 'twitter':
+                        href = 'https://twitter.com/intent/tweet?text=' + text + '&url=' + link + '&via=ThomasBelin4';
+                        break;
+                    case 'facebook':
+                        href = 'http://www.facebook.com/share.php?u=' + link;
+                        break;
+                    case 'googleplus':
+                        href = 'https://plus.google.com/share?url=' + link;
+                    }
+                    return href;
+                }
+            };
+        }],
+
 
         Tag: ['$resource', function (resource) {
             return resource('/api/posts/:slug/tags/:tagId', {tagId: '@_id'});
@@ -143,15 +149,48 @@ var Blog = (function () {
     /*************** DIRECTIVES ***************/
     /***************************************/
     application.directives = {
-        twitter: function () {
-            return function (scope, element, attr) {
-                require(['twitter'], function (twttr) {
-                    window.setTimeout(twttr.widgets.load, 100);
+
+        // add a sticky header on top of the window that shows when the user scroll to a specific position
+        sticky: ['$window', function ($window) {
+            return function (scope, element, attrs) {
+                var options = scope.$eval(attrs.sticky),
+                    isSticky = false,
+                    clone = element.clone();
+                clone.addClass('sticky hidden');
+                element.parent().append(clone);
+                $window.onscroll = function () {
+                    var shouldBeSticky = $window.pageYOffset >= options.start;
+                    if (shouldBeSticky === isSticky) { return; }
+
+                    if (shouldBeSticky) {
+                        clone.removeClass('hidden');
+                    } else {
+                        clone.addClass('hidden');
+                    }
+
+                    isSticky = shouldBeSticky;
+                };
+            };
+        }],
+
+        socialButton: ['$window', '$location', 'shareManager', function ($window, $location, shareManager) {
+            return function (scope, element, attrs) {
+                var href,
+                    options = scope.$eval(attrs.socialButton),
+                    provider = options.provider,
+                    resource = options.resource;
+                element.bind('click', function () {
+                    var url = shareManager.generateLink(provider, resource, $location.absUrl()),
+                        width = 500,
+                        height = 500,
+                        left = ($window.screen.width / 2) - (width / 2),
+                        top = ($window.screen.height / 2) - (height / 2);
+                    return $window.open(url, 'share', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + width + ', height=' + height + ', top=' + top + ', left=' + left);
                 });
             };
-        },
+        }],
 
-        googleplus: function () {
+        /*googleplus: function () {
             return function (scope, element, attr) {
                 require(['gplus'], function (gplus) {
                     var i = 0;
@@ -160,9 +199,9 @@ var Blog = (function () {
                     }
                 });
             };
-        },
+        },*/
 
-        facebook: function () {
+        /*facebook: function () {
             return function (scope, element, attr) {
                 require(['facebook'], function (fb) {
                     var i = 0,
@@ -179,7 +218,7 @@ var Blog = (function () {
                     }
                 });
             };
-        },
+        },*/
 
         codecontainer: function () {
             return function (scope, element, attr) {

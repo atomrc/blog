@@ -2,17 +2,17 @@
     include _form
 
 .full-article
-    a(href="/") Tous les articles
-    .share-panel
-        button back
-        button share
-        button next
-        //.share-container
-            a(href="https://twitter.com/share", class="twitter-share-button", data-via="ThomasBelin4", data-text="{{ post.title }}", data-url="{{ location }}", data-twitter)
-            br
-            .like(data-facebook)
-            br
-            .g-plusone(data-googleplus)
+    .share-panel(data-sticky='{ start: 200 }')
+        .share-container
+            a(href='/', class='button') back
+            .share
+                button share
+                .buttons-container
+                    span.twitter(data-social-button="{ provider: 'twitter', resource: post }") Twitter
+                    br
+                    span.fb(data-social-button="{ provider: 'facebook', resource: post }") Facebook
+                    br
+                    span.gplus(data-social-button="{ provider: 'googleplus', resource: post }") Google+
     include _show
 
 section

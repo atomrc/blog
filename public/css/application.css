@@ -185,10 +185,32 @@ article .edition-panel, .widget, table, .pubdate, #tweets-list { background:rgba
 .card .pubdate { top: -33px; background-color: white; }
 
 /* full article */
-.full-article, #disqus_thread { width: 750px; margin: auto; position: relative; }
+.full-article, #disqus_thread, .share-panel.sticky .share-container { width: 750px; margin: auto; position: relative; }
 .full-article .pubdate { padding: 10px; margin: 0px 10px; }
-.share-panel { padding:10px; }
-.share-container { position:fixed; border-radius:5px; padding:10px; box-shadow:#CCC -1px 1px 4px 0px inset; background-color: #EEE; }
+.share-panel { padding:10px; position: relative; }
+.share-panel .share { position: absolute; right: 0; top: 0; }
+.share-panel .share .buttons-container { display: none; position: absolute; z-index: 10; background-color: white; }
+.share-panel .share:hover .buttons-container { display: block; }
+
+.share-panel.sticky {
+    width: 100%;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 0;
+     -webkit-transition: 0.5s all; /* Safari/Chrome */
+    -moz-transition: 0.5s all; /* Firefox */
+    -ms-transition: 0.5s all; /* IE10 */
+    -o-transition: 0.5s all; /* Opera */
+    transition: 0.5s all; /* Future Browsers */
+}
+.share-panel.sticky.hidden {
+    top: -60px;
+}
+
+
+/*.share-container { position:fixed; border-radius:5px; padding:10px; box-shadow:#CCC -1px 1px 4px 0px inset; background-color: #EEE; }*/
 .full-article article { text-align:justify; border-bottom:solid 1px #ccc; }
 article h1 { text-align:left; font-size: 2em; margin:0; }
 .full-article article h2 { text-indent: 1em; }
