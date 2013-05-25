@@ -150,8 +150,13 @@ article .edition-panel, .widget, table, .pubdate, #tweets-list { background:rgba
 .full-article .pubdate { padding: 10px; margin: 0px 10px; }
 .actions-panel { padding:10px; position: relative; }
 .actions-panel .share { position: absolute; right: 0; top: 0; }
-.actions-panel .share .buttons-container { display: none; position: absolute; z-index: 10; background-color: white; }
+
+.actions-panel .share-opener { }
+.actions-panel .share .buttons-container { display: none; position: absolute; z-index: 10; }
 .actions-panel .share:hover .buttons-container { display: block; }
+.actions-panel .share:hover .button, .buttons-container { background-color: white; border: solid gray 1px; }
+.actions-panel .share:hover .button { border-bottom: none; box-shadow: none; color: inherit; }
+
 .buttons-container { font-size: 14pt; width: 300px; }
 .buttons-container a i { display: inline-block; width: 20px; }
 

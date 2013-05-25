@@ -184,13 +184,14 @@ var Blog = (function () {
     application.directives = {
 
         // add a sticky header on top of the window that shows when the user scroll to a specific position
-        sticky: ['$window', function ($window) {
+        sticky: ['$window', '$compile', function ($window, $compile) {
             return function (scope, element, attrs) {
                 var options = scope.$eval(attrs.sticky),
                     isSticky = false,
                     clone = element.clone();
                 clone.addClass('sticky hidden');
-                element.parent().append(clone);
+                clone.removeAttr('data-sticky');
+                element.parent().append($compile(clone)(scope));
                 $window.onscroll = function () {
                     var shouldBeSticky = $window.pageYOffset >= options.start;
                     if (shouldBeSticky === isSticky) { return; }
@@ -228,36 +229,6 @@ var Blog = (function () {
                 });
             };
         }],
-
-        /*googleplus: function () {
-            return function (scope, element, attr) {
-                require(['gplus'], function (gplus) {
-                    var i = 0;
-                    for (i = 0; i < element.length; i++) {
-                        gplus.plusone.render(element[i], {annotation: "bubble", size: "medium", href: scope.location});
-                    }
-                });
-            };
-        },*/
-
-        /*facebook: function () {
-            return function (scope, element, attr) {
-                require(['facebook'], function (fb) {
-                    var i = 0,
-                        fbButton;
-                    for (i = 0; i < element.length; i++) {
-                        fbButton = window.document.createElement("fb:like");
-                        fbButton.setAttribute("href", scope.location);
-                        fbButton.setAttribute("layout", "button_count");
-                        fbButton.setAttribute("show_faces", "false");
-                        fbButton.setAttribute("show_send", "false");
-                        fbButton.setAttribute("width", "400");
-                        element[i].appendChild(fbButton);
-                        fb.XFBML.parse(fbButton);
-                    }
-                });
-            };
-        },*/
 
         codecontainer: function () {
             return function (scope, element, attr) {
