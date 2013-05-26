@@ -2,23 +2,24 @@
     include _form
 
 .full-article
-    .actions-panel(data-sticky='{ start: 200 }')
-        .actions-container
-            a(href='/', class='button') 
-                i.icon-chevron-left  Tous les articles
-            .share
-                div.button.share-opener
-                    i.icon-share  Partager
-                .buttons-container(data-ng-controller="socialController")
-                    a(data-ng-repeat="provider in providers",
-                        class="{{provider.name}}",
-                        href="javascript:void(0);",
-                        data-ng-click="share(provider, post)"
-                    )
-                        i(class="icon-{{provider.name}}")
-                        span(data-ng-bind="provider.name")
-                        span.count(data-ng-bind='provider.count')
-                        br
+    - for i in ['{ start: 200 }', false]
+        .actions-panel(data-sticky=i)
+            .actions-container
+                a(href='/', class='button') 
+                    i.icon-chevron-left  Tous les articles
+                .share
+                    div.button.share-opener
+                        i.icon-share  Partager
+                    .buttons-container(data-ng-controller="shareController", data-ng-init="setResource(post)")
+                        a(data-ng-repeat="provider in providers",
+                            class="{{provider.name}}",
+                            href="javascript:void(0);",
+                            data-ng-click="share(provider)"
+                        )
+                            i(class="icon-{{provider.name}}")
+                            span(data-ng-bind="provider.name")
+                            span.count(data-ng-bind='provider.count')
+                            br
     include _show
 
 section

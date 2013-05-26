@@ -51,6 +51,70 @@ var Blog = (function () {
     /*************** SERVICES ***************/
     /***************************************/
     application.services = {
+
+        shareManager: ['$interpolate', '$http', function ($interpolate, $http) {
+            return {
+                providers: [],
+                providersSetting: {
+                    'twitter': {
+                        shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
+                        countUrl: 'http://urls.api.twitter.com/1/urls/count.json?url={{url}}&callback=JSON_CALLBACK',
+                        countPropertyPath: 'count'
+                    },
+                    'google-plus' : {
+                        shareUrl: 'https://plus.google.com/share?url={{url}}',
+                        countUrl: false
+                    },
+                    'facebook': {
+                        shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
+                        countUrl: 'http://graph.facebook.com/?id={{url}}&callback=JSON_CALLBACK',
+                        countPropertyPath: 'shares'
+                    }
+                },
+
+                initWithUrl: function (providerSetting, url, resource) {
+                    var escapedUrl = encodeURIComponent(url),
+                        shareUrl = $interpolate(providerSetting.shareUrl)({
+                            url: escapedUrl,
+                            text: encodeURIComponent(resource.title)
+                        }),
+                        countUrl = $interpolate(providerSetting.countUrl)({ url: escapedUrl });
+                    return { shareUrl: shareUrl, countUrl: countUrl, countPropertyPath: providerSetting.countPropertyPath };
+                },
+
+                getProvidersForResource: function (url, resource) {
+                    //handle caching
+                    if (this.providers[url]) { return this.providers[url]; }
+                    var i = 0,
+                        providers = [],
+                        providerSetting;
+                    for(i in this.providersSetting) {
+                        providerSetting = this.initWithUrl(this.providersSetting[i], url, resource);
+                        (function (provider, name) {
+                            var filledProvider = {
+                                name: name,
+                                shareUrl: provider.shareUrl,
+                                count: ''
+                            };
+                            providers.push(filledProvider);
+                            if (provider.countUrl) {
+                                $http({
+                                    method: 'JSONP',
+                                    url: provider.countUrl
+                                }).success(function (response) {
+                                    filledProvider.count = response[provider.countPropertyPath];
+                                });
+                            }
+                        }(providerSetting, i));
+                    }
+                    this.providers[url] = providers;
+
+                    return providers;
+                }
+
+            };
+        }],
+
         stateManager: ['$window', '$rootScope', function ($window, $rootScope) {
             var setTitle = function (event) {
                 if (event.targetScope.title) {
@@ -132,19 +196,17 @@ var Blog = (function () {
         sticky: ['$window', '$compile', function ($window, $compile) {
             return function (scope, element, attrs) {
                 var options = scope.$eval(attrs.sticky),
-                    isSticky = false,
-                    clone = element.clone();
-                clone.addClass('sticky hidden');
-                clone.removeAttr('data-sticky');
-                element.parent().append($compile(clone)(scope));
+                    isSticky = false;
+                if (!options) { return; }
+                element.addClass('sticky hidden');
                 $window.onscroll = function () {
                     var shouldBeSticky = $window.pageYOffset >= options.start;
                     if (shouldBeSticky === isSticky) { return; }
 
                     if (shouldBeSticky) {
-                        clone.removeClass('hidden');
+                        element.removeClass('hidden');
                     } else {
-                        clone.addClass('hidden');
+                        element.addClass('hidden');
                     }
 
                     isSticky = shouldBeSticky;
@@ -181,43 +243,14 @@ var Blog = (function () {
     /***************************************/
     /*************** CONTROLLERS ***************/
     /***************************************/
-    application.controllers.socialController = ['$scope', '$location', '$interpolate', '$window', '$http', function ($scope, $location, $interpolate, $window, $http) {
-        $scope.providers = [
-            {
-                name: 'twitter',
-                shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
-                countUrl: 'http://urls.api.twitter.com/1/urls/count.json?url={{url}}&callback=JSON_CALLBACK'
-            },
-            {
-                name: 'google-plus',
-                shareUrl: 'https://plus.google.com/share?url={{url}}',
-                countUrl: false
-            },
-            {
-                name: 'facebook',
-                shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
-                countUrl: false
-            }
-        ];
+    application.controllers.shareController = ['$scope', '$location', '$window', 'shareManager', function ($scope, $location, $window, shareManager) {
+        $scope.setResource = function (resource) {
+            $scope.resource = resource;
+            $scope.providers = shareManager.getProvidersForResource($location.absUrl(), $scope.resource);
+        };
 
-        for (var i = 0; i < $scope.providers.length; i++) {
-            var pro = $scope.providers[i],
-                url = encodeURIComponent($location.absUrl()),
-                countUrl = $interpolate(pro.countUrl)({url :url});
-            if (pro.countUrl) {
-                (function (provider) {
-                    $http({
-                        method: 'JSONP',
-                        url: countUrl
-                    }).success(function (response) {
-                        provider.count = response.count;
-                    });
-                }(pro));
-            }
-        }
-
-        $scope.share = function (provider, post) {
-            var url = $interpolate(provider.shareUrl)({ url: encodeURIComponent($location.absUrl()), text: encodeURIComponent(post.title) }),
+        $scope.share = function (provider) {
+            var url = provider.shareUrl,
                 width = 500,
                 height = 500,
                 left = ($window.screen.width / 2) - (width / 2),
