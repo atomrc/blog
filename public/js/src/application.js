@@ -2,16 +2,16 @@
 /*jslint plusplus: true*/
 
 if (!window.angular) {
-    //require(['angular', 'requirejslib', 'ngSanitize', 'ngResource']);
+    require(['angular', 'requirejslib', 'ngSanitize', 'ngResource']);
 }
 
 require.config({
     baseUrl: '/',
     paths: {
         requirejslib: './js/lib/require.min',
-        angular: './js/lib/angular.min',
-        ngResource: './js/lib/angular.resource.min',
-        ngSanitize: './js/lib/angular.sanitize.min',
+        angular: './js/lib/angular/1.1.5/angular.min',
+        ngResource: './js/lib/angular/1.1.5/angular.resource.min',
+        ngSanitize: './js/lib/angular/1.1.5/angular.sanitize.min',
         rainbow: './js/lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
         disqus: 'http://whysocurious.disqus.com/embed'
@@ -57,15 +57,18 @@ var Blog = (function () {
                 providers: [],
                 providersSetting: {
                     'twitter': {
+                        title: 'Twitter',
                         shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
                         countUrl: 'http://urls.api.twitter.com/1/urls/count.json?url={{url}}&callback=JSON_CALLBACK',
                         countPropertyPath: 'count'
                     },
                     'google-plus' : {
+                        title: 'Google+',
                         shareUrl: 'https://plus.google.com/share?url={{url}}',
                         countUrl: false
                     },
                     'facebook': {
+                        title: 'Facebook',
                         shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
                         countUrl: 'http://graph.facebook.com/?id={{url}}&callback=JSON_CALLBACK',
                         countPropertyPath: 'shares'
@@ -79,7 +82,12 @@ var Blog = (function () {
                             text: encodeURIComponent(resource.title)
                         }),
                         countUrl = $interpolate(providerSetting.countUrl)({ url: escapedUrl });
-                    return { shareUrl: shareUrl, countUrl: countUrl, countPropertyPath: providerSetting.countPropertyPath };
+                    return {
+                        title: providerSetting.title,
+                        shareUrl: shareUrl,
+                        countUrl: countUrl,
+                        countPropertyPath: providerSetting.countPropertyPath
+                    };
                 },
 
                 getProvidersForResource: function (url, resource) {
@@ -92,6 +100,7 @@ var Blog = (function () {
                         providerSetting = this.initWithUrl(this.providersSetting[i], url, resource);
                         (function (provider, name) {
                             var filledProvider = {
+                                title: provider.title,
                                 name: name,
                                 shareUrl: provider.shareUrl,
                                 count: ''
@@ -287,7 +296,7 @@ var Blog = (function () {
                 $scope.title = post.title;
                 $scope.post = post;
                 $scope.location = $location.absUrl();
-                //disqus.init(post);
+                disqus.init(post);
             }],
 
             resolve: {

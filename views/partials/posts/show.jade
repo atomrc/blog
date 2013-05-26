@@ -2,24 +2,30 @@
     include _form
 
 .full-article
-    - for i in ['{ start: 200 }', false]
+    - for i in ['{ start: 150 }', false]
         .actions-panel(data-sticky=i)
-            .actions-container
-                a(href='/', class='button') 
-                    i.icon-chevron-left  Tous les articles
-                .share
-                    div.button.share-opener
-                        i.icon-share  Partager
-                    .buttons-container(data-ng-controller="shareController", data-ng-init="setResource(post)")
-                        a(data-ng-repeat="provider in providers",
-                            class="{{provider.name}}",
-                            href="javascript:void(0);",
-                            data-ng-click="share(provider)"
-                        )
-                            i(class="icon-{{provider.name}}")
-                            span(data-ng-bind="provider.name")
-                            span.count(data-ng-bind='provider.count')
-                            br
+            table.actions-container
+                tr
+                    td
+                        a(href='/', class='button')
+                            i.icon-chevron-left
+                            |  Tous les articles
+                    td.share
+                        a.button
+                            i.icon-share
+                            |  Partager
+                            table.buttons-container(data-ng-controller="shareController", data-ng-init="setResource(post)")
+                                tr(data-ng-repeat="provider in providers",
+                                    class="{{provider.name}}",
+                                    href="javascript:void(0);",
+                                    data-ng-click="share(provider)"
+                                )
+                                    td
+                                        i(class="icon-{{provider.name}}")
+                                    td
+                                        span(data-ng-bind="provider.title")
+                                    td
+                                        span.count(data-ng-bind="provider.count > 0 && provider.count || ''")
     include _show
 
 section

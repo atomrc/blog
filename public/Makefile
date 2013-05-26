@@ -16,11 +16,13 @@ ADMIN_JS_FILES= \
 
 PUBLIC_CSS_FILES= \
 				$(CSS_DIR)application.css\
+				$(CSS_DIR)font-awesome.min.css\
 				$(CSS_DIR)code-themes/custom.css
 
 ADMIN_CSS_FILES= \
 				$(CSS_DIR)application.css\
 				$(CSS_DIR)admin.css\
+				$(CSS_DIR)font-awesome.min.css\
 				$(CSS_DIR)code-themes/custom.css
 
 all: public admin
