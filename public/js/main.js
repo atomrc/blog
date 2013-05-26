@@ -40,5 +40,7 @@
         $routeProvider.otherwise({redirectTo: '/404'});
     }]);
 
+    application.run(['analyticsTracker', 'stateManager', function () {}]);
+
 
 }());
