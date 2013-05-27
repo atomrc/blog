@@ -1,4 +1,4 @@
-/*global require, controllers, routes, window*/
+/*global require, Blog*/
 var savePost = function (callback) {
     return function (post) {
         if( post._id ) {
@@ -29,6 +29,15 @@ var reset = function (callback) {
         }
     };
 };
+
+/***************************************/
+/*************** SERVICES ***************/
+/***************************************/
+Blog.services.postManager = [function () {
+    return {
+        posts: [],
+    };
+}];
 
 /***************************************/
 /*************** ROUTES ***************/

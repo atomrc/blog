@@ -1,4 +1,39 @@
-/*global angular, Blog*/
+/*global angular, Blog, require, window*/
+
+require.config({
+    baseUrl: '/',
+    paths: {
+        requirejslib: './js/lib/require.min',
+        angular: './js/lib/angular/1.1.5/angular.min',
+        ngResource: './js/lib/angular/1.1.5/angular.resource.min',
+        ngSanitize: './js/lib/angular/1.1.5/angular.sanitize.min',
+        rainbow: './js/lib/rainbow.min',
+        analytics: 'http://www.google-analytics.com/ga',
+        disqus: 'http://whysocurious.disqus.com/embed'
+    },
+
+    shim: {
+        angular: {
+            exports: "angular"
+        },
+
+        analytics: {
+            exports: "_gaq"
+        },
+
+        rainbow: {
+            exports: "Rainbow"
+        },
+
+        disqus: {
+            exports: "DISQUS"
+        }
+    }
+});
+
+if (!window.angular) {
+    require(['angular', 'requirejslib', 'ngSanitize', 'ngResource']);
+}
 
 (function () {
     'use strict';
@@ -40,6 +75,6 @@
         $routeProvider.otherwise({redirectTo: '/404'});
     }]);
 
-    application.run(['analyticsTracker', function () {}]);
+    application.run(['analyticsTracker', 'errorHandler', function () {}]);
 
 }());

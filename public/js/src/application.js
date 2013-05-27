@@ -1,41 +1,5 @@
 /*global require, define, angular, window*/
 /*jslint plusplus: true*/
-
-if (!window.angular) {
-    require(['angular', 'requirejslib', 'ngSanitize', 'ngResource']);
-}
-
-require.config({
-    baseUrl: '/',
-    paths: {
-        requirejslib: './js/lib/require.min',
-        angular: './js/lib/angular/1.1.5/angular.min',
-        ngResource: './js/lib/angular/1.1.5/angular.resource.min',
-        ngSanitize: './js/lib/angular/1.1.5/angular.sanitize.min',
-        rainbow: './js/lib/rainbow.min',
-        analytics: 'http://www.google-analytics.com/ga',
-        disqus: 'http://whysocurious.disqus.com/embed'
-    },
-
-    shim: {
-        angular: {
-            exports: "angular"
-        },
-
-        analytics: {
-            exports: "_gaq"
-        },
-
-        rainbow: {
-            exports: "Rainbow"
-        },
-
-        disqus: {
-            exports: "DISQUS"
-        }
-    }
-});
-
 var Blog = (function () {
     'use strict';
     var application = {
@@ -50,6 +14,22 @@ var Blog = (function () {
     /*************** SERVICES ***************/
     /***************************************/
     application.services = {
+
+        analyticsTracker: ['$location', '$rootScope', function (location, rootScope) {
+            require(['analytics'], function (analytics) {
+                var track = function () {
+                    analytics.push(['_setAccount', 'UA-34218773-1']);
+                    analytics.push(['_trackPageview', location.path()]);
+                };
+                rootScope.$on('$viewContentLoaded', track);
+            });
+        }],
+
+        errorHandler: ['$rootScope', '$location', function (rootScope, $location) {
+            rootScope.$on('$routeChangeError', function () {
+                $location.url('/404');
+            });
+        }],
 
         shareManager: ['$interpolate', '$http', function ($interpolate, $http) {
             return {
@@ -123,14 +103,27 @@ var Blog = (function () {
             };
         }],
 
-        analyticsTracker: ['$location', '$rootScope', function (location, rootScope) {
-            require(['analytics'], function (analytics) {
-                var track = function () {
-                    analytics.push(['_setAccount', 'UA-34218773-1']);
-                    analytics.push(['_trackPageview', location.path()]);
-                };
-                rootScope.$on('$viewContentLoaded', track);
-            });
+
+        postsManager: ['Post', '$q', function (Post, q) {
+            return {
+                posts: [],
+
+                query: function () {
+                    if (this.posts.length > 0) { return this.posts; } //caching
+                    this.posts = Post.query();
+                    return this.posts;
+                },
+
+                get: function (slug) {
+                    var deferred = q.defer();
+                    Post.get(
+                        { slug: slug },
+                        function (post) { deferred.resolve(post); },
+                        function (response) { deferred.reject('not found'); }
+                    );
+                    return deferred.promise;
+                }
+            };
         }],
 
         Tag: ['$resource', function (resource) {
@@ -295,10 +288,8 @@ var Blog = (function () {
             templateUrl: '/views/home',
             controller: 'homeController',
             resolve: {
-                posts: ['$rootScope', 'Post', function ($rootScope, Post) {
-                    if ($rootScope.posts) { return $rootScope.posts; } //caching
-                    $rootScope.posts = Post.query();
-                    return $rootScope.posts;
+                posts: ['postsManager', function (postsManager) {
+                    return postsManager.query();
                 }]
             }
         },
@@ -307,14 +298,8 @@ var Blog = (function () {
             templateUrl: '/views/posts_show',
             controller: 'postController',
             resolve: {
-                post: ['Post', '$route', '$q', '$location', function (Post, route, q, $location) {
-                    var deferred = q.defer();
-                    Post.get(
-                        { slug: route.current.params.postSlug },
-                        function (post) { deferred.resolve(post); },
-                        function () { $location.url('/404'); }
-                    );
-                    return deferred.promise;
+                post: ['postsManager', '$route', '$location', function (postsManager, route, $location) {
+                    return postsManager.get(route.current.params.postSlug);
                 }]
             }
         },
