@@ -115,6 +115,7 @@ var Blog = (function () {
                 },
 
                 get: function (slug) {
+                    if (!slug) { return new Post(); }
                     var deferred = q.defer();
                     Post.get(
                         { slug: slug },
@@ -135,17 +136,6 @@ var Blog = (function () {
                 update: { method: 'PUT' },
                 reset: { method: 'PUT', params: { action: 'reset'} }
             });
-
-            Post.prototype.addTag = function (tag) {
-                tag.$save({slug: this.slug}, function (newTag) {
-                    this.tags.push(newTag);
-                }.bind(this));
-            };
-
-            Post.prototype.publish = function () {
-                this.published = !this.published;
-                this.$save();
-            };
             return Post;
         }],
 
@@ -263,22 +253,28 @@ var Blog = (function () {
         };
     }];
 
-    application.controllers.homeController = ['$rootScope', '$scope', 'posts', 'Tweet', function ($rootScope, $scope, posts, Tweet) {
-        $rootScope.description = null;
-        $rootScope.title = null;
-
-        $scope.posts = posts;
+    application.controllers.tweetsController = ['$scope', 'Tweet', function ($scope, Tweet) {
         Tweet.query(function (tweets) {
             $scope.tweets = tweets;
         });
     }];
 
-    application.controllers.postController = ['$rootScope', '$scope', '$location', 'post', function ($rootScope, $scope, $location, post) {
+    application.controllers.homeController = ['$rootScope', '$scope', 'posts', 'Tweet', function ($rootScope, $scope, posts, Tweet) {
+        $rootScope.description = null;
+        $rootScope.title = null;
+
+        $scope.posts = posts;
+    }];
+
+    application.controllers.showController = ['$rootScope', '$scope', '$location', 'post', function ($rootScope, $scope, $location, post) {
         $rootScope.description = post.description;
         $rootScope.title = post.title;
 
         $scope.post = post;
     }];
+
+    application.controllers.postController = [function () {}];
+    application.controllers.tagsController = [function () {}];
 
     /***************************************/
     /*************** ROUTES ***************/
@@ -296,7 +292,7 @@ var Blog = (function () {
 
         '/posts/:postSlug': {
             templateUrl: '/views/posts_show',
-            controller: 'postController',
+            controller: 'showController',
             resolve: {
                 post: ['postsManager', '$route', '$location', function (postsManager, route, $location) {
                     return postsManager.get(route.current.params.postSlug);

@@ -1,90 +1,100 @@
 /*global require, Blog*/
-var savePost = function (callback) {
-    return function (post) {
-        if( post._id ) {
-            return post.$update(function () { console.log('saved'); });
-        }
-        post.$save(callback);
-    };
-};
-
-var publishPost = function (post) {
-    post.published = !post.published;
-    post.$update();
-};
-
-var deletePost = function (callback) {
-    return function (post) {
-        if (window.confirm('Sure bro ?')) {
-            post.$delete({slug: post.slug}, callback);
-        }
-    };
-};
-
-var reset = function (callback) {
+(function () {
     'use strict';
-    return function (post) {
-        if (window.confirm('It might probably change the url of the post. Are you sure you want to do that ?')) {
-            post.$reset({slug: post.slug}, callback);
-        }
-    };
-};
 
-/***************************************/
-/*************** SERVICES ***************/
-/***************************************/
-Blog.services.postManager = [function () {
-    return {
-        posts: [],
-    };
-}];
+    /***************************************/
+    /*************** SERVICES ***************/
+    /***************************************/
+    Blog.services.adminPostsManager = ['postsManager', 'Tag', function (postsManager, Tag) {
+        postsManager.save = function (post) {
+            var self = this;
+            if (post._id) {
+                return post.$update(function () { console.log('saved'); });
+            }
+            post.$save(function (post) {
+                self.posts.unshift(post);
+            });
+        };
 
-/***************************************/
-/*************** ROUTES ***************/
-/***************************************/
-routes['/'].controller = ['$scope', 'posts', 'Tweet', function ($scope, posts, Tweet) {
-    'use strict';
-    $scope.posts = posts;
-    $scope.deletePost = deletePost(function (post) {
-        posts.splice(posts.indexOf(post), 1);
-    });
-    $scope.publishPost = publishPost;
-    Tweet.query(function (tweets) {
-        $scope.tweets = tweets;
-    });
-}];
+        postsManager.remove = function (post) {
+            var self = this;
+            post.$delete(function () {
+                self.posts.removeElement(post);
+            });
+        };
 
-routes['/posts/:postSlug'].controller = ['$scope', 'post', 'Tag', '$location', function ($scope, post, Tag, $location) {
-    'use strict';
-    $scope.post = post;
-    $scope.newTag = new Tag();
+        postsManager.reset = function (post) {
+            return post.$reset();
+        };
 
-    $scope.publishPost = publishPost;
-    $scope.save = savePost();
-    $scope.reset = reset(function (post) { $location.url('/posts/' + post.slug); });
+        postsManager.publish = function (post) {
+            post.published = !post.published;
+            return post.$update();
+        };
 
-    $scope.addTag = function (tag) {
-        post.addTag(tag);
+        postsManager.addTag = function (post, tag) {
+            tag.$save({slug: this.slug}, function (newTag) {
+                this.tags.push(newTag);
+            }.bind(this));
+        };
+
+        postsManager.removeTag = function (post, tag) {
+            var dTag = new Tag(tag);
+            dTag.$delete({slug: post.slug, tagId: tag._id}, function () {
+                post.tags.removeElement(tag);
+            });
+        };
+
+        return postsManager;
+    }];
+
+    /***************************************/
+    /*************** CONTROLLERS ***************/
+    /***************************************/
+    Blog.controllers.postController = ['$scope', 'adminPostsManager', '$location', '$window', function ($scope, postsManager, $location, $window) {
+
+        $scope.publish = function (post) {
+            postsManager.publish(post);
+        };
+
+        $scope.save = function (post) {
+            postsManager.save(post);
+            post.$then(function () {
+                $location.url('/posts/' + post.slug);
+            });
+        };
+
+        $scope.reset = function (post) {
+            if ($window.confirm('It might probably change the url of the post. Are you sure you want to do that ?')) {
+                postsManager.reset(post);
+                post.$then(function () {
+                    $location.url('/posts/' + post.slug);
+                });
+            }
+        };
+
+        $scope.remove = function (post) {
+            if ($window.confirm('sure bro ?')) {
+                postsManager.remove(post);
+            }
+        };
+
+    }];
+
+    Blog.controllers.tagsController = ['$scope', 'Tag', 'adminPostsManager', function ($scope, Tag, postsManager) {
         $scope.newTag = new Tag();
-    };
 
-    $scope.deleteTag = function (tag) {
-        var dTag = new Tag(tag);
-        dTag.$delete({slug: post.slug, tagId: tag._id}, function () {
-            post.tags.splice(post.tags.indexOf(tag), 1);
-        });
-    };
+        $scope.create = function (post, tag) {
+            postsManager.addTag(post, tag);
+        };
 
-}];
+        $scope.remove = function (post, tag) {
+        };
+    }];
 
-routes['/post/create'] = {
-    templateUrl: '/views/posts_show',
+    /***************************************/
+    /*************** ROUTES ***************/
+    /***************************************/
 
-    controller: ['$scope', 'Post', '$location', function ($scope, Post, $location) {
-        'use strict';
-        $scope.post = new Post();
-        $scope.save = savePost(function (post) { $location.url('/posts/' + post.slug); });
-    }],
-
-    resolve: {}
-};
+    Blog.routes['/post/create'] = Blog.routes['/posts/:postSlug'];
+}());

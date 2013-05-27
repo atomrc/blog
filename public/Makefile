@@ -6,10 +6,12 @@ JS_BUILD_DIR=$(BUILD_DIR)$(JS_DIR)
 CSS_BUILD_DIR=$(BUILD_DIR)$(CSS_DIR)
 
 PUBLIC_JS_FILES= \
+				$(JS_DIR)src/extensions.js\
 				$(JS_DIR)src/application.js\
 				$(JS_DIR)main.js
 
 ADMIN_JS_FILES= \
+				$(JS_DIR)src/extensions.js\
 				$(JS_DIR)src/application.js\
 				$(JS_DIR)src/application.admin.js\
 				$(JS_DIR)main.js
