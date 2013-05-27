@@ -310,13 +310,9 @@ var Blog = (function () {
                 post: ['Post', '$route', '$q', '$location', function (Post, route, q, $location) {
                     var deferred = q.defer();
                     Post.get(
-                        {slug: route.current.params.postSlug},
-                        function (post) {
-                            deferred.resolve(post);
-                        },
-                        function () {
-                            $location.url('/404');
-                        }
+                        { slug: route.current.params.postSlug },
+                        function (post) { deferred.resolve(post); },
+                        function () { $location.url('/404'); }
                     );
                     return deferred.promise;
                 }]

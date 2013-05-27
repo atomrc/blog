@@ -42,5 +42,4 @@
 
     application.run(['analyticsTracker', function () {}]);
 
-
 }());
