@@ -36,7 +36,6 @@ require.config({
     }
 });
 
-
 var Blog = (function () {
     'use strict';
     var application = {
@@ -124,18 +123,6 @@ var Blog = (function () {
             };
         }],
 
-        stateManager: ['$window', '$rootScope', function ($window, $rootScope) {
-            var setTitle = function (event) {
-                if (event.targetScope.title) {
-                    $window.document.title = event.targetScope.title;
-                } else {
-                    $window.document.title = "Why So Curious ?";
-                }
-            };
-            $rootScope.$on('$viewContentLoaded', setTitle);
-        }],
-
-
         analyticsTracker: ['$location', '$rootScope', function (location, rootScope) {
             require(['analytics'], function (analytics) {
                 var track = function () {
@@ -146,27 +133,9 @@ var Blog = (function () {
             });
         }],
 
-
-        disqus: ['$location', function ($location) {
-            return {
-                init: function (post) {
-                    require(['disqus'], function (Disqus) {
-                        Disqus.reset({
-                            reload: true,
-                            config: function () {
-                                this.page.indentifier = post.slug;
-                                this.page.url = $location.absUrl();
-                            }
-                        });
-                    });
-                }
-            };
-        }],
-
         Tag: ['$resource', function (resource) {
             return resource('/api/posts/:slug/tags/:tagId', {tagId: '@_id'});
         }],
-
 
         Post: ['$resource', function (resource) {
             var Post = resource('/api/posts/:slug/:action', { slug: '@slug' }, {
@@ -201,6 +170,20 @@ var Blog = (function () {
     /***************************************/
     application.directives = {
 
+        metaDescription: function () {
+            return function (scope, element, attrs) {
+                var desc = scope.$eval(attrs.metaDesciption),
+                    defaultValue = element.attr('content');
+                scope.$watch(attrs.metaDescription, function (newValue) {
+                    if (newValue) {
+                        element.attr('content', newValue);
+                    } else {
+                        element.attr('content', defaultValue);
+                    }
+                });
+            };
+        },
+
         // add a sticky header on top of the window that shows when the user scroll to a specific position
         sticky: ['$window', '$compile', function ($window, $compile) {
             return function (scope, element, attrs) {
@@ -220,6 +203,25 @@ var Blog = (function () {
 
                     isSticky = shouldBeSticky;
                 };
+            };
+        }],
+
+        //the disqus container
+        disqus: ['$location', function ($location) {
+            return {
+                restrict: 'A',
+                scope: { resource: '=disqus' },
+                link: function (scope, element, attrs) {
+                    require(['disqus'], function (Disqus) {
+                        Disqus.reset({
+                            reload: true,
+                            config: function () {
+                                this.page.indentifier = scope.resource.slug;
+                                this.page.url = $location.absUrl();
+                            }
+                        });
+                    });
+                }
             };
         }],
 
@@ -268,18 +270,30 @@ var Blog = (function () {
         };
     }];
 
+    application.controllers.homeController = ['$rootScope', '$scope', 'posts', 'Tweet', function ($rootScope, $scope, posts, Tweet) {
+        $rootScope.description = null;
+        $rootScope.title = null;
+
+        $scope.posts = posts;
+        Tweet.query(function (tweets) {
+            $scope.tweets = tweets;
+        });
+    }];
+
+    application.controllers.postController = ['$rootScope', '$scope', '$location', 'post', function ($rootScope, $scope, $location, post) {
+        $rootScope.description = post.description;
+        $rootScope.title = post.title;
+
+        $scope.post = post;
+    }];
+
     /***************************************/
     /*************** ROUTES ***************/
     /***************************************/
     application.routes = {
         '/': {
             templateUrl: '/views/home',
-            controller: ['$scope', 'posts', 'Tweet', function ($scope, posts, Tweet) {
-                $scope.posts = posts;
-                Tweet.query(function (tweets) {
-                    $scope.tweets = tweets;
-                });
-            }],
+            controller: 'homeController',
             resolve: {
                 posts: ['$rootScope', 'Post', function ($rootScope, Post) {
                     if ($rootScope.posts) { return $rootScope.posts; } //caching
@@ -291,14 +305,7 @@ var Blog = (function () {
 
         '/posts/:postSlug': {
             templateUrl: '/views/posts_show',
-
-            controller: ['$scope', '$location', 'post', 'disqus', function ($scope, $location, post, disqus) {
-                $scope.title = post.title;
-                $scope.post = post;
-                $scope.location = $location.absUrl();
-                disqus.init(post);
-            }],
-
+            controller: 'postController',
             resolve: {
                 post: ['Post', '$route', '$q', '$location', function (Post, route, q, $location) {
                     var deferred = q.defer();

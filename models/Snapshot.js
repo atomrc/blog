@@ -6,6 +6,7 @@ var SnapshotSchema = new Schema({
     page: String,
     title: String,
     html: String,
+    description: String,
     visits: Number
 });
 

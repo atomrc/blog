@@ -4,15 +4,17 @@ var Snapshot = require('../models/Snapshot'),
 exports.serveStatic = function (req, res) {
     'use strict';
     Snapshot.findOne({page: req.url}, function (err, snapshot) {
-        var content = snapshot !== null ? snapshot.html : '';
-        var title = snapshot !== null ? snapshot.title : 'Why So Curious ?';
-        res.render('index', { auth: req.session.auth, prod: req.app.get('env') === 'prod', content: content, title: title});
+        var content = (snapshot || {}).html || '',
+            title = (snapshot || {}).title || 'Why So Curious ?',
+            description = (snapshot || {}).description || 'felix';
+
+        res.render('index', { auth: req.session.auth, prod: req.app.get('env') === 'prod', content: content, title: title, description: description});
     });
 }
 
 exports.snapshot = function(req, res) {
     var page = req.body.page;
-    Snapshot.findOneAndUpdate({page: page}, {page: page, html: req.body.html, title: req.body.title}, {upsert: true}, function (err, snap) {
+    Snapshot.findOneAndUpdate({page: page}, {page: page, html: req.body.html, title: req.body.title, description: req.body.description}, {upsert: true}, function (err, snap) {
         res.send(snap);
     });
 };

@@ -2,6 +2,7 @@
 var page = require('webpage').create(),
     apikey = require('../config/parameters.js').apikey,
     root = 'http://thomasbelin.fr',
+    root = 'http://localhost:3000',
     sitemap = root + '/sitemap.json',
     saveUrl = root + '/api/snapshots?apikey=' + apikey,
     urls = [],
@@ -20,11 +21,12 @@ snapshot = function (urls) {
         }
         var takeSnap = function () {
             var data = currentPage.evaluate(function () {
-                 var content, loc, title;
+                 var content, loc, title, description;
                  content = document.getElementById('main-content').innerHTML;
                  loc = window.location.pathname;
                  title = document.title;
-                 return { html: content, page: loc, title: title };
+                 description = document.getElementsByName('description')[0].attributes.content.value;
+                 return { html: content, page: loc, title: title, description: description };
             });
             console.log('SAVE', url, data.title);
             var u = encodeURIComponent(data.page);
