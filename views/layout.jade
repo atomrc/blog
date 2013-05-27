@@ -3,6 +3,7 @@ html(lang="fr", data-ng-app="blog")
     head
         meta(http-equiv="content-type", content="text/html; charset=UTF-8")
         meta(name="description", content="#{description}", data-meta-description="description")
+        meta(name="author", content="Thomas Belin")
 
         title(data-ng-bind="title || '#{title}' ") #{title}
         - if (prod)

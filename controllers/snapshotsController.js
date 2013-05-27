@@ -6,7 +6,7 @@ exports.serveStatic = function (req, res) {
     Snapshot.findOne({page: req.url}, function (err, snapshot) {
         var content = (snapshot || {}).html || '',
             title = (snapshot || {}).title || 'Why So Curious ?',
-            description = (snapshot || {}).description || 'felix';
+            description = (snapshot || {}).description || 'Et si on parlait un peu Javascript, AngularJS et code en général !';
 
         res.render('index', { auth: req.session.auth, prod: req.app.get('env') === 'prod', content: content, title: title, description: description});
     });

@@ -32,7 +32,8 @@ snapshot = function (urls) {
             var u = encodeURIComponent(data.page);
             var html = encodeURIComponent(data.html);
             var ti = encodeURIComponent(data.title);
-            require('webpage').create().open(saveUrl, 'post', 'page=' + u + '&title=' + ti + '&html=' + html, function (s) {
+            var desc = encodeURIComponent(data.description);
+            require('webpage').create().open(saveUrl, 'post', 'page=' + u + '&title=' + ti + '&html=' + html + '&description=' + desc, function (s) {
                 console.log('DONE', url);
                 console.log('\n');
                 snapshot(urls);
