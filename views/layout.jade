@@ -1,15 +1,25 @@
 doctype 5
 html(lang="fr", data-ng-app="blog")
     head
+        - var image = "http://thomasbelin.fr/images/avatar-small.jpeg"
         meta(http-equiv="content-type", content="text/html; charset=UTF-8")
-        meta(name="description", content="#{description}", data-meta-content="description")
+        meta(id="_desc", name="description", content="#{description}", data-meta-content="description", itemprop="desc")
         meta(name="author", content="Thomas Belin")
 
         meta(name="twitter:card", content="summary")
         meta(name="twitter:title", content="#{title}")
         meta(name="twitter:description", content="#{description}")
+        meta(name="twitter:site", content="@ThomasBelin4")
         meta(name="twitter:creator", content="@ThomasBelin4")
-        meta(name="twitter:image", content="http://thomasbelin.fr/images/avatar-small.jpeg")
+        meta(name="twitter:image", content="#{image}")
+
+        meta(property="og:type", content="article")
+        meta(property="og:title", content="#{title}")
+        meta(property="og:description", content="#{description}")
+        meta(property="og:image", content="#{image}")
+        meta(property="article:author", content="Thomas Belin")
+
+        meta(id="_image4", itemprop="image", content="http://thomasbelin.fr/images/avatar-small.jpeg")
 
         title(data-ng-bind="title || '#{title}' ") #{title}
         - if (prod)

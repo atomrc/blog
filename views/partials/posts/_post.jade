@@ -1,5 +1,5 @@
-article
-    time.pubdate(datetime="{{post.pubdate}}")
+article(itemscope="", itemtype="http://schema.org/Article", itemref="_image4 _desc")
+    time.pubdate(datetime="{{post.pubdate}}", itemprop="datePublished", content="{{post.pubdate}}")
         span.day {{ post.pubdate | date:'d' }}
         br
         span.month {{ post.pubdate | date:'MMM' }}
@@ -17,3 +17,6 @@ article
         block tag_form
     block content
         p.description{{ post.description }}
+    .author par
+        span(itemprop="author")  Thomas Belin
+    div(style="clear:both;")

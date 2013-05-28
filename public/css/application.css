@@ -146,6 +146,7 @@ article .edition-panel, .widget, .full-article .body table, .pubdate, #tweets-li
 /* full article */
 .full-article, #disqus_thread, .actions-panel .actions-container { width: 750px; margin: auto; position: relative; }
 .full-article .pubdate { padding: 10px; margin: 0px 10px; }
+.full-article .author { font-size: 10pt; margin: 10px 0; }
 .actions-panel { position: relative; }
 .actions-panel .share { text-align: right; }
 
