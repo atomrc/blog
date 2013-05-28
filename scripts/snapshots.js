@@ -2,7 +2,7 @@
 var page = require('webpage').create(),
     apikey = require('../config/parameters.js').apikey,
     root = 'http://thomasbelin.fr',
-    root = 'http://localhost:3000',
+    //root = 'http://localhost:3000',
     sitemap = root + '/sitemap.json',
     saveUrl = root + '/api/snapshots?apikey=' + apikey,
     urls = [],

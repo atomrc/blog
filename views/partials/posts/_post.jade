@@ -8,7 +8,7 @@ article
     block title
         h1 {{post.title}}
     aside
-        span.tags-list
+        span.tags-list(data-ng-controller="tagsController")
             span(data-ng-repeat='tag in post.tags')
                 span.tag
                     {{ tag.name }}

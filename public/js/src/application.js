@@ -153,7 +153,7 @@ var Blog = (function () {
     /***************************************/
     application.directives = {
 
-        metaDescription: function () {
+        metaContent: function () {
             return function (scope, element, attrs) {
                 var desc = scope.$eval(attrs.metaDesciption),
                     defaultValue = element.attr('content');

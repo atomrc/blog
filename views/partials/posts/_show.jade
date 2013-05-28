@@ -6,8 +6,8 @@ block content
 block tag_edit
     - if (auth)
         .edit-panel
-            button.delete(data-ng-click='deleteTag(tag)')
+            button.delete(data-ng-click='remove(post, tag)')
 block tag_form
     - if (auth)
-        form(data-ng-submit='addTag(newTag)')
+        form(data-ng-submit='create(newTag)')
             input(type='text', data-ng-model='newTag.name')
