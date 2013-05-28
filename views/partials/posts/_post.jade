@@ -7,8 +7,8 @@ article(itemscope="", itemtype="http://schema.org/Article", itemref="_image4 _de
         span.year {{ post.pubdate | date:'yyyy' }}
     block title
         h1 {{post.title}}
-    aside
-        span.tags-list(data-ng-controller="tagsController")
+    aside(data-ng-controller="tagsController")
+        span.tags-list
             span(data-ng-repeat='tag in post.tags')
                 span.tag
                     {{ tag.name }}

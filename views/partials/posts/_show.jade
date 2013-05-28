@@ -12,5 +12,5 @@ block tag_edit
             button.delete(data-ng-click='remove(post, tag)')
 block tag_form
     - if (auth)
-        form(data-ng-submit='create(newTag)')
+        form(data-ng-submit='create(post, newTag)')
             input(type='text', data-ng-model='newTag.name')

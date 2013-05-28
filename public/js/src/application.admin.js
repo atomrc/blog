@@ -33,8 +33,8 @@
         };
 
         postsManager.addTag = function (post, tag) {
-            tag.$save({slug: this.slug}, function (newTag) {
-                this.tags.push(newTag);
+            tag.$save({slug: post.slug}, function (newTag) {
+                post.tags.push(newTag);
             }.bind(this));
         };
 
@@ -86,9 +86,11 @@
 
         $scope.create = function (post, tag) {
             postsManager.addTag(post, tag);
+            this.newTag = new Tag();
         };
 
         $scope.remove = function (post, tag) {
+            postsManager.removeTag(post, tag);
         };
     }];
 
