@@ -2,6 +2,9 @@ extends _post
 
 block content
     .body(data-ng-bind-html-unsafe='post.body', data-codecontainer)
+    .author par
+        span(itemprop="author")  Thomas Belin
+    div(style="clear:both;")
 
 block tag_edit
     - if (auth)
