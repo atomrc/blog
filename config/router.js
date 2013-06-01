@@ -77,6 +77,9 @@ module.exports = function(app) {
     app.put('/api/posts/:post_slug', isAuthenticated, controllers.postsController.update);
     app.delete('/api/posts/:post_slug', isAuthenticated, loadPost, controllers.postsController.delete);
 
+    //SOCIAL
+    app.get('/api/sharecount/:provider', controllers.socialController.index);
+
     //TAGS
     app.post('/api/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.tag);
     app.delete('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);

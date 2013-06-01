@@ -31,73 +31,110 @@ var Blog = (function () {
             });
         }],
 
-        shareManager: ['$interpolate', '$http', function ($interpolate, $http) {
+        SocialNetwork:  ['$http', '$interpolate', function ($http, $interpolate) {
+            var SocialNetwork = function (url, text) {
+                this.init(url, text);
+                this.computeCount();
+            };
+            SocialNetwork.prototype = {
+                name: '',
+                title: '',
+                shareUrlPattern: '',
+                countUrlPattern: '',
+                countPropertyPath: '',
+                init: function (url, text) {
+                    var escapedUrl = encodeURIComponent(url);
+
+                    this.shareUrl = $interpolate(this.shareUrlPattern)({
+                        url: escapedUrl,
+                        text: encodeURIComponent(text)
+                    });
+                    this.countUrl = $interpolate(this.countUrlPattern)({ url: escapedUrl });
+                },
+
+                computeCount: function () {
+                    var self = this;
+                    if (this.countUrl) {
+                        $http({
+                            method: 'JSONP',
+                            url: this.countUrl
+                        }).success(function (response) {
+                            self.count = response[self.countPropertyPath];
+                        });
+                    }
+                }
+            };
+
+            return SocialNetwork;
+        }],
+
+        Twitter: ['SocialNetwork', function (SocialNetwork) {
+            var Twitter = function (url, text) {
+                SocialNetwork.call(this, url, text);
+            };
+            Twitter.prototype = Object.create(new SocialNetwork(), {
+                title: {value: 'Twitter'},
+                name: {value: 'twitter'},
+                shareUrlPattern: {value: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4'},
+                countUrlPattern: {value: 'http://urls.api.twitter.com/1/urls/count.json?url={{url}}&callback=JSON_CALLBACK'},
+                countPropertyPath: {value: 'count'}
+            });
+            return Twitter;
+        }],
+
+        Google: ['SocialNetwork', function (SocialNetwork) {
+            var Google = function (url, text) {
+                SocialNetwork.call(this, url, text);
+            };
+            Google.prototype = Object.create(new SocialNetwork(), {
+                title: {value: 'Google+'},
+                name: {value: 'google-plus'},
+                shareUrlPattern: {value: 'https://plus.google.com/share?url={{url}}'},
+                countUrlPattern: {value: '/api/sharecount/google?url={{url}}&callback=JSON_CALLBACK'},
+                countPropertyPath: {value: 'count'}
+            });
+            return Google;
+        }],
+
+        Facebook: ['SocialNetwork', function (SocialNetwork) {
+            var Facebook = function (url, text) {
+                SocialNetwork.call(this, url, text);
+            };
+            Facebook.prototype = Object.create(new SocialNetwork(), {
+                title: {value: 'Facebook'},
+                name: {value: 'facebook'},
+                shareUrlPattern: {value: 'http://www.facebook.com/share.php?u={{url}}'},
+                countUrlPattern: {value: 'http://graph.facebook.com/?id={{url}}&callback=JSON_CALLBACK'},
+                countPropertyPath: {value: 'shares'}
+            });
+            return Facebook;
+        }],
+
+        shareManager: ['$interpolate', '$http', 'Twitter', 'Google', 'Facebook', function ($interpolate, $http, Twitter, Google, Facebook) {
             return {
                 providers: [],
-                providersSetting: {
-                    'twitter': {
-                        title: 'Twitter',
-                        shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
-                        countUrl: 'http://urls.api.twitter.com/1/urls/count.json?url={{url}}&callback=JSON_CALLBACK',
-                        countPropertyPath: 'count'
-                    },
-                    'google-plus' : {
-                        title: 'Google+',
-                        shareUrl: 'https://plus.google.com/share?url={{url}}',
-                        countUrl: false
-                    },
-                    'facebook': {
-                        title: 'Facebook',
-                        shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
-                        countUrl: 'http://graph.facebook.com/?id={{url}}&callback=JSON_CALLBACK',
-                        countPropertyPath: 'shares'
-                    }
+                providersClasses: {
+                    'twitter': Twitter,
+                    'google-plus' : Google,
+                    'facebook': Facebook
                 },
 
-                initWithUrl: function (providerSetting, url, resource) {
-                    var escapedUrl = encodeURIComponent(url),
-                        shareUrl = $interpolate(providerSetting.shareUrl)({
-                            url: escapedUrl,
-                            text: encodeURIComponent(resource.title)
-                        }),
-                        countUrl = $interpolate(providerSetting.countUrl)({ url: escapedUrl });
-                    return {
-                        title: providerSetting.title,
-                        shareUrl: shareUrl,
-                        countUrl: countUrl,
-                        countPropertyPath: providerSetting.countPropertyPath
-                    };
-                },
-
-                getProvidersForResource: function (url, resource) {
+                generateProviders: function (url, resource) {
                     //handle caching
                     if (this.providers[url]) { return this.providers[url]; }
-                    var i = 0,
-                        providers = [],
-                        providerSetting;
-                    for(i in this.providersSetting) {
-                        providerSetting = this.initWithUrl(this.providersSetting[i], url, resource);
-                        (function (provider, name) {
-                            var filledProvider = {
-                                title: provider.title,
-                                name: name,
-                                shareUrl: provider.shareUrl,
-                                count: ''
-                            };
-                            providers.push(filledProvider);
-                            if (provider.countUrl) {
-                                $http({
-                                    method: 'JSONP',
-                                    url: provider.countUrl
-                                }).success(function (response) {
-                                    filledProvider.count = response[provider.countPropertyPath];
-                                });
-                            }
-                        }(providerSetting, i));
+                    this.providers[url] = [];
+                    var i,
+                        provider,
+                        ProviderClass;
+                    for (i in this.providersClasses) {
+                        if (this.providersClasses.hasOwnProperty(i)) {
+                            ProviderClass = this.providersClasses[i];
+                            provider = new ProviderClass(url, resource.title);
+                            this.providers[url].push(provider);
+                        }
                     }
-                    this.providers[url] = providers;
 
-                    return providers;
+                    return this.providers[url];
                 }
 
             };
@@ -240,7 +277,7 @@ var Blog = (function () {
     application.controllers.shareController = ['$scope', '$location', '$window', 'shareManager', function ($scope, $location, $window, shareManager) {
         $scope.setResource = function (resource) {
             $scope.resource = resource;
-            $scope.providers = shareManager.getProvidersForResource($location.absUrl(), $scope.resource);
+            $scope.providers = shareManager.generateProviders($location.absUrl(), $scope.resource);
         };
 
         $scope.share = function (provider) {
