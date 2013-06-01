@@ -91,7 +91,8 @@ var Blog = (function () {
                 name: {value: 'google-plus'},
                 shareUrlPattern: {value: 'https://plus.google.com/share?url={{url}}'},
                 countUrlPattern: {value: '/api/sharecount/google?url={{url}}&callback=JSON_CALLBACK'},
-                countPropertyPath: {value: 'count'}
+                countPropertyPath: {value: 'count'},
+                computeCount: {value: function () { console.log('todo'); return; }}
             });
             return Google;
         }],
@@ -139,7 +140,6 @@ var Blog = (function () {
 
             };
         }],
-
 
         postsManager: ['Post', '$q', function (Post, q) {
             return {
@@ -192,9 +192,9 @@ var Blog = (function () {
 
         metaContent: function () {
             return function (scope, element, attrs) {
-                var desc = scope.$eval(attrs.metaDesciption),
+                var desc = scope.$eval(attrs.metaContent),
                     defaultValue = element.attr('content');
-                scope.$watch(attrs.metaDescription, function (newValue) {
+                scope.$watch(attrs.metaContent, function (newValue) {
                     if (newValue) {
                         element.attr('content', newValue);
                     } else {
