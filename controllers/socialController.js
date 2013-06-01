@@ -3,6 +3,9 @@ var https = require('https');
 
 exports.index = function (req, res) {
     'use strict';
+    //TODO
+    res.write(callback + '({count: 0})');
+    return ;
     var callback = req.query.callback,
         url = req.query.url,
         options,
