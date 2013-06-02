@@ -52,7 +52,14 @@ var Blog = (function () {
                 },
 
                 extractCount: function (allCounts) {
-                    this.count = allCounts[this.countPath];
+                    var splittedPath = this.countPath.split('.'),
+                        i = 0,
+                        pathDepth = splittedPath.length,
+                        tmp = allCounts;
+                    for (i; i < pathDepth; i++) {
+                        tmp = tmp[splittedPath[i]];
+                    }
+                    this.count = tmp;
                 }
             };
 
@@ -69,17 +76,17 @@ var Blog = (function () {
                         shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
                         countPath: 'Twitter'
                     },
-                    'google-plus' : {
+                    'facebook' : {
                         name: 'facebook',
                         title: 'Facebook',
                         shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
-                        countPath: 'GooglePlusOne'
+                        countPath: 'Facebook.total_count'
                     },
-                    'facebook': {
+                    'google-plus': {
                         name: 'google-plus',
                         title: 'Google+',
                         shareUrl: 'https://plus.google.com/share?url={{url}}',
-                        countPath: 'Facebook.share_count'
+                        countPath: 'GooglePlusOne'
                     }
                 },
 
