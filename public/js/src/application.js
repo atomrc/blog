@@ -32,92 +32,55 @@ var Blog = (function () {
         }],
 
         SocialNetwork:  ['$http', '$interpolate', function ($http, $interpolate) {
-            var SocialNetwork = function (url, text) {
-                this.init(url, text);
-                this.computeCount();
+            var SocialNetwork = function (settings) {
+                this.name = settings.name;
+                this.title = settings.title;
+                this.shareUrlPattern = settings.shareUrl;
+                this.countPath = settings.countPath;
             };
             SocialNetwork.prototype = {
                 name: '',
                 title: '',
                 shareUrlPattern: '',
-                countUrlPattern: '',
-                countPropertyPath: '',
+                shareUrl: '',
                 init: function (url, text) {
                     var escapedUrl = encodeURIComponent(url);
-
                     this.shareUrl = $interpolate(this.shareUrlPattern)({
                         url: escapedUrl,
                         text: encodeURIComponent(text)
                     });
-                    this.countUrl = $interpolate(this.countUrlPattern)({ url: escapedUrl });
                 },
 
-                computeCount: function () {
-                    var self = this;
-                    if (this.countUrl) {
-                        $http({
-                            method: 'JSONP',
-                            url: this.countUrl
-                        }).success(function (response) {
-                            self.count = response[self.countPropertyPath];
-                        });
-                    }
+                extractCount: function (allCounts) {
+                    this.count = allCounts[this.countPath];
                 }
             };
 
             return SocialNetwork;
         }],
 
-        Twitter: ['SocialNetwork', function (SocialNetwork) {
-            var Twitter = function (url, text) {
-                SocialNetwork.call(this, url, text);
-            };
-            Twitter.prototype = Object.create(new SocialNetwork(), {
-                title: {value: 'Twitter'},
-                name: {value: 'twitter'},
-                shareUrlPattern: {value: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4'},
-                countUrlPattern: {value: 'http://urls.api.twitter.com/1/urls/count.json?url={{url}}&callback=JSON_CALLBACK'},
-                countPropertyPath: {value: 'count'}
-            });
-            return Twitter;
-        }],
-
-        Google: ['SocialNetwork', function (SocialNetwork) {
-            var Google = function (url, text) {
-                SocialNetwork.call(this, url, text);
-            };
-            Google.prototype = Object.create(new SocialNetwork(), {
-                title: {value: 'Google+'},
-                name: {value: 'google-plus'},
-                shareUrlPattern: {value: 'https://plus.google.com/share?url={{url}}'},
-                countUrlPattern: {value: '/api/sharecount/google?url={{url}}&callback=JSON_CALLBACK'},
-                countPropertyPath: {value: 'count'},
-                computeCount: {value: function () { return; }}
-            });
-            return Google;
-        }],
-
-        Facebook: ['SocialNetwork', function (SocialNetwork) {
-            var Facebook = function (url, text) {
-                SocialNetwork.call(this, url, text);
-            };
-            Facebook.prototype = Object.create(new SocialNetwork(), {
-                title: {value: 'Facebook'},
-                name: {value: 'facebook'},
-                shareUrlPattern: {value: 'http://www.facebook.com/share.php?u={{url}}'},
-                countUrlPattern: {value: 'http://graph.facebook.com/?id={{url}}&callback=JSON_CALLBACK'},
-                countPropertyPath: {value: 'shares'}
-            });
-            return Facebook;
-        }],
-
-        shareManager: ['$interpolate', '$http', 'Twitter', 'Google', 'Facebook', function ($interpolate, $http, Twitter, Google, Facebook) {
+        shareManager: ['$interpolate', '$http', 'SocialNetwork', function ($interpolate, $http, SocialNetwork) {
             return {
                 providers: [],
-                providersClasses: {
-                    'twitter': Twitter,
-                    'google-plus' : Google,
-                    'facebook': Facebook
+                providersSettings: {
+                    'twitter': {
+                        name: 'twitter',
+                        title: 'Twitter',
+                        shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
+                        countPath: 'Twitter'
+                    },
+                    'google-plus' : {
+                        name: 'facebook',
+                        title: 'Facebook',
+                        shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
+                        countPath: 'GooglePlusOne'
+                    },
+                    'facebook': {
+                        name: 'google-plus',
+                        title: 'Google+',
+                        shareUrl: 'https://plus.google.com/share?url={{url}}',
+                        countPath: 'Facebook.share_count'
+                    }
                 },
 
                 generateProviders: function (url, resource) {
@@ -126,16 +89,32 @@ var Blog = (function () {
                     this.providers[url] = [];
                     var i,
                         provider,
-                        ProviderClass;
-                    for (i in this.providersClasses) {
-                        if (this.providersClasses.hasOwnProperty(i)) {
-                            ProviderClass = this.providersClasses[i];
-                            provider = new ProviderClass(url, resource.title);
+                        providerSetting;
+                    for (i in this.providersSettings) {
+                        if (this.providersSettings.hasOwnProperty(i)) {
+                            providerSetting = this.providersSettings[i];
+                            provider = new SocialNetwork(providerSetting);
+                            provider.init(url, resource.title);
                             this.providers[url].push(provider);
                         }
                     }
+                    this.initShareCounts(url, this.providers[url]);
 
                     return this.providers[url];
+                },
+
+                initShareCounts: function (url, providers) {
+                    var countUrlPattern = 'http://api.sharedcount.com/?url={{url}}&callback=JSON_CALLBACK',
+                        countUrl = $interpolate(countUrlPattern)({ url: encodeURIComponent(url) });
+                    $http.jsonp(countUrl).success(function (response) {
+                        var pro,
+                            count;
+                        for (pro in providers) {
+                            if (providers.hasOwnProperty(pro)) {
+                                providers[pro].extractCount(response);
+                            }
+                        }
+                    });
                 }
 
             };
@@ -191,38 +170,44 @@ var Blog = (function () {
     application.directives = {
 
         metaContent: function () {
-            return function (scope, element, attrs) {
-                var desc = scope.$eval(attrs.metaContent),
-                    defaultValue = element.attr('content');
-                scope.$watch(attrs.metaContent, function (newValue) {
-                    if (newValue) {
-                        element.attr('content', newValue);
-                    } else {
-                        element.attr('content', defaultValue);
-                    }
-                });
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    var desc = scope.$eval(attrs.metaContent),
+                        defaultValue = element.attr('content');
+                    scope.$watch(attrs.metaContent, function (newValue) {
+                        if (newValue) {
+                            element.attr('content', newValue);
+                        } else {
+                            element.attr('content', defaultValue);
+                        }
+                    });
+                }
             };
         },
 
         // add a sticky header on top of the window that shows when the user scroll to a specific position
         sticky: ['$window', '$compile', function ($window, $compile) {
-            return function (scope, element, attrs) {
-                var options = scope.$eval(attrs.sticky),
-                    isSticky = false;
-                if (!options) { return; }
-                element.addClass('sticky hidden');
-                $window.onscroll = function () {
-                    var shouldBeSticky = $window.pageYOffset >= options.start;
-                    if (shouldBeSticky === isSticky) { return; }
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    var options = scope.$eval(attrs.sticky),
+                        isSticky = false;
+                    if (!options) { return; }
+                    element.addClass('sticky hidden');
+                    $window.onscroll = function () {
+                        var shouldBeSticky = $window.pageYOffset >= options.start;
+                        if (shouldBeSticky === isSticky) { return; }
 
-                    if (shouldBeSticky) {
-                        element.removeClass('hidden');
-                    } else {
-                        element.addClass('hidden');
-                    }
+                        if (shouldBeSticky) {
+                            element.removeClass('hidden');
+                        } else {
+                            element.addClass('hidden');
+                        }
 
-                    isSticky = shouldBeSticky;
-                };
+                        isSticky = shouldBeSticky;
+                    };
+                }
             };
         }],
 
