@@ -245,15 +245,16 @@ var Blog = (function () {
             };
         }],
 
-        codecontainer: function () {
-            return function (scope, element, attr) {
-                require(['rainbow'], function (rainbow) {
-                    window.setTimeout(function () {
-                        rainbow.color(element[0]);
-                    }, 10);
-                });
+        codecontainer: ['$timeout', function ($timeout) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attr) {
+                    require(['rainbow'], function (rainbow) {
+                        $timeout(function () { rainbow.color(element[0]); }, 0);
+                    });
+                }
             };
-        }
+        }]
     };
 
 
