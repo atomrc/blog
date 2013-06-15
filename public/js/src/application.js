@@ -162,12 +162,6 @@ var Blog = (function () {
             return Post;
         }],
 
-        Tweet : ['$resource', function (resource) {
-            return resource('http://api.twitter.com/1/statuses/user_timeline.json?count=10&include_rts=true&screen_name=thomasbelin4&callback=JSON_CALLBACK',
-                {},
-                { query: {method: 'JSONP', isArray: true}}
-                );
-        }]
     };
 
 
@@ -253,16 +247,7 @@ var Blog = (function () {
     /***************************************/
     /*************** FILTERS ***************/
     /***************************************/
-    application.filters = {
-        twitterRefs: function () {
-            return function (input) {
-                var parsedText = input,
-                    refReg = /(@[^ ]+)/g;
-                parsedText = parsedText.replace(refReg, "<span class=\"tweet-ref\">$1</span>");
-                return parsedText;
-            };
-        }
-    };
+    application.filters = {};
 
     /***************************************/
     /*************** CONTROLLERS ***************/
@@ -283,13 +268,7 @@ var Blog = (function () {
         };
     }];
 
-    application.controllers.tweetsController = ['$scope', 'Tweet', function ($scope, Tweet) {
-        Tweet.query(function (tweets) {
-            $scope.tweets = tweets;
-        });
-    }];
-
-    application.controllers.homeController = ['$rootScope', '$scope', 'posts', 'Tweet', function ($rootScope, $scope, posts, Tweet) {
+    application.controllers.homeController = ['$rootScope', '$scope', 'posts', function ($rootScope, $scope, posts) {
         $rootScope.description = null;
         $rootScope.title = null;
 
