@@ -1,12 +1,13 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 @font-face {
     font-family: "tomfont";
     src: url('/font/Tomfont-Regular.ttf');
 }
 html, body { height: 100% }
 
-body { padding:0; margin:0; background:url('/images/noise.png') #EEE; color:#666; font-family:Arial; }
+body { padding:0; margin:0; background:url('/images/noise.png') #EEE; color:#666; font-family:Open Sans, Arial; }
 
-h1, h2, .tweet-ref, strong, #not-found .code, .pubdate .month { color:#F06; }
+h1, h2, .tweet-ref, strong, #not-found .code, .pubdate .month { color:#F06; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75); font-weight: normal; }
 a { color:inherit;  text-decoration:none; }
 label { float:left; display:block; width:100px;  }
 fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
@@ -120,32 +121,40 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
     padding: 50px 0 10px 0;
 }
 
-#tweets-list { width: 70%; margin: auto; padding: 10px; border-radius: 5px; }
-#tweets-list .tweet { padding: 10px 0; border-bottom: solid 1px #DDD; }
-#tweets-list .tweet a, article a  { color:#0084b4; }
-
-
-.pubdate { color:#888; font-weight: bold; padding: 2px;  float: right; position: relative; text-align: center; }
-.pubdate .day { font-size: 20pt; }
+.pubdate { color:#888; font-weight: bold; padding: 2px;  position: relative; text-align: center; }
+.pubdate .day { font-size: 11pt; }
 .pubdate .year { font-size: 11pt; }
 .error404 { font-size:50pt; text-align:center; font-weight:bold; padding:50px 0; }
 
 /* Posts list */
 #posts-container { text-align: center; }
 
-.card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 200px; border-radius: 5px; margin: 1%; position: relative; }
-.card:hover {
-    box-shadow:#DDD 0px 0px 20px 0px;
-}
+.card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 250px; border: solid #DDD 1px; margin: 1%; position: relative; }
+.card:hover { box-shadow:#DDD 0px 0px 20px 0px; }
 .card h2 { font-size: 14pt; margin: 0px; }
-.card,
-article .edition-panel, .widget, .full-article .body table, .pubdate, #tweets-list { background:rgba(255,255,255, 0.5);}
+.card { background-color: white; }
+article .edition-panel, .widget, .full-article .body table, #tweets-list { background:rgba(255,255,255, 0.5);}
 .card a { display: block;  width: 100%; height: 100%; }
-.card .pubdate { top: -33px; background-color: white; }
+.card .pubdate {  }
+.card, .card aside { border-radius: 3px; }
+
+.card aside { position: absolute; bottom: 0; height: 0; left: 0; margin: 0; color: black; background-color: black; width: 100%; padding: 5px 0; overflow: hidden; }
+.card aside {
+    opacity: 0;
+     -webkit-transition: 0.2s linear all; /* Safari/Chrome */
+    -moz-transition: 0.2s linear all; /* Firefox */
+    -ms-transition: 0.2s linear all; /* IE10 */
+    -o-transition: 0.2s linear all; /* Opera */
+    transition: 0.2s linear all; /* Future Browsers */
+}
+.card:hover aside { height: 25px; opacity: 1; }
+.card aside .tags-list { float: right; text-align: justify; }
+.card aside .tags-list .tag { border-left: solid 5px rgb(77, 144, 254); padding: 0 5px; font-size: 10pt; background-color: white; }
 
 /* full article */
 .full-article, #disqus_thread, .actions-panel .actions-container { width: 750px; margin: auto; position: relative; }
-.full-article .pubdate { padding: 10px; margin: 0px 10px; }
+.full-article .header { text-align: center; margin: 0 0 60px 0; }
+.full-article .header h1 { text-align: center; }
 .full-article .author { font-size: 10pt; margin: 10px 0; }
 .actions-panel { position: relative; }
 .actions-panel .share { text-align: right; }
@@ -194,31 +203,8 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 
 
 /* tags */
-.tags-list { margin: 5px 0; }
-.tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
-
-/* Comments */
-#commentsContainer .name { font-weight:bold; }
-.comment { padding:10px 5px 20px 10px; border-bottom: solid 0px #ccc; position:relative; }
-.comment p { margin-bottom: 0; }
+.full-article .tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
 
 /* ABOUT */
 #idpic {border-radius: 5px; height:150px; float:left; margin:0 10px; }
 #about-contact a { font-weight:bold; }
-
-/************ANIMATIONS**********/
-.fade-enter, .fade-leave {
-     -webkit-transition: 5s all; /* Safari/Chrome */
-    -moz-transition: 5s all; /* Firefox */
-    -ms-transition: 5s all; /* IE10 */
-    -o-transition: 5s all; /* Opera */
-    transition: 5s all; /* Future Browsers */
-    position: absolute;
-    top: 0;
-}
-.fade-leave {
-    opacity: 1;
-}
-.fade-leave-active {
-    opacity: 0;
-}
