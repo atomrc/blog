@@ -2,8 +2,7 @@
     a.button(href="/post/create") Create
     br
 .card(data-ng-repeat="post in posts", data-ng-controller="postController")
-    a(href="/posts/{{ post.slug }}", class="published {{ post.published }}")
-        include _list
+    include _list
     -if (auth)
         span.edit-panel
             button.publish(data-ng-click='publish(post)', class='publish {{ post.published }}') publish

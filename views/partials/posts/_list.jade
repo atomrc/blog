@@ -1,6 +1,7 @@
 extends _post
 
 block title
-    h2 {{post.title}}
+    h2
+        a(href="/posts/{{ post.slug }}", class="published {{ post.published }}") {{post.title}}
 block content
     p.description{{ post.description }}
