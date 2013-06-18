@@ -1,3 +1,4 @@
+/*global require*/
 var controllers  = require('../controllers'),
     express      = require('express'),
     Unauthorized = require('../libs/errors').Unauthorized,
@@ -88,12 +89,6 @@ module.exports = function(app) {
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
     app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);
 
-    //FRONT
-    //app.get('/', controllers.homeController.index);
-    app.get('/', controllers.snapshotsController.serveStatic);
-    app.get('/posts/:post_slug', controllers.snapshotsController.serveStatic);
-    app.get('/404', controllers.snapshotsController.serveStatic);
-
     app.get('/sitemap.:format', getSiteUrls, controllers.sitemapController.index);
 
     app.get('/login', authenticateUser, function (req, res) {
@@ -107,4 +102,6 @@ module.exports = function(app) {
     //VIEWS
     app.get('/views/:view_id', controllers.viewsController.show);
 
+    //FRONT
+    app.get('*', controllers.homeController.index);
 }

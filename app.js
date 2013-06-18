@@ -1,3 +1,4 @@
+/*global require*/
 
 /**
  * Module dependencies.
@@ -7,42 +8,61 @@ var express = require('express'),
     path = require('path'),
     mongoose = require('mongoose'),
     postsController = require('./controllers/postsController'),
-    errorHandler = require('./libs/errors').handler;
+    errorHandler = require('./libs/errors').handler,
+    app = express(),
 
-var app = express();
+    staticCaching = function (req, res, next) {
+        'use strict';
+        var extension = req.url.substring(req.url.lastIndexOf('.') + 1),
+            cache = {
+                'css': 1800,
+                'png': 604800,
+                'jpeg': 604800,
+                'jpg': 604800,
+                'js': 1800,
+                'ico': 604800
+            },
+            maxAge = cache[extension];
 
-var staticCaching = function(req, res, next) {
-    var extension = req.url.substring(req.url.lastIndexOf('.') + 1);
-    var cache = {
-        'css': 1800,
-        'png': 604800,
-        'jpeg': 604800,
-        'jpg': 604800,
-        'js': 1800,
-        'ico': 604800
+        if (maxAge) {
+            res.setHeader('Cache-Control', 'max-age=' + maxAge);
+        } else {
+            res.setHeader('Cache-Control', 'max-age=10');
+        }
+        next();
+    },
+
+    rewriteRules = function (req, res, next) {
+        'use strict';
+        var botRegexp = /(bot|spider|archiver|facebook|twitter|pintereset)/,
+            isBot = req.headers['user-agent'].match(botRegexp),
+            requestParams,
+            request,
+            datas;
+
+        if (!isBot) { return next(); }
+        //setting a query param that will tells the home controller to get the snapshot instead of the single page layout
+        req.query.snap = 1;
+        next();
     };
 
-    var maxAge = cache[extension];
-    if(maxAge) {
-        res.setHeader('Cache-Control', 'max-age=' + maxAge);
-    } else {
-        res.setHeader('Cache-Control', 'max-age=10');
-    }
-    next();
-};
-
-app.configure('development', function(){
+app.configure('development', function () {
+    'use strict';
     app.use(express.logger('dev'));
 });
 
 app.configure('prod', function () {
+    'use strict';
     app.use(staticCaching);
 });
 
-app.configure(function(){
+app.configure(function () {
+    'use strict';
     app.set('port', process.env.PORT || 3000);
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
+
+    app.use(rewriteRules);
     app.use(express.compress());
     app.use(express.favicon(__dirname + '/public/favicon.ico'));
     app.use(express.static(path.join(__dirname, 'public')));
