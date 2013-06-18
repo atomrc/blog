@@ -21,26 +21,21 @@ snapshot = function (urls) {
         }
         var takeSnap = function () {
             var data = currentPage.evaluate(function () {
-                 var content, loc, title, description;
-                 content = document.getElementById('main-content').innerHTML;
+                 var content = '<!DOCTYPE html>' + window.document.documentElement.outerHTML;
                  loc = window.location.pathname;
-                 title = document.title;
-                 description = document.getElementsByName('description')[0].attributes.content.value;
-                 return { html: content, page: loc, title: title, description: description };
+                 return { html: content, page: loc };
             });
-            console.log('SAVE', url, data.title);
+            console.log('SAVE', url);
             var u = encodeURIComponent(data.page);
             var html = encodeURIComponent(data.html);
-            var ti = encodeURIComponent(data.title);
-            var desc = encodeURIComponent(data.description);
-            require('webpage').create().open(saveUrl, 'post', 'page=' + u + '&title=' + ti + '&html=' + html + '&description=' + desc, function (s) {
+            require('webpage').create().open(saveUrl, 'post', 'page=' + u + '&html=' + html, function (s) {
                 console.log('DONE', url);
                 console.log('\n');
                 snapshot(urls);
             });
         };
         console.log('RENDER', url);
-        setTimeout(takeSnap, 10000);
+        setTimeout(takeSnap, 30000);
     });
 };
 
