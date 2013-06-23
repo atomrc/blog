@@ -13,4 +13,4 @@ block tag_edit
 block tag_form
     - if (auth)
         form(data-ng-submit='create(post, newTag)')
-            input(type='text', data-ng-model='newTag.name')
+            div(data-autocomplete="newTag.name", data-autocomplete-url="/api/tags/find", data-autocomplete-select="affectTag(post, data);")

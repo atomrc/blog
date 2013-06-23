@@ -2,6 +2,34 @@
 (function () {
     'use strict';
 
+
+    /***************************************/
+    /*************** DIRECTIVES ***************/
+    /***************************************/
+    Blog.directives.autocomplete = ['$http', function ($http) {
+        return {
+            restrict: 'A',
+            template:
+                    '<input type="text" data-ng-model="term"><div class="autocomplete-results">' +
+                    '<div data-ng-repeat="result in results" data-ng-bind="result.name" data-ng-click="selectResult(result);"></div>' +
+                    '</div>',
+            scope: { term: '=autocomplete', url: '@autocompleteUrl', select: '&autocompleteSelect' },
+            link: function (scope, element, attrs) {
+                scope.selectResult = function (result) {
+                    scope.select({data: result});
+                };
+                scope.$watch('term', function (newValue, oldValue) {
+                    if (!newValue) { return; }
+                    if (newValue.length > 2) {
+                        $http.get(scope.url, { params: { term: newValue }}).then(function (res) {
+                            scope.results = res.data;
+                        });
+                    }
+                });
+            }
+        };
+    }];
+
     /***************************************/
     /*************** SERVICES ***************/
     /***************************************/
@@ -91,6 +119,10 @@
 
         $scope.remove = function (post, tag) {
             postsManager.removeTag(post, tag);
+        };
+
+        $scope.affectTag = function (post, tag) {
+            postsManager.addTag(post, new Tag(tag));
         };
     }];
 

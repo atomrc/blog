@@ -4,7 +4,12 @@ var Tag  = require('../models/Tag'),
 
 exports.index = function (req, res) {
     'use strict';
-    res.send(req.posts);
+    res.send(req.tags);
+};
+
+exports.show = function (req, res) {
+    'use strict';
+    res.send(req.tag);
 };
 
 exports.find = function (req, res, next) {
@@ -26,7 +31,7 @@ exports.create = function (req, res) {
 
 exports.delete = function (req, res) {
     'use strict';
-    var post = req.post;
-    post.remove();
-    res.send(post);
+    var tag = req.tag;
+    tag.remove();
+    res.send(tag);
 };

@@ -36,8 +36,17 @@ var loadPost = function (req, res, next) {
         if (post === null) { return next(new NotFound); }
         req.post = post;
         return next();
+    }).populate('tags');
+};
+
+var loadTag = function (req, res, next) {
+    'use strict';
+    Tag.findById(req.params.tag_id, function (err, tag) {
+        if (err) { return next(new NotFound()); }
+        if (tag === null) { return next(new NotFound()); }
+        req.tag = tag;
+        return next();
     });
-    //.populate('tags');
 };
 
 var loadPosts = function (req, res, next) {
@@ -49,7 +58,7 @@ var loadPosts = function (req, res, next) {
         { limit: req.query.limit } :
         {};
 
-    var posts = Post.find(condition, '', options).sort({'pubdate': 'desc'}).exec(function (err, posts) {
+    var posts = Post.find(condition, '', options).sort({'pubdate': 'desc'}).populate('tags').exec(function (err, posts) {
         if( err ) throw new NotFound;
         req.posts = posts;
         next();
@@ -94,11 +103,13 @@ module.exports = function (app) {
 
 
     //TAGS
-    app.post('/api/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.tag);
+    app.post('/api/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.createTag);
+    app.post('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, loadTag, controllers.postsController.affectTag);
     app.delete('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
 
     app.get('/api/tags', loadTags, controllers.tagsController.index);
     app.get('/api/tags/find', controllers.tagsController.find);
+    app.get('/api/tags/:tag_id', loadTag, controllers.tagsController.show);
 
     app.post('/api/snapshots', authenticateApp, controllers.snapshotsController.snapshot);
     app.get('/snapshots/stats', controllers.snapshotsController.stats);

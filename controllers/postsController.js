@@ -3,7 +3,17 @@ var Post = require('../models/Post'),
     Tag  = require('../models/Tag'),
     NotFound = require('../libs/errors').NotFound,
     RSS = require('rss'),
-    suggester = require('../services/suggester');
+    suggester = require('../services/suggester'),
+    associateTag = function (post, tag, callback) {
+        'use strict';
+        tag.posts.push(post);
+        tag.save(function (err, tag) {
+            callback(tag);
+            post.tags.push(tag);
+            post.save(function (err, post) {
+            });
+        });
+    };
 
 exports.index = function (req, res) {
     'use strict';
@@ -65,26 +75,30 @@ exports.reset = function (req, res) {
     });
 };
 
-exports.tag = function (req, res) {
-    var post = req.post;
-    var tag = new Tag(req.body);
-    tag.posts.push(post);
-    tag.save(function (err, tag) {
+exports.createTag = function (req, res) {
+    associateTag(req.post, new Tag(req.body), function (tag) {
         res.send(tag);
-        post.tags.push(tag);
-        post.save(function (err, post) {
-            if(err) res.send(err);
-        });
+    });
+};
+
+exports.affectTag = function (req, res) {
+    associateTag(req.post, req.tag, function (tag) {
+        res.send(tag);
     });
 };
 
 exports.deleteTag = function (req, res) {
     Post.findOneAndUpdate(
         { slug: req.params.post_slug },
-        {$pull : {tags: { _id: req.params.tag_id }}},
+        {$pull : {tags: req.params.tag_id }},
         function ( err, post ) {
             if(err) res.send(err);
-            res.send();
+            Tag.findOneAndUpdate(
+                { _id: req.params.tag_id },
+                { $pull: { posts:  post._id }},
+                function (err, tag) {
+                    res.send(tag);
+            });
         }
     );
 };

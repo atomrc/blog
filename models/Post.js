@@ -13,8 +13,8 @@ var PostSchema = new Schema({
     slug:         String,
     published:    { type: Boolean, 'default': false },
     pubdate:      { type: Date, 'default': Date.now },
-    tags:         [Tag.schema]
-    //tags:         [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
+    //tags:         [Tag.schema]
+    tags:         [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
 }, { versionKey:  "version" });
 
 PostSchema.pre('save', function (next) {
