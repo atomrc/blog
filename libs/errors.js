@@ -29,5 +29,6 @@ exports.handler = function(err, req, res, next) {
     if (err instanceof ValidationError) {
         return res.send({message: 'Missing Parameters'});
     }
+    console.log(err);
     return next(err);
 }

@@ -11,7 +11,7 @@
 
 .tag { position: relative; }
 .tag .edit-panel button.delete { width: 100%; height: 100%; }
-.tag .edit-panel { position: absolute; top:0; height:100%; width: 100%; }
+.tag .edit-panel { position: absolute; top:0; left: 0; height:100%; width: 100%; }
 .tag:hover .edit-panel { opacity: 1; }
 
 .published.false { opacity:0.5; }

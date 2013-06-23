@@ -1,4 +1,4 @@
-/*global require*/
+/*global require, process*/
 
 /**
  * Module dependencies.
@@ -70,16 +70,18 @@ app.configure(function () {
     app.use(app.router);
 });
 
-app.configure('development', function(){
+app.configure('development', function () {
+    'use strict';
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.use(errorHandler);
 });
 
 app.configure('prod', function () {
+    'use strict';
     app.use(errorHandler);
 });
 
-if(process.env.VCAP_SERVICES){
+if (process.env.VCAP_SERVICES) {
     var env = JSON.parse(process.env.VCAP_SERVICES);
     var mongo = env['mongodb-1.8'][0]['credentials'];
 }

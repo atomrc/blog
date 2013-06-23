@@ -2,14 +2,15 @@
 var Post = require('../models/Post'),
     Tag  = require('../models/Tag'),
     NotFound = require('../libs/errors').NotFound,
-    RSS = require('rss');
+    RSS = require('rss'),
+    suggester = require('../services/suggester');
 
 exports.index = function (req, res) {
     'use strict';
     res.send(req.posts);
 };
 
-exports.feed = function(req, res) {
+exports.feed = function (req, res) {
     'use strict';
     var feed = new RSS({
         title: 'Why So Curious ?',
@@ -21,7 +22,7 @@ exports.feed = function(req, res) {
     });
 
     /* loop over data and add to feed */
-    for(var i = 0; i < req.posts.length; i++) {
+    for (var i = 0; i < req.posts.length; i++) {
         var post = req.posts[i];
         feed.item({
             title:  post.title,
@@ -38,18 +39,23 @@ exports.feed = function(req, res) {
     res.send(xml);
 };
 
-exports.show = function(req, res, next) {
+exports.show = function (req, res, next) {
     res.send(req.post);
 };
 
-exports.create = function(req, res) {
+exports.suggest = function (req, res) {
+    suggester.suggest(req.post);
+    res.send('soon');
+};
+
+exports.create = function (req, res) {
     var post = new Post(req.body);
-    post.save(function(err, post){
+    post.save(function (err, post){
         res.send(post);
     });
 };
 
-exports.reset= function (req, res) {
+exports.reset = function (req, res) {
     var post = req.post;
     post.slug = null;
     post.pubdate = null;
@@ -62,10 +68,13 @@ exports.reset= function (req, res) {
 exports.tag = function (req, res) {
     var post = req.post;
     var tag = new Tag(req.body);
-    post.tags.push(tag);
-    post.save(function( err, post) {
-        if(err) res.send(err);
-        res.send(post.tags.pop());
+    tag.posts.push(post);
+    tag.save(function (err, tag) {
+        res.send(tag);
+        post.tags.push(tag);
+        post.save(function (err, post) {
+            if(err) res.send(err);
+        });
     });
 };
 
@@ -73,19 +82,19 @@ exports.deleteTag = function (req, res) {
     Post.findOneAndUpdate(
         { slug: req.params.post_slug },
         {$pull : {tags: { _id: req.params.tag_id }}},
-        function( err, post ) {
+        function ( err, post ) {
             if(err) res.send(err);
             res.send();
         }
     );
 };
 
-exports.update = function(req, res, next) {
+exports.update = function (req, res, next) {
     delete req.body._id;
     Post.findOneAndUpdate(
         { slug: req.params.post_slug},
         req.body,
-        function( err, post ) {
+        function ( err, post ) {
             if( err ) return next(err);
             if( !post ) return next(new NotFound);
             res.send(post);
@@ -93,8 +102,22 @@ exports.update = function(req, res, next) {
     );
 };
 
-exports.delete = function(req, res) {
+exports.delete = function (req, res) {
     var post = req.post;
     post.remove();
     res.send(post);
+};
+
+exports.purgeTags = function (req, res) {
+    var i = 0,
+        post,
+        deletedTags = [];
+    console.log(req.posts);
+    for (i; i < req.posts.length; i++) {
+        post = req.posts[i];
+        deletedTags.push({post: post.title, tags: post.tags});
+        /*post.tags = [];
+        post.save();*/
+    }
+    res.send(deletedTags);
 };
