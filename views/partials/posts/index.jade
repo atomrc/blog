@@ -1,7 +1,7 @@
 -if (auth)
     a.button(href="/post/create") Create
     br
-.card(data-ng-repeat="post in posts", data-ng-animate="{enter: 'example-repeat-enter', leave: 'example-repeat-leave', move: 'example-repeat-move'}", data-ng-click="show(post);")
+.card(data-ng-repeat="post in posts", data-ng-click="show(post);")
     include _list
     -if (auth)
         span.edit-panel
