@@ -35,10 +35,7 @@ var express = require('express'),
     rewriteRules = function (req, res, next) {
         'use strict';
         var botRegexp = /(bot|spider|archiver|facebook|twitter|pintereset)/,
-            isBot = req.headers['user-agent'].match(botRegexp),
-            requestParams,
-            request,
-            datas;
+            isBot = req.headers['user-agent'].match(botRegexp);
 
         if (!isBot) { return next(); }
         //setting a query param that will tells the home controller to get the snapshot instead of the single page layout

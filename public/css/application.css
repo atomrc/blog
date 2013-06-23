@@ -205,3 +205,34 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 /* ABOUT */
 #idpic {border-radius: 5px; height:150px; float:left; margin:0 10px; }
 #about-contact a { font-weight:bold; }
+
+    .example-repeat-enter,
+    .example-repeat-leave,
+    .example-repeat-move {
+    -webkit-transition:all linear 0.5s;
+    -moz-transition:all linear 0.5s;
+    -ms-transition:all linear 0.5s;
+    -o-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+    }
+     
+    .example-repeat-enter {
+    line-height:0;
+    opacity:0;
+    }
+    .example-repeat-enter.example-repeat-enter-active {
+    line-height:20px;
+    opacity:1;
+    }
+     
+    .example-repeat-leave {
+    opacity:1;
+    line-height:20px;
+    }
+    .example-repeat-leave.example-repeat-leave-active {
+    opacity:0;
+    line-height:0;
+    }
+     
+    .example-repeat-move { }
+    .example-repeat-move.example-repeat-move-active { }
