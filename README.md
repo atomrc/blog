@@ -1,7 +1,7 @@
 Single Page Blog
 =================
 
-My personnal blog designed as a single page application using AngularJS as MVC client framework.
+My personnal blog ( http://thomasbelin.fr ) designed as a single page application using AngularJS as MVC client framework.
 
 Requirements
 ==================
