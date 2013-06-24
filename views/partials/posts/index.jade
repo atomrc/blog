@@ -2,6 +2,7 @@
     a.button(href="/post/create") Create
     br
 .card(data-ng-repeat="post in posts", data-ng-click="show(post);")
+    .highlighter(data-ng-class="{ active: post.$highlighted }")
     include _list
     -if (auth)
         span.edit-panel

@@ -82,7 +82,7 @@
     /***************************************/
     /*************** CONTROLLERS ***************/
     /***************************************/
-    Blog.controllers.postController = ['$scope', 'adminPostsManager', '$location', '$window', function ($scope, postsManager, $location, $window) {
+    Blog.controllers.postsController = ['$scope', 'adminPostsManager', '$location', '$window', function ($scope, postsManager, $location, $window) {
 
         $scope.publish = function (post) {
             postsManager.publish(post);

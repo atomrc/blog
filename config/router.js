@@ -91,7 +91,6 @@ module.exports = function (app) {
 
     /************ API ****************/
     //POSTS
-    app.get('/api/posts/purgeTags', loadPosts, controllers.postsController.purgeTags);
     app.get('/api/posts', loadPosts, controllers.postsController.index);
     app.post('/api/posts', isAuthenticated, controllers.postsController.create);
     app.get('/api/posts/:post_slug', loadPost, controllers.postsController.show);

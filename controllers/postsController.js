@@ -127,17 +127,3 @@ exports.delete = function (req, res) {
     post.remove();
     res.send(post);
 };
-
-exports.purgeTags = function (req, res) {
-    var i = 0,
-        post,
-        deletedTags = [];
-    console.log(req.posts);
-    for (i; i < req.posts.length; i++) {
-        post = req.posts[i];
-        deletedTags.push({post: post.title, tags: post.tags});
-        /*post.tags = [];
-        post.save();*/
-    }
-    res.send(deletedTags);
-};

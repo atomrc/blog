@@ -160,7 +160,7 @@ var Blog = (function () {
                 reset: { method: 'PUT', params: { action: 'reset'} }
             });
             return Post;
-        }],
+        }]
 
     };
 
@@ -282,9 +282,18 @@ var Blog = (function () {
         $scope.post = post;
     }];
 
-    application.controllers.postController = ['$scope', '$location', function ($scope, $location) {
+    application.controllers.postsController = ['$scope', '$location', 'postsManager', function ($scope, $location, postsManager) {
+        $scope.posts = postsManager.query();
         $scope.show = function (post) {
             $location.path('/posts/' + post.slug);
+        };
+
+        $scope.higlightPostsWithTag = function (tag, unlight) {
+            $scope.posts.map(function (post) {
+                post.$highlighted = !unlight && post.tags.reduce(function (value, postTag) {
+                    return value || tag._id === postTag._id;
+                }, false);
+            });
         };
 
     }];
