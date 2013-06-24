@@ -4,7 +4,6 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 var TagSchema = new Schema({
-    id:          ObjectId,
     name:        { type: String, required: true },
     posts:       [{ type: Schema.Types.ObjectId, ref: 'Post' }]
 });

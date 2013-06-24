@@ -6,14 +6,12 @@ var mongoose = require('mongoose'),
     Tag  = require('../models/Tag');
 
 var PostSchema = new Schema({
-    id:           ObjectId,
     title:        String,
     description:  String,
     body:         String,
     slug:         String,
     published:    { type: Boolean, 'default': false },
     pubdate:      { type: Date, 'default': Date.now },
-    //tags:         [Tag.schema]
     tags:         [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
 }, { versionKey:  "version" });
 

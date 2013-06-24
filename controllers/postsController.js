@@ -6,6 +6,12 @@ var Post = require('../models/Post'),
     suggester = require('../services/suggester'),
     associateTag = function (post, tag, callback) {
         'use strict';
+        var alreadyAdded = post.tags.reduce(function (prev, current) {
+            return prev || '' + current._id === '' + tag._id;
+        }, false);
+        if (alreadyAdded) {
+            return callback(false);
+        }
         tag.posts.push(post);
         tag.save(function (err, tag) {
             callback(tag);

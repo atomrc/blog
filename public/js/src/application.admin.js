@@ -20,6 +20,7 @@
                 };
                 scope.$watch('term', function (newValue, oldValue) {
                     if (!newValue) { return; }
+                    scope.results = [];
                     if (newValue.length > 2) {
                         $http.get(scope.url, { params: { term: newValue }}).then(function (res) {
                             scope.results = res.data;
@@ -62,8 +63,10 @@
 
         postsManager.addTag = function (post, tag) {
             tag.$save({slug: post.slug}, function (newTag) {
-                post.tags.push(newTag);
-            }.bind(this));
+                if (newTag) {
+                    post.tags.push(newTag);
+                }
+            });
         };
 
         postsManager.removeTag = function (post, tag) {
@@ -123,6 +126,7 @@
 
         $scope.affectTag = function (post, tag) {
             postsManager.addTag(post, new Tag(tag));
+            this.newTag = new Tag();
         };
     }];
 
