@@ -64,6 +64,12 @@ if (!window.angular) {
         }
     }
 
+    for (element in Blog.animations) {
+        if (Blog.animations.hasOwnProperty(element)) {
+            application.animation(element, Blog.animations[element]);
+        }
+    }
+
     application.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
         var el;
         $locationProvider.html5Mode(true);

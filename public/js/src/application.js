@@ -243,6 +243,10 @@ var Blog = (function () {
         }]
     };
 
+    /***************************************/
+    /*************** ANIMATIONS ***************/
+    /***************************************/
+    application.animations = {};
 
     /***************************************/
     /*************** FILTERS ***************/
@@ -283,16 +287,32 @@ var Blog = (function () {
     }];
 
     application.controllers.postsController = ['$scope', '$location', 'postsManager', function ($scope, $location, postsManager) {
+        var hasTag = function (post, tag) {
+            return post.tags.reduce(function (value, postTag) {
+                return value || tag._id === postTag._id;
+            }, false);
+        };
+
         $scope.posts = postsManager.query();
         $scope.show = function (post) {
             $location.path('/posts/' + post.slug);
         };
 
+        $scope.filteringTags = [];
+
+        $scope.filterByTags = function (post) {
+            var i, tag;
+            if ($scope.filteringTags.length === 0) { return true; }
+            for (i = 0; i < $scope.filteringTags.length; i++) {
+                tag = $scope.filteringTags[i];
+                if (hasTag(post, tag)) { return true; }
+            }
+            return false;
+        };
+
         $scope.higlightPostsWithTag = function (tag, unlight) {
             $scope.posts.map(function (post) {
-                post.$highlighted = !unlight && post.tags.reduce(function (value, postTag) {
-                    return value || tag._id === postTag._id;
-                }, false);
+                post.$highlighted = !unlight && hasTag(post, tag);
             });
         };
 

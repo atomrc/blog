@@ -52,18 +52,6 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 .social { font-family: tomfont; }
 
 .container { width:100%; position:relative; }
-@media all and (max-width: 700px) {
-    .card { width: 90%; height: auto; }
-}
-@media all and (min-width: 700px) and (max-width: 1000px) {
-    .card { width: 46%; }
-}
-@media all and (min-width: 1000px) {
-    .card { width: 29%; }
-}
-@media all and (min-width: 1500px) {
-    .card { width: 20%; }
-}
 
 #header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; text-align: center; }
 #header .logo #id-image { height:3em; margin-top:0.5em; }
@@ -127,6 +115,18 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 #posts-container { text-align: center; }
 
 .card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 250px; border: solid #DDD 1px; margin: 1%; position: relative; }
+@media all and (max-width: 700px) {
+    .card { width: 90%; height: auto; height: 200px; }
+}
+@media all and (min-width: 700px) and (max-width: 1000px) {
+    .card { width: 40%; }
+}
+@media all and (min-width: 1000px) {
+    .card { width: 29%; }
+}
+@media all and (min-width: 1500px) {
+    .card { width: 20%; }
+}
 .card:hover { box-shadow:#DDD 0px 0px 20px 0px; }
 .card .highlighter { background-color:transparent; position: absolute; right: 10px; height: 10px; width: 10px; border-radius: 10px;
      -webkit-transition: all 0.5s linear; /* Safari/Chrome */
@@ -189,7 +189,7 @@ article h1 { text-align:left; font-size: 2em; margin:0; }
 .full-article article h2 { text-indent: 1em; }
 .full-article article h3 { text-indent: 2em; }
 .full-article article h2 { font-size: 1.5em; margin:0; margin-top: 1.5em; }
-article .body { font-size:13pt; line-height:1.5em; }
+article .body { font-size:7pt; }
 article ul { margin: 0 30px; list-style:disc; }
 code { white-space:pre; color: rgb(8, 160, 33);  background-color:black; border-radius:10px; display: block; padding:10px; }
 
@@ -205,3 +205,28 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 /* ABOUT */
 #idpic {border-radius: 5px; height:150px; float:left; margin:0 10px; }
 #about-contact a { font-weight:bold; }
+
+.fade-enter,
+.fade-leave,
+.fade-move {
+  -webkit-transition: 1s linear all;
+  -moz-transition: 1s linear all;
+  -o-transition: 1s linear all;
+  transition: 1s linear all;
+}
+
+.fade-enter {
+    opacity:0;
+}
+.fade-enter.fade-enter-active {
+    opacity:1;
+}
+
+.fade-leave {
+    opacity:1;
+    overflow: hidden;
+}
+.fade-leave.fade-leave-active {
+    width: 0;
+    opacity:0;
+}
