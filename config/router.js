@@ -66,7 +66,8 @@ var loadPosts = function (req, res, next) {
 };
 
 var loadTags = function (req, res, next) {
-    var posts = Post.find({}, function (err, tags) {
+    'use strict';
+    var tags = Tag.find({}, function (err, tags) {
         if (err) { throw new NotFound(); }
         req.tags = tags;
         next();
@@ -106,9 +107,10 @@ module.exports = function (app) {
     app.post('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, loadTag, controllers.postsController.affectTag);
     app.delete('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
 
-    app.get('/api/tags', loadTags, controllers.tagsController.index);
+    app.get('/api/tags', isAuthenticated, loadTags, controllers.tagsController.index);
     app.get('/api/tags/find', controllers.tagsController.find);
     app.get('/api/tags/:tag_id', loadTag, controllers.tagsController.show);
+    app.delete('/api/tags/:tag_id', isAuthenticated, loadTag, controllers.tagsController.delete);
 
     app.post('/api/snapshots', authenticateApp, controllers.snapshotsController.snapshot);
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
