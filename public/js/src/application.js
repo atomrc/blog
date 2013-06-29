@@ -27,7 +27,11 @@ var Blog = (function () {
 
         errorHandler: ['$rootScope', '$location', function (rootScope, $location) {
             rootScope.$on('$routeChangeError', function () {
-                $location.url('/404');
+                if (window.onCaptureReady) {
+                    window.onCaptureReady(404);
+                } else {
+                    $location.url('/404');
+                }
             });
         }],
 
