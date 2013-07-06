@@ -10,11 +10,12 @@ article(itemscope="", itemtype="http://schema.org/Article", itemref="_image4 _de
 
         aside(data-ng-controller="tagsController")
             span.tags-list
-                span(data-ng-repeat='tag in post.tags')
+                div.tag-container(data-ng-repeat='tag in post.tags')
                     span.tag(data-ng-mouseover="higlightPostsWithTag(tag);", data-ng-mouseout="higlightPostsWithTag(tag, true);")
                         {{ tag.name }}
                         block tag_edit
                     &nbsp;
             block tag_form
+        div(style='clear:both')
     block content
         p.description{{ post.description }}
