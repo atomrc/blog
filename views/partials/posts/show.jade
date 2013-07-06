@@ -2,30 +2,29 @@
     include _form
 
 .full-article
-    - for i in ['{ start: 150 }']
-        .actions-panel(data-sticky=i)
-            table.actions-container
-                tr
-                    td
-                        a(href='/', class='button')
-                            i.icon-chevron-left
-                            |  Tous les articles
-                    td.share
-                        a.button
-                            i.icon-share
-                            |  Partager
-                            table.buttons-container(data-ng-controller="shareController", data-ng-init="setResource(post)")
-                                tr(data-ng-repeat="provider in providers",
-                                    class="{{provider.name}}",
-                                    href="javascript:void(0);",
-                                    data-ng-click="share(provider)"
-                                )
-                                    td
-                                        i(class="icon-{{provider.name}}")
-                                    td
-                                        span(data-ng-bind="provider.title")
-                                    td
-                                        span.count(data-ng-bind="provider.count > 0 && provider.count || ''")
+    .actions-panel(data-sticky='{ start: 10 }')
+        table.actions-container
+            tr
+                td
+                    a(href='/', class='button')
+                        i.icon-chevron-left
+                        |  Tous les articles
+                td.share
+                    a.button
+                        i.icon-share
+                        |  Partager
+                        table.buttons-container(data-ng-controller="shareController", data-ng-init="setResource(post)")
+                            tr(data-ng-repeat="provider in providers",
+                                class="{{provider.name}}",
+                                href="javascript:void(0);",
+                                data-ng-click="share(provider)"
+                            )
+                                td
+                                    i(class="icon-{{provider.name}}")
+                                td
+                                    span(data-ng-bind="provider.title")
+                                td
+                                    span.count(data-ng-bind="provider.count > 0 && provider.count || ''")
     include _show
 
 section

@@ -114,17 +114,17 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 /* Posts list */
 #posts-container { text-align: center; }
 
-.card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 250px; border: solid #DDD 1px; margin: 1%; position: relative; }
+.card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 300px; border: solid #DDD 1px; margin: 1%; position: relative; }
 @media all and (max-width: 700px) {
-    .card { width: 90%; height: auto; height: 200px; }
+    .card { width: 90%; height: auto; }
 }
-@media all and (min-width: 700px) and (max-width: 1000px) {
-    .card { width: 40%; }
+@media all and (min-width: 701px) and (max-width: 1000px) {
+    .card { width: 45%; height: 250px; }
 }
-@media all and (min-width: 1000px) {
+@media all and (min-width: 1000px) and (max-width: 1300px) {
     .card { width: 29%; }
 }
-@media all and (min-width: 1500px) {
+@media all and (min-width: 1300px) {
     .card { width: 20%; }
 }
 .card:hover { box-shadow:#DDD 0px 0px 20px 0px; }
