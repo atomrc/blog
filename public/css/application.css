@@ -81,7 +81,7 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
     overflow: hidden;
 }
 
-a.share-button { font-size: 15pt; margin: 0 5px; display: inline-block; min-width: 20px; text-align: left;  padding: 2px 10px;  }
+a.share-button { font-size: 15pt; margin: 0 5px; display: inline-block; min-width: 15px; text-align: left;  padding: 3px 10px; border-radius: 0; border: none; }
 a.share-button .count { font-size: 12pt }
 
 .github { color: rgba(57, 223 ,255, 1);}
@@ -178,15 +178,6 @@ article .edition-panel, .widget, .full-article .body table, #tweets-list { backg
 .full-article .author { font-size: 10pt; margin: 10px 0; }
 .actions-panel { position: relative; }
 .actions-panel .share { text-align: right; }
-
-.actions-panel .share .buttons-container { display: none; position: absolute; z-index: 10; text-align: left; white-space: nowrap; padding: 5px; left: 0; }
-.actions-panel .share .button { position: relative; }
-.actions-panel .share .button:hover .buttons-container { display: block; }
-.actions-panel .share .button:hover , .buttons-container { background-color: white; }
-.actions-panel .share .button:hover { border-bottom: none; box-shadow: none; color: inherit; }
-
-.buttons-container { font-size: 14pt; }
-.buttons-container a i { display: inline-block; width: 20px; }
 
 .actions-panel.sticky {
     width: 100%;
