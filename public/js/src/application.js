@@ -245,6 +245,33 @@ var Blog = (function () {
                 }
             };
         }]
+
+        /*postSocialDetails: [function () {
+            return {
+                restrict: 'A',
+                scope: { post: '=postSocialDetails' },
+                template: '<div class="comment-count" data-ng-bind="commentCount">' +
+                    '</div>',
+                controller: ['$scope', '$http', function ($scope, $http) {
+                    $http.jsonp("https://disqus.com/api/3.0/threads/set.jsonp?callback=JSON_CALLBACK",
+                        {
+                            params: {
+                                api_key: 'o84lV9ZKGR1axptrWCWHY869Qpr9v5wNxsqxWl2H716QD7J9Oh49ykVeuCn1XEWf',
+                                forum : 'whysocurious',
+                                thread : [
+                                    'http://thomasbelin.fr/posts/single-page-app-blog-requirejs-nest-pas-fait-pour-angularjs',
+                                    'http://thomasbelin.fr/posts/Single-Page-App-Blog-combiner-la-puissance-dAngularJS-avec-la-modularisation-de-RequireJS'
+                                ]
+                            },
+                            cache: false
+                        }
+                        ).error(function () {
+                        console.log(arguments);
+                    });
+                    $scope.commentCount = 12;
+                }]
+            };
+        }]*/
     };
 
     /***************************************/
