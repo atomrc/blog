@@ -81,15 +81,21 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
     overflow: hidden;
 }
 
+a.share-button { font-size: 15pt; margin: 0 5px; display: inline-block; min-width: 20px; text-align: left;  padding: 2px 10px;  }
+a.share-button .count { font-size: 12pt }
+
 .github { color: rgba(57, 223 ,255, 1);}
 
 .twitter { color: rgba(19, 157, 233, 1);}
+a.share-button.twitter { background-color: rgba(19, 157, 233, 1); color: white; }
 
 .doyoubuzz { color: rgba(255, 136, 0, 1);}
 
 .google-plus{ color: rgba(212, 11, 13, 1);}
+a.share-button.google-plus { background-color: rgba(212, 11, 13, 1); color: white; }
 
 .facebook { color: rgba(36, 71, 134, 1);}
+a.share-button.facebook { background-color: rgba(36, 71, 134, 1); color: white; }
 
 #footer .social { text-align: right; }
 #footer .social a { font-size: 100px;  text-shadow:#666 1px 1px 10px;
