@@ -8,7 +8,8 @@ html, body { height: 100% }
 body { padding:0; margin:0; background:url('/images/noise.png') #EEE; color:#666; font-family:Open Sans, Arial; }
 
 h1, h2, .tweet-ref, strong, #not-found .code, .pubdate .month { color:#F06; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75); font-weight: normal; }
-a { color:inherit;  text-decoration:none; }
+a {  text-decoration:none; color: rgb(0, 132, 180); }
+#header a, h1 a, h2 a { color:inherit; }
 label { float:left; display:block; width:100px;  }
 fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
 legend { font-weight:bold; }
