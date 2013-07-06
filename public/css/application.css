@@ -152,7 +152,6 @@ article .edition-panel, .widget, .full-article .body table, #tweets-list { backg
 .card, .card aside { border-radius: 3px; }
 
 .card aside { width: 100%; padding: 5px 0; color: white; }
-.card aside .tags-list { text-align: justify; }
 .card aside .tags-list .tag-container { float: left; }
 .card aside .tags-list .tag { padding: 1px 7px; font-size: 10pt; background-color: #72A6FC; cursor: pointer; }
 .card aside .tags-list .tag:hover { background-color: #4D90FE; }
@@ -218,6 +217,7 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 
 /* tags */
 .full-article .tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
+.full-article .tags-list .tag-container { display: inline; }
 
 /* ABOUT */
 #idpic {border-radius: 5px; height:150px; float:left; margin:0 10px; }
