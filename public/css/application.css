@@ -7,17 +7,10 @@ html, body { height: 100% }
 
 body { padding:0; margin:0; background:url('/images/noise.png') #EEE; color:#666; font-family:Open Sans, Arial; }
 
-h1, h2, .tweet-ref, strong, #not-found .code, .pubdate .month { color:#F06; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75); font-weight: normal; }
+h1, h2, strong, #not-found .code, .pubdate .month { color:#F06; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75); font-weight: normal; }
 a {  text-decoration:none; color: rgb(0, 132, 180); }
 #header a, h1 a, h2 a { color:inherit; }
-label { float:left; display:block; width:100px;  }
-fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
-legend { font-weight:bold; }
 ul { list-style: none; padding:0; }
-form input, form textarea { width: 300px; border-radius: 5px; border:solid 1px #BBB; box-shadow: #BBB 1px 1px 5px inset; }
-form input { padding: 5px; width: 290px; }
-input[type=submit] { float:right; width: auto; padding: 8px; box-shadow:none; }
-input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 
 .animated {
      -webkit-transition: 0.5s all; /* Safari/Chrome */
@@ -32,41 +25,35 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 .full-article .body table td { padding: 5px; }
 .full-article .body table thead td { font-weight: bold; text-align: center; }
 
-#header {
-    padding-top:5px; height:4em; font-size:11pt;
-    position:relative;
-    width: 90%;
-    margin: auto;
-}
-#avatar { height:60px; border-radius:12px;  margin:0 10px; float: right; }
+#header { padding:1.5em 0; text-align: center; }
 
 #not-found, #header {
-    text-shadow:0px 1px 0px white;
+text-shadow:0px 1px 0px white;
 }
 #not-found { text-align: center; font-size: 17pt; font-weight: bold; }
 #not-found .code { font-size: 100pt; }
 
 .top-container { min-height: 100%; margin-bottom: -110px; }
+
+.social { font-family: tomfont; }
+
+.container { width:100%; position:relative; }
+
+#header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; }
+#header .menu a { display:block; float:right; width:75px; text-align:center; }
+#header .menu p { line-height:0; margin-top:3.25em; }
+
 #footer, .push {
     height: 120px;
 }
-#footer { /*background:#4D90FE;*/ border-top:solid 1px #CCC; box-shadow: 1px 1px 10px #666;}
+#footer { background:#666; }
 #footer .container {
     background: url('/images/tom.png') no-repeat center left;
     height: 100%;
     width: 90%;
     margin: auto;
 }
-
-.social { font-family: tomfont; }
-
-.container { width:100%; position:relative; }
-
-#header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; text-align: center; }
-#header .logo #id-image { height:3em; margin-top:0.5em; }
-#header .menu a { display:block; float:right; width:75px; text-align:center; }
-#header .menu p { line-height:0; margin-top:3.25em; }
-
+/*
 #about { background:url('/images/sprite.png') 0 0; }
 #about:hover { background:url('/images/sprite.png') 0px 62px; }
 
@@ -75,6 +62,7 @@ input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
 
 #home { background:url('/images/sprite.png') 75px 0px; }
 #home:hover { background:url('/images/sprite.png') 75px 62px; }
+*/
 
 #main-content {
     padding: 70px 0;
@@ -98,37 +86,16 @@ a.share-button.google-plus { background-color: rgba(212, 11, 13, 1); color: whit
 a.share-button.facebook { background-color: rgba(36, 71, 134, 1); color: white; }
 
 #footer .social { text-align: right; }
-#footer .social a { font-size: 100px;  text-shadow:#666 1px 1px 10px;
-     -webkit-transition: 0.5s linear color; /* Safari/Chrome */
-    -moz-transition: 0.5s linear color; /* Firefox */
-    -ms-transition: 0.5s linear color; /* IE10 */
-    -o-transition: 0.5s linear color; /* Opera */
-    transition: 0.5s linear color; /* Future Browsers */
-}
+#footer .social a { font-size: 100px; }
 #footer .social a:not(:hover) { color: #EEE; }
-
-
-.hide { opacity: 0; }
-
-.success, .error { text-align: center; padding:10px; }
-.success {color:green; }
-.error {color:red; }
-
-.section {
-    text-align: center;
-    font-weight: bold;
-    font-size: 20pt;
-    padding: 50px 0 10px 0;
-}
 
 .pubdate { color:#888; font-weight: bold; padding: 2px;  position: relative; text-align: center; }
 .pubdate .day { font-size: 11pt; }
 .pubdate .year { font-size: 11pt; }
 .error404 { font-size:50pt; text-align:center; font-weight:bold; padding:50px 0; }
 
-/* Posts list */
+/*** HOME ***/
 #posts-container { text-align: center; }
-
 .card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 250px; border: solid #DDD 1px; margin: 1%; position: relative; }
 @media all and (max-width: 700px) {
     .card { width: 90%; height: auto; }
@@ -153,7 +120,7 @@ a.share-button.facebook { background-color: rgba(36, 71, 134, 1); color: white; 
 .card .highlighter.active { background-color:#4D90FE; }
 .card h2 { font-size: 14pt; margin: 0px; }
 .card { background-color: white; }
-article .edition-panel, .widget, .full-article .body table, #tweets-list { background:rgba(255,255,255, 0.5);}
+article .edition-panel, .widget, .full-article .body table { background:rgba(255,255,255, 0.5);}
 .card a { display: block;  width: 100%; height: 100%; }
 .card .pubdate {  }
 .card, .card aside { border-radius: 3px; }
@@ -171,7 +138,7 @@ article .edition-panel, .widget, .full-article .body table, #tweets-list { backg
 .comment-count { float: right; color: #CCC; padding: 0 5px; font-size: 10pt }
 .comment-count:after { content: " \f075"; font-family: FontAwesome }
 
-/* full article */
+/*** FULL ARTICLE ***/
 .full-article, #disqus_thread, .actions-panel .actions-container { width: 750px; margin: auto; position: relative; }
 .full-article .header { text-align: center; margin: 0 0 60px 0; }
 .full-article .header h1 { text-align: center; }
@@ -208,18 +175,10 @@ article ul { margin: 0 30px; list-style:disc; }
 code { white-space:pre; color: rgb(8, 160, 33);  background-color:black; border-radius:10px; display: block; padding:10px; }
 
 a.button {display:inline-block; margin:10px}
-input[type=submit], button, .button { border:solid #3079ED 1px; border-radius:3px; padding:5px; color:white; font-size:12pt; background:#4D90FE; cursor: pointer; }
-input[type=submit]:hover, button:hover, .button:hover { box-shadow: #666 0px 0px 7px inset; }
-input[type=submit]:active, button:active, .button:active { box-shadow: black 0px 0px 7px inset; }
-
 
 /* tags */
 .full-article .tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
 .full-article .tags-list .tag-container { display: inline; }
-
-/* ABOUT */
-#idpic {border-radius: 5px; height:150px; float:left; margin:0 10px; }
-#about-contact a { font-weight:bold; }
 
 .fade-enter,
 .fade-leave,

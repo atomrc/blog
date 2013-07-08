@@ -1,3 +1,14 @@
+form input, form textarea { width: 300px; border-radius: 5px; border:solid 1px #BBB; box-shadow: #BBB 1px 1px 5px inset; }
+form input { padding: 5px; width: 290px; }
+input[type=submit] { float:right; width: auto; padding: 8px; box-shadow:none; }
+input[type=submit]:hover { box-shadow: 0px 0px 2px gray inset; }
+input[type=submit], button, .button { border:solid #3079ED 1px; border-radius:3px; padding:5px; color:white; font-size:12pt; background:#4D90FE; cursor: pointer; }
+input[type=submit]:hover, button:hover, .button:hover { box-shadow: #666 0px 0px 7px inset; }
+input[type=submit]:active, button:active, .button:active { box-shadow: black 0px 0px 7px inset; }
+label { float:left; display:block; width:100px;  }
+fieldset {border: solid 1px #ccc; border-radius:3px; background-color:white; }
+legend { font-weight:bold; }
+
 .card .edit-panel { height: 0; position:absolute; bottom:0; left:0; font-size:14pt; font-weight:bold; text-align: right; background-color:black; width: 100%; overflow: hidden; }
 .edit-panel {
     opacity: 0;

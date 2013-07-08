@@ -48,13 +48,8 @@ html(lang="fr", data-ng-app="blog")
     body
         .top-container
             #header
-                .container
-                    .title
-                        a(href="/"){ Thomas BELIN }
-
-            #main
-                .container
-                    #main-content(data-ng-view) !{content}
+                a.title(href="/"){ Thomas BELIN }
+            #main-content(data-ng-view) !{content}
             .push
         #footer
             .container
