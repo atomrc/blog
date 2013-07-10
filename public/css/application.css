@@ -94,7 +94,7 @@ a.share-button.facebook { background-color: rgba(36, 71, 134, 1); color: white; 
 
 /*** HOME ***/
 #posts-container { text-align: center; }
-.card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 250px; border: solid #DDD 1px; margin: 1%; position: relative; }
+.card { text-align: left; padding: 1%; display:inline-block; vertical-align: top; height: 250px; border: solid #DDD 1px; margin: 1%; position: relative; cursor: pointer; }
 @media all and (max-width: 700px) {
     .card { width: 90%; height: auto; }
 }
