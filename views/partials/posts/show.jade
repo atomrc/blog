@@ -10,7 +10,7 @@
                         i.icon-chevron-left
                         |  Tous les articles
                 td.share
-                    div(data-ng-controller="shareController", data-ng-init="setResource(post)")
+                    div(data-share="post")
                         a.button.share-button(data-ng-repeat="provider in providers",
                             class="{{provider.name}}",
                             href="javascript:void(0);",

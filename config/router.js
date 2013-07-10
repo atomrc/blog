@@ -58,7 +58,7 @@ var loadPosts = function (req, res, next) {
         { limit: req.query.limit } :
         {};
 
-    var posts = Post.find(condition, '', options).sort({'pubdate': 'desc'}).populate('tags').exec(function (err, posts) {
+    var posts = Post.find(condition, '-body', options).sort({'pubdate': 'desc'}).populate('tags').exec(function (err, posts) {
         if( err ) throw new NotFound;
         req.posts = posts;
         next();

@@ -173,6 +173,9 @@ article ul { margin: 0 30px; list-style:disc; }
 code { white-space:pre; color: rgb(8, 160, 33);  background-color:black; border-radius:10px; display: block; padding:10px; }
 
 a.button {display:inline-block; margin:10px}
+input[type=submit], button, .button { border:solid #3079ED 1px; border-radius:3px; padding:5px; color:white; font-size:12pt; background:#4D90FE; cursor: pointer; }
+input[type=submit]:hover, button:hover, .button:hover { box-shadow: #666 0px 0px 7px inset; }
+input[type=submit]:active, button:active, .button:active { box-shadow: black 0px 0px 7px inset; } 
 
 /* tags */
 .full-article .tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }

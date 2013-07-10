@@ -131,6 +131,34 @@ var Blog = (function () {
             };
         }],
 
+        metadatasManager: [function () {
+            return {
+                metadatas: {}, //will contain all the metadatas of the posts (like share counts and comments count)
+
+                loadForResources: function (posts) {
+                    var threads = posts.map(function (post) {
+                        return post.slug;
+                    });
+                    /*$http.jsonp("https://disqus.com/api/3.0/threads/set.jsonp?callback=JSON_CALLBACK",
+                        {
+                            params: {
+                                api_key: 'o84lV9ZKGR1axptrWCWHY869Qpr9v5wNxsqxWl2H716QD7J9Oh49ykVeuCn1XEWf',
+                                forum : 'whysocurious',
+                                thread : [
+                                    'http://thomasbelin.fr/posts/single-page-app-blog-requirejs-nest-pas-fait-pour-angularjs',
+                                    'http://thomasbelin.fr/posts/Single-Page-App-Blog-combiner-la-puissance-dAngularJS-avec-la-modularisation-de-RequireJS'
+                                ]
+                            },
+                            cache: false
+                        }
+                        ).error(function () {
+                        console.log(arguments);
+                    });*/
+                }
+
+            };
+        }],
+
         postsManager: ['Post', '$q', function (Post, q) {
             return {
                 posts: [],
@@ -141,14 +169,30 @@ var Blog = (function () {
                     return this.posts;
                 },
 
+                getInCache: function (slug) {
+                    if (this.posts.length === 0) { return null; }
+                    return (this.posts.filter(function (post) { return post.slug === slug; }) || [])[0];
+                },
+
+                isFullyLoaded: function (post) {
+                    return post && post.body;
+                },
+
                 get: function (slug) {
                     if (!slug) { return new Post(); }
-                    var deferred = q.defer();
-                    Post.get(
-                        { slug: slug },
-                        function (post) { deferred.resolve(post); },
-                        function (response) { deferred.reject('not found'); }
-                    );
+                    var post = this.getInCache(slug),
+                        deferred = q.defer(),
+                        success = function (post) { deferred.resolve(post); },
+                        error = function (response) { deferred.reject('not found'); };
+
+                    if (this.isFullyLoaded(post)) {
+                        return post;
+                    }
+                    if (post) {
+                        post.$get(success, error);
+                    } else {
+                        Post.get({ slug: slug }, success, error);
+                    }
                     return deferred.promise;
                 }
             };
@@ -192,7 +236,7 @@ var Blog = (function () {
         },
 
         // add a sticky header on top of the window that shows when the user scroll to a specific position
-        sticky: ['$window', '$compile', function ($window, $compile) {
+        sticky: ['$window', function ($window) {
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
@@ -244,14 +288,19 @@ var Blog = (function () {
                     });
                 }
             };
-        }]
-
-        /*postSocialDetails: [function () {
+        }],
+        /*
+        socialDetails: [function () {
             return {
                 restrict: 'A',
-                scope: { post: '=postSocialDetails' },
+                controller: 'socialDetailsController',
                 template: '<div class="comment-count" data-ng-bind="commentCount">' +
                     '</div>',
+                link: function (scope, element, attrs) {
+                    scope.$watch(attrs.socialDetails, function (newValue) {
+                    });
+                },
+
                 controller: ['$scope', '$http', function ($scope, $http) {
                     $http.jsonp("https://disqus.com/api/3.0/threads/set.jsonp?callback=JSON_CALLBACK",
                         {
@@ -272,6 +321,14 @@ var Blog = (function () {
                 }]
             };
         }]*/
+
+        share: [function () {
+            return {
+                restrict: 'A',
+                scope: { resource: "=share" },
+                controller: 'shareController'
+            };
+        }]
     };
 
     /***************************************/
@@ -288,10 +345,13 @@ var Blog = (function () {
     /*************** CONTROLLERS ***************/
     /***************************************/
     application.controllers.shareController = ['$scope', '$location', '$window', 'shareManager', function ($scope, $location, $window, shareManager) {
-        $scope.setResource = function (resource) {
-            $scope.resource = resource;
-            $scope.providers = shareManager.generateProviders($location.absUrl(), $scope.resource);
-        };
+
+        $scope.$watch('resource', function (newValue) {
+            if (!newValue) { return; }
+            if (newValue.$resolved) {
+                $scope.providers = shareManager.generateProviders($location.absUrl(), $scope.resource);
+            }
+        });
 
         $scope.share = function (provider) {
             var url = provider.shareUrl,
@@ -303,21 +363,27 @@ var Blog = (function () {
         };
     }];
 
-    application.controllers.homeController = ['$rootScope', '$scope', 'posts', function ($rootScope, $scope, posts) {
+    application.controllers.homeController = ['$rootScope', '$scope', function ($rootScope, $scope) {
         $rootScope.description = null;
         $rootScope.title = null;
-
-        $scope.posts = posts;
     }];
 
-    application.controllers.showController = ['$rootScope', '$scope', '$location', 'post', function ($rootScope, $scope, $location, post) {
-        $rootScope.description = post.description;
-        $rootScope.title = post.title;
+    application.controllers.showController = ['$rootScope', '$scope', '$route', 'postsManager', function ($rootScope, $scope, $route, postsManager) {
+        var initRootScope = function (post) {
+            $rootScope.description = post.description;
+            $rootScope.title = post.title;
+        };
+        $scope.post = postsManager.get($route.current.params.postSlug);
 
-        $scope.post = post;
+        if ($scope.post.$resolved) {
+            initRootScope($scope.post);
+        } else {
+            $scope.post.then(initRootScope);
+        }
+
     }];
 
-    application.controllers.postsController = ['$scope', '$location', 'postsManager', function ($scope, $location, postsManager) {
+    application.controllers.postsController = ['$scope', '$location', 'postsManager', 'metadatasManager', function ($scope, $location, postsManager, metadatasManager) {
         var hasTag = function (post, tag) {
             return post.tags.reduce(function (value, postTag) {
                 return value || tag._id === postTag._id;
@@ -325,6 +391,7 @@ var Blog = (function () {
         };
 
         $scope.posts = postsManager.query();
+
         $scope.show = function (post) {
             $location.path('/posts/' + post.slug);
         };
@@ -348,6 +415,7 @@ var Blog = (function () {
         };
 
     }];
+
     application.controllers.tagsController = [function () {}];
 
     /***************************************/
@@ -356,22 +424,17 @@ var Blog = (function () {
     application.routes = {
         '/': {
             templateUrl: '/views/home',
-            controller: 'homeController',
-            resolve: {
-                posts: ['postsManager', function (postsManager) {
-                    return postsManager.query();
-                }]
-            }
+            controller: 'homeController'
         },
 
         '/posts/:postSlug': {
             templateUrl: '/views/posts_show',
             controller: 'showController',
-            resolve: {
-                post: ['postsManager', '$route', '$location', function (postsManager, route, $location) {
+            /*£resolve: {
+                post: ['postsManager', '$route', function (postsManager, route) {
                     return postsManager.get(route.current.params.postSlug);
                 }]
-            }
+            }*/
         },
 
         '/404': {
