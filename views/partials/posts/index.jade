@@ -1,5 +1,8 @@
 -if (auth)
-    a.button(href="/post/create") Create
+    div(data-post-edition="newPost")
+        button(data-ng-click="add();") Add
+        form(data-ng-show="newPost", data-ng-submit="create(newPost);")
+            input(data-ng-model="newPost.title")
     br
 //.filter-zone(data-ng-show="filteringTags.length > 0")
     | filtres :
@@ -9,6 +12,6 @@
     include _list
     //.social-details.animated(data-post-social-details="post")
     -if (auth)
-        span.edit-panel
-            button.publish(data-ng-click='publish(post)', class='publish {{ post.published }}') publish
-            button.delete(data-ng-click='remove(post)') delete
+        span.edit-panel(data-post-edition="post")
+            button.publish(data-ng-click='publish(post); $event.stopPropagation();', class='publish {{ post.published }}') publish
+            button.delete(data-ng-click='remove(post); $event.stopPropagation();') delete

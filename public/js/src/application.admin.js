@@ -31,10 +31,24 @@
         };
     }];
 
+    Blog.directives.postEdition = [function () {
+        return {
+            restrict: 'A',
+            scope: { post: '=postEdition' },
+            controller: 'postEditionController'
+        };
+    }];
+
     /***************************************/
     /*************** SERVICES ***************/
     /***************************************/
-    Blog.services.adminPostsManager = ['postsManager', 'Tag', function (postsManager, Tag) {
+    Blog.services.adminPostsManager = ['postsManager', 'Tag', 'Post', function (postsManager, Tag, Post) {
+
+        postsManager.create = function (post) {
+            post.$save();
+            this.posts.unshift(post);
+        };
+
         postsManager.save = function (post) {
             var self = this;
             if (post._id) {
@@ -82,11 +96,16 @@
     /***************************************/
     /*************** CONTROLLERS ***************/
     /***************************************/
-    Blog.controllers.postsController = ['$scope', 'adminPostsManager', '$location', '$window', function ($scope, postsManager, $location, $window) {
+    Blog.controllers.postEditionController = ['$scope', 'adminPostsManager', 'Post', '$location', '$window', function ($scope, postsManager, Post, $location, $window) {
 
-        $scope.publish = function (post) {
-            postsManager.publish(post);
+        $scope.add = function () { $scope.newPost = new Post(); };
+
+        $scope.create = function (post) {
+            postsManager.create(post);
+            $scope.newPost = null;
         };
+
+        $scope.publish = postsManager.publish;
 
         $scope.save = function (post) {
             postsManager.save(post);
@@ -130,9 +149,4 @@
         };
     }];
 
-    /***************************************/
-    /*************** ROUTES ***************/
-    /***************************************/
-
-    Blog.routes['/post/create'] = Blog.routes['/posts/:postSlug'];
 }());

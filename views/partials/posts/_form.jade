@@ -1,7 +1,7 @@
-.edit-form(data-ng-controller="postsController")
+.edit-form(data-post-edition="post")
     button(data-ng-click='publish(post)', class='publish {{ post.published }}') Publish
     button(data-ng-click='reset(post)') Reset
-    form(data-ng-submit='save(post)', draggable)
+    form(data-ng-submit='save(post)')
         input(type='text', data-ng-model='post.title')
         br
         textarea(data-ng-model='post.description')
