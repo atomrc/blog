@@ -40,8 +40,6 @@ text-shadow:0px 1px 0px white;
 .container { width:100%; position:relative; }
 
 #header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; }
-#header .menu a { display:block; float:right; width:75px; text-align:center; }
-#header .menu p { line-height:0; margin-top:3.25em; }
 
 #footer, .push {
     height: 120px;
