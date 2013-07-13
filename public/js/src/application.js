@@ -151,7 +151,7 @@ var Blog = (function () {
                         angular.forEach(datas.response, function (thread) {
                             angular.forEach(thread.identifiers, function (slug) {
                                 this.metadatas[slug] = { commentCount: thread.posts };
-                            });
+                            }, this);
                         }, self);
                     });
 
