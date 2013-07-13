@@ -149,7 +149,9 @@ var Blog = (function () {
                         cache: true
                     }).success(function (datas) {
                         angular.forEach(datas.response, function (thread) {
-                            this.metadatas[thread.slug] = { commentCount: thread.posts };
+                            angular.forEach(thread.identifiers, function (slug) {
+                                this.metadatas[slug] = { commentCount: thread.posts };
+                            });
                         }, self);
                     });
 
