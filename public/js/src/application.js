@@ -130,7 +130,7 @@ var Blog = (function () {
             };
         }],
 
-        metadatasManager: [function () {
+        metadatasManager: ['$http', function ($http) {
             return {
                 metadatas: {}, //will contain all the metadatas of the posts (like share counts and comments count)
 
@@ -141,7 +141,7 @@ var Blog = (function () {
                     /*$http.jsonp("https://disqus.com/api/3.0/threads/set.jsonp?callback=JSON_CALLBACK",
                         {
                             params: {
-                                api_key: 'o84lV9ZKGR1axptrWCWHY869Qpr9v5wNxsqxWl2H716QD7J9Oh49ykVeuCn1XEWf',
+                                api_key: 'HSs49FHL75L8CTUpuVWmGqpFcgshtj5J2AaSBbklu3vRS92ysEnKYn5gjPX12Qcx',
                                 forum : 'whysocurious',
                                 thread : [
                                     'http://thomasbelin.fr/posts/single-page-app-blog-requirejs-nest-pas-fait-pour-angularjs',
@@ -158,7 +158,7 @@ var Blog = (function () {
             };
         }],
 
-        postsManager: ['Post', '$q', function (Post, q) {
+        postsManager: ['Post', '$q', '$timeout', function (Post, q, timeout) {
             return {
                 posts: [],
 
@@ -178,16 +178,16 @@ var Blog = (function () {
                 },
 
                 get: function (slug) {
-                    if (!slug) { return null; }
                     var post = this.getInCache(slug),
                         deferred = q.defer(),
                         success = function (post) { deferred.resolve(post); },
                         error = function (response) { deferred.reject('not found'); };
 
-                    if (this.isFullyLoaded(post)) {
-                        return post;
-                    }
-                    if (post) {
+                    if (!slug) {
+                        timeout(error, 0);
+                    } else if (this.isFullyLoaded(post)) {
+                        timeout(function () { success(post); }, 0);
+                    } else if (post) {
                         post.$get(success, error);
                     } else {
                         Post.get({ slug: slug }, success, error);
@@ -269,7 +269,7 @@ var Blog = (function () {
                         Disqus.reset({
                             reload: true,
                             config: function () {
-                                this.page.indentifier = scope.resource.slug;
+                                this.page.identifier = scope.resource.slug;
                                 this.page.url = $location.absUrl();
                             }
                         });
@@ -286,6 +286,14 @@ var Blog = (function () {
                         $timeout(function () { rainbow.color(element[0]); }, 0);
                     });
                 }
+            };
+        }],
+
+        postsContainer: ['$timeout', function ($timeout) {
+            return {
+                restrict: 'A',
+                scope: { posts: '=postsContainer' },
+                controller: 'postsController'
             };
         }],
         /*
@@ -343,14 +351,50 @@ var Blog = (function () {
     /***************************************/
     /*************** CONTROLLERS ***************/
     /***************************************/
-    application.controllers.shareController = ['$scope', '$location', '$window', 'shareManager', function ($scope, $location, $window, shareManager) {
 
-        $scope.$watch('resource', function (newValue) {
-            if (!newValue) { return; }
-            if (newValue.$resolved) {
-                $scope.providers = shareManager.generateProviders($location.absUrl(), $scope.resource);
-            }
-        });
+    application.controllers.homeController = ['$rootScope', '$scope', 'posts', function ($rootScope, $scope, posts) {
+        $rootScope.description = null;
+        $rootScope.title = null;
+
+        $scope.posts = posts;
+    }];
+
+    application.controllers.showController = ['$rootScope', '$scope', 'post', function ($rootScope, $scope, post) {
+        $rootScope.description = post.description;
+        $rootScope.title = post.title;
+
+        $scope.post = post;
+    }];
+
+    application.controllers.postsController = ['$scope', '$location', 'metadatasManager', function ($scope, $location, metadatasManager) {
+        var hasTag = function (post, tag) {
+            return post.tags.reduce(function (value, postTag) {
+                return value || tag._id === postTag._id;
+            }, false);
+        };
+
+        $scope.show = function (post) {
+            $location.path('/posts/' + post.slug);
+        };
+
+        if ($scope.posts.$resolved) {
+            $scope.metadatas = metadatasManager.loadForResources($scope.posts);
+        } else {
+            $scope.posts.$then(function () {
+                $scope.metadatas = metadatasManager.loadForResources($scope.posts);
+            });
+        }
+
+        $scope.higlightPostsWithTag = function (tag, unlight) {
+            $scope.posts.map(function (post) {
+                post.$highlighted = !unlight && hasTag(post, tag);
+            });
+        };
+
+    }];
+
+    application.controllers.shareController = ['$scope', '$location', '$window', 'shareManager', function ($scope, $location, $window, shareManager) {
+        $scope.providers = shareManager.generateProviders($location.absUrl(), $scope.resource);
 
         $scope.share = function (provider) {
             var url = provider.shareUrl,
@@ -362,61 +406,6 @@ var Blog = (function () {
         };
     }];
 
-    application.controllers.homeController = ['$rootScope', '$scope', function ($rootScope, $scope) {
-        $rootScope.description = null;
-        $rootScope.title = null;
-    }];
-
-    application.controllers.showController = ['$rootScope', '$scope', '$route', 'postsManager', function ($rootScope, $scope, $route, postsManager) {
-        var initRootScope = function (post) {
-            $rootScope.description = post.description;
-            $rootScope.title = post.title;
-        };
-        $scope.post = postsManager.get($route.current.params.postSlug);
-
-        if ($scope.post.$resolved) {
-            initRootScope($scope.post);
-        } else {
-            $scope.post.then(initRootScope, function () {
-                $rootScope.$broadcast('loadError');
-            });
-        }
-
-    }];
-
-    application.controllers.postsController = ['$scope', '$location', 'postsManager', 'metadatasManager', function ($scope, $location, postsManager, metadatasManager) {
-        var hasTag = function (post, tag) {
-            return post.tags.reduce(function (value, postTag) {
-                return value || tag._id === postTag._id;
-            }, false);
-        };
-
-        $scope.posts = postsManager.query();
-
-        $scope.show = function (post) {
-            $location.path('/posts/' + post.slug);
-        };
-
-        $scope.filteringTags = [];
-
-        $scope.filterByTags = function (post) {
-            var i, tag;
-            if ($scope.filteringTags.length === 0) { return true; }
-            for (i = 0; i < $scope.filteringTags.length; i++) {
-                tag = $scope.filteringTags[i];
-                if (hasTag(post, tag)) { return true; }
-            }
-            return false;
-        };
-
-        $scope.higlightPostsWithTag = function (tag, unlight) {
-            $scope.posts.map(function (post) {
-                post.$highlighted = !unlight && hasTag(post, tag);
-            });
-        };
-
-    }];
-
     application.controllers.tagsController = [function () {}];
 
     /***************************************/
@@ -425,25 +414,20 @@ var Blog = (function () {
     application.routes = {
         '/': {
             templateUrl: '/views/home',
-            controller: 'homeController'
+            controller: 'homeController',
+            resolve: {
+                posts: ['postsManager', function (postsManager) {
+                    return postsManager.query();
+                }]
+            }
         },
 
         '/posts/:postSlug': {
             templateUrl: '/views/posts_show',
             controller: 'showController',
             resolve: {
-                post: ['$route', '$q', '$timeout', function (route, q, timeout) {
-                    var deferred = q.defer(),
-                        isOk = function () {
-                            if (route.current.params.postSlug) {
-                                return deferred.resolve();
-                            }
-                            return deferred.reject('not found');
-                        };
-
-                    timeout(isOk, 0);
-
-                    return deferred.promise;
+                post: ['$route', 'postsManager', function (route, postsManager) {
+                    return postsManager.get(route.current.params.postSlug);
                 }]
             }
         },
