@@ -27,11 +27,7 @@ var Blog = (function () {
 
         errorHandler: ['$rootScope', '$location', function (rootScope, $location) {
             rootScope.$on('loadError', function () {
-                if (window.onCaptureReady) {
-                    window.onCaptureReady(404);
-                } else {
-                    $location.url('/404');
-                }
+                $location.url('/404');
             });
         }],
 
@@ -431,7 +427,7 @@ var Blog = (function () {
 
         '/posts/:postSlug': {
             templateUrl: '/views/posts_show',
-            controller: 'showController',
+            controller: 'showController'
             /*£resolve: {
                 post: ['postsManager', '$route', function (postsManager, route) {
                     return postsManager.get(route.current.params.postSlug);
@@ -440,7 +436,12 @@ var Blog = (function () {
         },
 
         '/404': {
-            templateUrl: '/views/404'
+            templateUrl: '/views/404',
+            controller: [function () {
+                if (window.onCaptureReady) {
+                    window.onCaptureReady(404);
+                }
+            }]
         }
     };
 
