@@ -28,11 +28,12 @@ var Snapshot = require('../models/Snapshot'),
         };
 
         request = http.request(requestParams, function (response) {
+            res.set(response.headers);
             response.on('data', function (chunk) {
                 datas += chunk.toString('utf8');
             });
             response.on('end', function () {
-                res.send(datas);
+                res.send(res.statusCode, datas);
             });
         });
 
