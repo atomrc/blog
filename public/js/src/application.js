@@ -438,9 +438,7 @@ var Blog = (function () {
         '/404': {
             templateUrl: '/views/404',
             controller: [function () {
-                if (window.onCaptureReady) {
-                    window.onCaptureReady(404);
-                }
+                return window.onCaptureReady && window.onCaptureReady(404);
             }]
         }
     };
