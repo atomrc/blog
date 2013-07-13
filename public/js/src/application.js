@@ -27,6 +27,7 @@ var Blog = (function () {
 
         errorHandler: ['$rootScope', '$location', function (rootScope, $location) {
             rootScope.$on('loadError', function () {
+                (window.onCaptureReady || angular.noop)(404);
                 $location.url('/404');
             });
         }],
@@ -438,7 +439,7 @@ var Blog = (function () {
         '/404': {
             templateUrl: '/views/404',
             controller: [function () {
-                return window.onCaptureReady && window.onCaptureReady(404);
+                (window.onCaptureReady || angular.noop)(404);
             }]
         }
     };
