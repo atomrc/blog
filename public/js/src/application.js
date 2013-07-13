@@ -136,23 +136,24 @@ var Blog = (function () {
 
                 loadForResources: function (posts) {
                     var threads = posts.map(function (post) {
-                        return post.slug;
+                        return 'link:' + post.getUrl();
+                    }),
+                        self = this;
+
+                    $http.jsonp("https://disqus.com/api/3.0/threads/set.jsonp?callback=JSON_CALLBACK", {
+                        params: {
+                            api_key: 'HSs49FHL75L8CTUpuVWmGqpFcgshtj5J2AaSBbklu3vRS92ysEnKYn5gjPX12Qcx',
+                            forum : 'whysocurious',
+                            thread: threads
+                        },
+                        cache: true
+                    }).success(function (datas) {
+                        angular.forEach(datas.response, function (thread) {
+                            this.metadatas[thread.slug] = { commentCount: thread.posts };
+                        }, self);
                     });
-                    /*$http.jsonp("https://disqus.com/api/3.0/threads/set.jsonp?callback=JSON_CALLBACK",
-                        {
-                            params: {
-                                api_key: 'HSs49FHL75L8CTUpuVWmGqpFcgshtj5J2AaSBbklu3vRS92ysEnKYn5gjPX12Qcx',
-                                forum : 'whysocurious',
-                                thread : [
-                                    'http://thomasbelin.fr/posts/single-page-app-blog-requirejs-nest-pas-fait-pour-angularjs',
-                                    'http://thomasbelin.fr/posts/Single-Page-App-Blog-combiner-la-puissance-dAngularJS-avec-la-modularisation-de-RequireJS'
-                                ]
-                            },
-                            cache: false
-                        }
-                        ).error(function () {
-                        console.log(arguments);
-                    });*/
+
+                    return this.metadatas;
                 }
 
             };
@@ -201,11 +202,16 @@ var Blog = (function () {
             return resource('/api/posts/:slug/tags/:tagId', {tagId: '@_id'});
         }],
 
-        Post: ['$resource', function (resource) {
+        Post: ['$resource', '$location', function (resource, $location) {
             var Post = resource('/api/posts/:slug/:action', { slug: '@slug' }, {
                 update: { method: 'PUT' },
                 reset: { method: 'PUT', params: { action: 'reset'} }
             });
+
+            Post.prototype.getUrl = function () {
+                return 'http://' + $location.$$host + ($location.$$port ? ':' + $location.$$port : '') + '/posts/' + this.slug;
+            };
+
             return Post;
         }]
 
@@ -296,38 +302,6 @@ var Blog = (function () {
                 controller: 'postsController'
             };
         }],
-        /*
-        socialDetails: [function () {
-            return {
-                restrict: 'A',
-                controller: 'socialDetailsController',
-                template: '<div class="comment-count" data-ng-bind="commentCount">' +
-                    '</div>',
-                link: function (scope, element, attrs) {
-                    scope.$watch(attrs.socialDetails, function (newValue) {
-                    });
-                },
-
-                controller: ['$scope', '$http', function ($scope, $http) {
-                    $http.jsonp("https://disqus.com/api/3.0/threads/set.jsonp?callback=JSON_CALLBACK",
-                        {
-                            params: {
-                                api_key: 'o84lV9ZKGR1axptrWCWHY869Qpr9v5wNxsqxWl2H716QD7J9Oh49ykVeuCn1XEWf',
-                                forum : 'whysocurious',
-                                thread : [
-                                    'http://thomasbelin.fr/posts/single-page-app-blog-requirejs-nest-pas-fait-pour-angularjs',
-                                    'http://thomasbelin.fr/posts/Single-Page-App-Blog-combiner-la-puissance-dAngularJS-avec-la-modularisation-de-RequireJS'
-                                ]
-                            },
-                            cache: false
-                        }
-                        ).error(function () {
-                        console.log(arguments);
-                    });
-                    $scope.commentCount = 12;
-                }]
-            };
-        }]*/
 
         share: [function () {
             return {
