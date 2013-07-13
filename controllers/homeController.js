@@ -33,7 +33,7 @@ var Snapshot = require('../models/Snapshot'),
                 datas += chunk.toString('utf8');
             });
             response.on('end', function () {
-                res.send(res.statusCode, datas);
+                res.send(response.statusCode, datas);
             });
         });
 
