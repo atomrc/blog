@@ -26,10 +26,12 @@ var Blog = (function () {
         }],
 
         errorHandler: ['$rootScope', '$location', function (rootScope, $location) {
-            rootScope.$on('loadError', function () {
+            var errorFn = function () {
                 (window.onCaptureReady || angular.noop)(404);
                 $location.url('/404');
-            });
+            };
+            rootScope.$on('$routeChangeError', errorFn);
+            rootScope.$on('loadError', errorFn);
         }],
 
         SocialNetwork:  ['$http', '$interpolate', function ($http, $interpolate) {
@@ -372,9 +374,6 @@ var Blog = (function () {
         };
         $scope.post = postsManager.get($route.current.params.postSlug);
 
-        if (!$scope.post) {
-            return $rootScope.$broadcast('loadError');
-        }
         if ($scope.post.$resolved) {
             initRootScope($scope.post);
         } else {
@@ -431,12 +430,22 @@ var Blog = (function () {
 
         '/posts/:postSlug': {
             templateUrl: '/views/posts_show',
-            controller: 'showController'
-            /*£resolve: {
-                post: ['postsManager', '$route', function (postsManager, route) {
-                    return postsManager.get(route.current.params.postSlug);
+            controller: 'showController',
+            resolve: {
+                post: ['$route', '$q', '$timeout', function (route, q, timeout) {
+                    var deferred = q.defer(),
+                        isOk = function () {
+                            if (route.current.params.postSlug) {
+                                return deferred.resolve();
+                            }
+                            return deferred.reject('not found');
+                        };
+
+                    timeout(isOk, 0);
+
+                    return deferred.promise;
                 }]
-            }*/
+            }
         },
 
         '/404': {
