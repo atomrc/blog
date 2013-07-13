@@ -30,7 +30,6 @@ html(lang="fr", data-ng-app="blog")
                 link(href="/build/css/application.css", type="text/css", rel="stylesheet")
                 script(src="/build/js/application.js")
         - else
-            link(href="/css/font-awesome.min.css", type="text/css", rel="stylesheet")
             link(href="/css/application.css", type="text/css", rel="stylesheet")
             link(href="/css/code-themes/custom.css", type="text/css", rel="stylesheet")
             script(src="/js/lib/require.min.js")
@@ -46,11 +45,20 @@ html(lang="fr", data-ng-app="blog")
 
         base(href="/")
     body
-        .top-container
-            #header
-                a.title(href="/"){ Thomas BELIN }
-            #main-content(data-ng-view) !{content}
-            .push
+        #header
+            a.title(href="/"){ Thomas BELIN }
+        #main-content(data-ng-view) !{content}
         #footer
             .container
-                include _social
+                img#avatar(src="/images/avatar_s.jpeg", alt="Thomas Belin", height="100", width="100")
+                .content
+                    .description
+                        | Front End développeur chez 
+                        a(href="http://www.doyoubuzz.com") DoYouBuzz 
+                        | (
+                        a(href="https://thomas-belin.com") mon cv
+                        |). Je fais la part belle au code. Je crois en la richesse du web. Je m'éclate avec Javascript. Vous pouvez me retrouver ici : 
+                    .social.icon
+                        a.twitter.animated(href='https://twitter.com/ThomasBelin4', target='_blank', title="Mon profil Twitter") 
+                        a.google-plus.animated(href='https://plus.google.com/118010420630912086698?rel=author', target='_blank', title="Mon profil Google+") 
+                        a.github.animated(href='https://github.com/thomasbelin4', target='_blank', title="Mon repo Github")

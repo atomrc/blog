@@ -12,15 +12,15 @@
                 td.share
                     div(data-share="post")
                         a.button.share-button(data-ng-repeat="provider in providers",
-                            class="{{provider.name}}",
+                            class="{{provider.name}} icon",
                             href="javascript:void(0);",
                             data-ng-click="share(provider)"
                         )
-                            i(class="icon-{{provider.name}}")
                             span.count(data-ng-show="provider.count > 0")
                                 | &nbsp;
                                 span(data-ng-bind="provider.count")
     include _show
 
-section
-    #disqus_thread(data-disqus="post")
+-if (prod)
+    section
+        #disqus_thread(data-disqus="post")

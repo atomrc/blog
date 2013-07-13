@@ -3,6 +3,13 @@
     font-family: "tomfont";
     src: url('/font/Tomfont-Regular.ttf');
 }
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('/font/fontawesome-webfont.eot?v=3.2.1');
+  src: url('/font/fontawesome-webfont.eot?#iefix&v=3.2.1') format('embedded-opentype'), url('/font/fontawesome-webfont.woff?v=3.2.1') format('woff'), url('/font/fontawesome-webfont.ttf?v=3.2.1') format('truetype'), url('/font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.1') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
 html, body { height: 100% }
 
 body { padding:0; margin:0; background:url('/images/noise.png') #EEE; color:#666; font-family:Open Sans, Arial; }
@@ -35,22 +42,30 @@ text-shadow:0px 1px 0px white;
 
 .top-container { min-height: 100%; margin-bottom: -110px; }
 
-.social { font-family: tomfont; }
-
 .container { width:100%; position:relative; }
+
+.icon { font-family: FontAwesome; }
 
 #header .title { color:#666; font-size:23pt; font-weight:bold; margin-top:0.25em; }
 
-#footer, .push {
-    height: 120px;
+#footer {
+    background:#666;
+    color: #EEE;
 }
-#footer { background:#666; }
 #footer .container {
-    background: url('/images/tom.png') no-repeat center left;
+    background: url('/images/tom.png') no-repeat center right;
     height: 100%;
     width: 90%;
     margin: auto;
+    position: relative;
 }
+
+#avatar { border-radius: 50px; position: relative; top: -60px; border: solid 3px #EEE; float: left; margin: 10px; }
+#footer .content { width: 500px; padding: 20px; text-align: justify; font-size: 11pt; }
+#footer .description a { color:rgba(19, 157, 233, 1); }
+#footer .social { font-size: 25pt; text-align: right; }
+#footer .social a:not(:hover) { color: #EEE; }
+
 /*
 #about { background:url('/images/sprite.png') 0 0; }
 #about:hover { background:url('/images/sprite.png') 0px 62px; }
@@ -65,27 +80,28 @@ text-shadow:0px 1px 0px white;
 #main-content {
     padding: 70px 0;
     overflow: hidden;
+    min-height: 600px;
 }
 
-a.share-button { font-size: 15pt; margin: 0 5px; display: inline-block; min-width: 15px; text-align: left;  padding: 3px 10px; border-radius: 0; border: none; }
+a.share-button { font-size: 15pt; margin: 0 5px; display: inline-block; min-width: 15px; text-align: left;  padding: 6px 10px; border-radius: 0; border: none; }
 a.share-button .count { font-size: 12pt }
 
 .github { color: rgba(57, 223 ,255, 1);}
+.github:before { content: "\f09b"; }
 
 .twitter { color: rgba(19, 157, 233, 1);}
+.twitter:before { content: "\f099"; }
 a.share-button.twitter { background-color: rgba(19, 157, 233, 1); color: white; }
 
-.doyoubuzz { color: rgba(255, 136, 0, 1);}
+/*.doyoubuzz { color: rgba(255, 136, 0, 1);}*/
 
 .google-plus{ color: rgba(212, 11, 13, 1);}
+.google-plus:before { content: "\f0d5"; }
 a.share-button.google-plus { background-color: rgba(212, 11, 13, 1); color: white; }
 
 .facebook { color: rgba(36, 71, 134, 1);}
+.facebook:before { content: "\f09a"; }
 a.share-button.facebook { background-color: rgba(36, 71, 134, 1); color: white; }
-
-#footer .social { text-align: right; }
-#footer .social a { font-size: 100px; }
-#footer .social a:not(:hover) { color: #EEE; }
 
 .pubdate { color:#888; font-weight: bold; padding: 2px;  position: relative; text-align: center; }
 .pubdate .day { font-size: 11pt; }
