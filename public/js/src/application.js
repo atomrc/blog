@@ -373,7 +373,7 @@ var Blog = (function () {
         $scope.post = postsManager.get($route.current.params.postSlug);
 
         if (!$scope.post) {
-            $rootScope.$broadcast('loadError');
+            return $rootScope.$broadcast('loadError');
         }
         if ($scope.post.$resolved) {
             initRootScope($scope.post);
