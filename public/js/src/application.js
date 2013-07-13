@@ -26,7 +26,7 @@ var Blog = (function () {
         }],
 
         errorHandler: ['$rootScope', '$location', function (rootScope, $location) {
-            rootScope.$on('$routeChangeError', function () {
+            rootScope.$on('loadError', function () {
                 if (window.onCaptureReady) {
                     window.onCaptureReady(404);
                 } else {
@@ -378,7 +378,9 @@ var Blog = (function () {
         if ($scope.post.$resolved) {
             initRootScope($scope.post);
         } else {
-            $scope.post.then(initRootScope);
+            $scope.post.then(initRootScope, function () {
+                $rootScope.$broadcast('loadError');
+            });
         }
 
     }];
