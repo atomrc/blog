@@ -209,7 +209,7 @@ var Blog = (function () {
             });
 
             Post.prototype.getUrl = function () {
-                return 'http://' + $location.$$host + ($location.$$port ? ':' + $location.$$port : '') + '/posts/' + this.slug;
+                return 'http://' + $location.$$host + ($location.$$port !== 80 ? ':' + $location.$$port : '') + '/posts/' + this.slug;
             };
 
             return Post;
