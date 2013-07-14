@@ -1,7 +1,10 @@
 extends _post
 
 block content
-    .body(data-ng-bind-html-unsafe='post.body', data-codecontainer)
+    - if(auth)
+        .body(contenteditable="true", data-ng-model="post.body")
+    - else
+        .body(data-ng-bind-html-unsafe='post.body', data-codecontainer)
     .author par
         span(itemprop="author")  Thomas Belin
     div(style="clear:both;")

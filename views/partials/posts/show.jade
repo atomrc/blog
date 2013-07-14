@@ -21,5 +21,6 @@
                                 span(data-ng-bind="provider.count")
     include _show
 
-section
-    #disqus_thread(data-disqus="post")
+-if (prod)
+    section
+        #disqus_thread(data-disqus="post")

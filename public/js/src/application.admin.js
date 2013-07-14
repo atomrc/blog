@@ -1,4 +1,4 @@
-/*global require, Blog*/
+/*global require, Blog, document*/
 (function () {
     'use strict';
 
@@ -25,6 +25,57 @@
                         $http.get(scope.url, { params: { term: newValue }}).then(function (res) {
                             scope.results = res.data;
                         });
+                    }
+                });
+            }
+        };
+    }];
+
+    Blog.directives.contenteditable = [function () {
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attrs, ctrl) {
+                var modifiedElement = null,
+                    executeAction = function (key) {
+                        switch (key) {
+                        case 80: //p
+                            document.execCommand('formatBlock', false, 'p');
+                            break;
+                        case 66: //b
+                            document.execCommand('bold');
+                            break;
+                        case 97: //1
+                            document.execCommand('formatBlock', false, 'h1');
+                            break;
+                        case 98: //2
+                            document.execCommand('formatBlock', false, 'h2');
+                            break;
+                        case 99: //3
+                            document.execCommand('formatBlock', false, 'h3');
+                            break;
+                        case 85: //u
+                            document.execCommand('insertUnorderedList');
+                            break;
+                        case 65: //a
+                            document.execCommand('createLink', false, 'http://tofill.com');
+                            break;
+                        }
+                    };
+                element.bind('blur', function () {
+                    scope.$apply(function () {
+                        ctrl.$setViewValue(element.html());
+                    });
+                });
+
+                // model -> view
+                ctrl.$render = function () {
+                    element.html(this.$modelValue);
+                };
+
+                element.bind('keydown', function (event) {
+                    if (event.ctrlKey) {
+                        executeAction(event.keyCode);
+                        event.preventDefault();
                     }
                 });
             }
