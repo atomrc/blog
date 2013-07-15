@@ -180,6 +180,14 @@ var Blog = (function () {
                     return post && post.body;
                 },
 
+                getById: function (id) {
+                    var deferred = q.defer(),
+                        success = function (post) { deferred.resolve(post); },
+                        error = function (response) { deferred.reject('not found'); };
+                    Post.get({ id: id }, success, error);
+                    return deferred.promise;
+                },
+
                 get: function (slug) {
                     var post = this.getInCache(slug),
                         deferred = q.defer(),
@@ -193,7 +201,7 @@ var Blog = (function () {
                     } else if (post) {
                         post.$get(success, error);
                     } else {
-                        Post.get({ slug: slug }, success, error);
+                        Post.find({ id: slug }, success, error);
                     }
                     return deferred.promise;
                 }
@@ -205,9 +213,10 @@ var Blog = (function () {
         }],
 
         Post: ['$resource', '$location', function (resource, $location) {
-            var Post = resource('/api/posts/:slug/:action', { slug: '@slug' }, {
+            var Post = resource('/api/posts/:id/:action', { id: '@_id' }, {
                 update: { method: 'PUT' },
-                reset: { method: 'PUT', params: { action: 'reset'} }
+                reset: { method: 'PUT', params: { action: 'reset'} },
+                find: { method: 'GET', params: { action: 'find' } }
             });
 
             Post.prototype.getUrl = function () {
@@ -404,6 +413,16 @@ var Blog = (function () {
             resolve: {
                 post: ['$route', 'postsManager', function (route, postsManager) {
                     return postsManager.get(route.current.params.postSlug);
+                }]
+            }
+        },
+
+        '/posts/:postId/preview': {
+            templateUrl: '/views/posts_show',
+            controller: 'showController',
+            resolve: {
+                post: ['$route', 'postsManager', function (route, postsManager) {
+                    return postsManager.getById(route.current.params.postId);
                 }]
             }
         },

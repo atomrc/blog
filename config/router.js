@@ -27,9 +27,24 @@ var authenticateApp = function (req, res, next) {
 
 var loadPost = function (req, res, next) {
     'use strict';
+    var callback = function (err, post) {
+        if (err || post === null) { return next(new NotFound()); }
+        req.post = post;
+        return next();
+    };
+
+    if (!req.session || !req.session.auth) {
+    //if not authenticated, check if post is either published or a draft
+        return Post.findOne({'_id': req.params.post_id, 'status': {$gt: 0} }, callback).populate('tags');
+    }
+    Post.findById(req.params.post_id, callback).populate('tags');
+};
+
+var findPost = function (req, res, next) {
+    'use strict';
     var condition = {slug: req.params.post_slug};
     if (!req.session.auth) {
-        condition.published = true;
+        condition.status = 2;
     }
     Post.findOne(condition, function (err, post) {
         if (err) { return next(new NotFound); }
@@ -50,13 +65,14 @@ var loadTag = function (req, res, next) {
 };
 
 var loadPosts = function (req, res, next) {
+    'use strict';
     var condition = req.session.auth ?
-        {} :
-        { published: true };
+            {} :
+            { status: 2 };
 
     var options = req.query.limit ?
-        { limit: req.query.limit } :
-        {};
+            { limit: req.query.limit } :
+            {};
 
     var posts = Post.find(condition, '-body', options).sort({'pubdate': 'desc'}).populate('tags').exec(function (err, posts) {
         if( err ) throw new NotFound;
@@ -94,11 +110,12 @@ module.exports = function (app) {
     //POSTS
     app.get('/api/posts', loadPosts, controllers.postsController.index);
     app.post('/api/posts', isAuthenticated, controllers.postsController.create);
-    app.get('/api/posts/:post_slug', loadPost, controllers.postsController.show);
-    app.get('/api/posts/:post_slug/suggest', loadPost, controllers.postsController.suggest);
-    app.put('/api/posts/:post_slug/reset', isAuthenticated, loadPost, controllers.postsController.reset);
-    app.put('/api/posts/:post_slug', isAuthenticated, controllers.postsController.update);
-    app.delete('/api/posts/:post_slug', isAuthenticated, loadPost, controllers.postsController.delete);
+    app.get('/api/posts/:post_id', loadPost, controllers.postsController.show);
+    app.get('/api/posts/:post_slug/find', findPost, controllers.postsController.show);
+    app.get('/api/posts/:post_id/suggest', loadPost, controllers.postsController.suggest);
+    app.put('/api/posts/:post_id/reset', isAuthenticated, loadPost, controllers.postsController.reset);
+    app.put('/api/posts/:post_id', isAuthenticated, controllers.postsController.update);
+    app.delete('/api/posts/:post_id', isAuthenticated, loadPost, controllers.postsController.delete);
 
 
 

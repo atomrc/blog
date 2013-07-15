@@ -10,9 +10,8 @@ var PostSchema = new Schema({
     description:  String,
     body:         String,
     slug:         String,
-    published:    { type: Boolean, 'default': false },
+    status:       { type: Number, 'default': 0 },
     pubdate:      { type: Date, 'default': Date.now },
-    //tags:         [Tag.schema]
     tags:         [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
 }, { versionKey:  "version" });
 

@@ -121,8 +121,8 @@
             return post.$reset();
         };
 
-        postsManager.publish = function (post) {
-            post.published = !post.published;
+        postsManager.toggleState = function (post) {
+            post.status = (post.status + 1) % 3;
             return post.$update();
         };
 
@@ -156,7 +156,7 @@
             $scope.newPost = null;
         };
 
-        $scope.publish = postsManager.publish;
+        $scope.toggleState = postsManager.toggleState;
 
         $scope.save = function (post) {
             postsManager.save(post);

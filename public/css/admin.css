@@ -25,9 +25,14 @@ legend { font-weight:bold; }
 .tag .edit-panel { position: absolute; top:0; left: 0; height:100%; width: 100%; }
 .tag:hover .edit-panel { opacity: 1; }
 
-.published.false { opacity:0.5; }
+.status { position: absolute; top: 10px; left: 10px; height: 10px; width: 10px; border-radius: 5px; }
+.status.published { background-color: #4D90FE; }
+.status.draft { background-color: #FF8C00; }
+.status.unpublished { background-color: #7A0026; }
 
-button.publish.true, button.delete { background-color: #7A0026; border: solid 1px #7A0026;}
+button.draft { background-color: yellow; color: black; }
+
+button.delete { background-color: #7A0026; border: solid 1px #7A0026;}
 
 article .edition-panel { position:absolute; left:100%; padding:10px; border:solid #ccc 1px; border-left:0; border-radius:3px; }
 #posts-list li:hover .edit-panel { display:block; }
