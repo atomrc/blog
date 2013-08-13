@@ -31,7 +31,7 @@
         };
     }];
 
-    Blog.directives.contenteditable = [function () {
+    Blog.directives.contenteditable = ['$window', function ($window, selectedText) {
         return {
             require: 'ngModel',
             link: function (scope, element, attrs, ctrl) {
@@ -57,7 +57,7 @@
                             document.execCommand('insertUnorderedList');
                             break;
                         case 65: //a
-                            document.execCommand('createLink', false, 'http://tofill.com');
+                            document.execCommand('createLink', false, selectedText);
                             break;
                         }
                     };
@@ -74,7 +74,7 @@
 
                 element.bind('keydown', function (event) {
                     if (event.ctrlKey) {
-                        executeAction(event.keyCode);
+                        executeAction(event.keyCode, $window.getSelection());
                         event.preventDefault();
                     }
                 });
