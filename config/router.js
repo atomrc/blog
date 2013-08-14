@@ -120,9 +120,9 @@ module.exports = function (app) {
 
 
     //TAGS
-    app.post('/api/posts/:post_slug/tags', isAuthenticated, loadPost, controllers.postsController.createTag);
-    app.post('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, loadTag, controllers.postsController.affectTag);
-    app.delete('/api/posts/:post_slug/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
+    app.post('/api/posts/:post_id/tags', isAuthenticated, loadPost, controllers.postsController.createTag);
+    app.post('/api/posts/:post_id/tags/:tag_id', isAuthenticated, loadPost, loadTag, controllers.postsController.affectTag);
+    app.delete('/api/posts/:post_id/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
 
     app.get('/api/tags', isAuthenticated, loadTags, controllers.tagsController.index);
     app.get('/api/tags/find', controllers.tagsController.find);

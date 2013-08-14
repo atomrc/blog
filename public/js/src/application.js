@@ -198,7 +198,7 @@ var Blog = (function () {
         }],
 
         Tag: ['$resource', function (resource) {
-            return resource('/api/posts/:slug/tags/:tagId', {tagId: '@_id'});
+            return resource('/api/posts/:postId/tags/:tagId', {tagId: '@_id'});
         }],
 
         Post: ['$resource', '$location', function (resource, $location) {
@@ -210,6 +210,12 @@ var Blog = (function () {
 
             Post.prototype.getUrl = function () {
                 return 'http://' + $location.$$host + ($location.$$port !== 80 ? ':' + $location.$$port : '') + '/posts/' + this.slug;
+            };
+
+            Post.prototype.hasTag = function (tag) {
+                return tag && this.tags.reduce(function (value, element) {
+                    return value || element._id === tag._id;
+                }, false);
             };
 
             return Post;
@@ -341,10 +347,9 @@ var Blog = (function () {
     }];
 
     application.controllers.postsController = ['$scope', '$location', 'metadatasManager', function ($scope, $location, metadatasManager) {
-        var hasTag = function (post, tag) {
-            return post.tags.reduce(function (value, postTag) {
-                return value || tag._id === postTag._id;
-            }, false);
+
+        $scope.setHoveredTag = function (tag) {
+            $scope.hoveredTag = tag;
         };
 
         $scope.show = function (post) {
@@ -354,12 +359,6 @@ var Blog = (function () {
         $scope.posts.$promise.then(function () {
             $scope.metadatas = metadatasManager.loadForResources($scope.posts);
         });
-
-        $scope.higlightPostsWithTag = function (tag, unlight) {
-            $scope.posts.map(function (post) {
-                post.$highlighted = !unlight && hasTag(post, tag);
-            });
-        };
 
     }];
 

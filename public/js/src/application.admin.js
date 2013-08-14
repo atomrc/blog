@@ -134,7 +134,7 @@
         };
 
         postsManager.addTag = function (post, tag) {
-            tag.$save({slug: post.slug}, function (newTag) {
+            tag.$save({postId: post._id}, function (newTag) {
                 if (newTag) {
                     post.tags.push(newTag);
                 }
