@@ -66,6 +66,37 @@ text-shadow:0px 1px 0px white;
 #footer .social { font-size: 25pt; text-align: right; }
 #footer .social a:not(:hover) { color: #EEE; }
 
+#page-loader {
+    position: fixed;
+    top: 0;
+    background-color: #F06;
+    height: 2px;
+    width: 100%;
+    opacity: 0.5;
+}
+
+.snake {
+    animation: snake 0.5s;
+    -moz-animation: snake 0.5s;
+    -webkit-animation: snake 0.5s;
+}
+
+.snake.ng-hide {
+    animation: none;
+    -moz-animation: none;
+    -webkit-animation: none;
+}
+
+@-webkit-keyframes snake {
+    from {width: 0}
+    to {width: 100%}
+}
+@keyframes snake {
+    from {width: 0}
+    to {width: 100%}
+}
+
+
 /*
 #about { background:url('/images/sprite.png') 0 0; }
 #about:hover { background:url('/images/sprite.png') 0px 62px; }
@@ -175,7 +206,7 @@ article .edition-panel, .widget, .full-article .body table { background:rgba(255
     transition: 0.5s all; /* Future Browsers */
 }
 .actions-panel.sticky.hidden {
-    top: -60px;
+    top: -61px;
 }
 
 
@@ -196,28 +227,3 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 /* tags */
 .full-article .tags-list .tag { font-size:small; border-radius:5px; padding:3px; border:solid 1px #ccc; position:relative; }
 .full-article .tags-list .tag-container { display: inline; }
-
-.fade-enter,
-.fade-leave,
-.fade-move {
-  -webkit-transition: 1s linear all;
-  -moz-transition: 1s linear all;
-  -o-transition: 1s linear all;
-  transition: 1s linear all;
-}
-
-.fade-enter {
-    opacity:0;
-}
-.fade-enter.fade-enter-active {
-    opacity:1;
-}
-
-.fade-leave {
-    opacity:1;
-    overflow: hidden;
-}
-.fade-leave.fade-leave-active {
-    width: 0;
-    opacity:0;
-}

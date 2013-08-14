@@ -47,6 +47,7 @@ html(lang="fr", data-ng-app="blog")
 
         base(href="/")
     body
+        #page-loader(data-route-loader, data-ng-show="loading", class="snake")
         #header
             a.title(href="/"){ Thomas BELIN }
         #main-content(data-ng-view) !{content}

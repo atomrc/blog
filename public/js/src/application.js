@@ -315,6 +315,21 @@ var Blog = (function () {
                 scope: { resource: "=share" },
                 controller: 'shareController'
             };
+        }],
+
+        routeLoader: ['$rootScope', function (rootScope) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    scope.loading = false;
+                    rootScope.$on('$routeChangeStart', function () {
+                        scope.loading = true;
+                    });
+                    rootScope.$on('$routeChangeSuccess', function () {
+                        scope.loading = false;
+                    });
+                }
+            };
         }]
     };
 
