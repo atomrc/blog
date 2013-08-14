@@ -31,12 +31,12 @@
         };
     }];
 
-    Blog.directives.contenteditable = ['$window', function ($window, selectedText) {
+    Blog.directives.contenteditable = ['$window', function ($window) {
         return {
             require: 'ngModel',
             link: function (scope, element, attrs, ctrl) {
                 var modifiedElement = null,
-                    executeAction = function (key) {
+                    executeAction = function (key, selectedText) {
                         switch (key) {
                         case 80: //p
                             document.execCommand('formatBlock', false, 'p');
@@ -57,7 +57,9 @@
                             document.execCommand('insertUnorderedList');
                             break;
                         case 65: //a
-                            document.execCommand('createLink', false, selectedText);
+                            if (selectedText && selectedText.match(/http:\/\/[A-Za-z0-9.\/-_]+/)) {
+                                document.execCommand('createLink', false, selectedText);
+                            }
                             break;
                         }
                     };
@@ -74,7 +76,7 @@
 
                 element.bind('keydown', function (event) {
                     if (event.ctrlKey) {
-                        executeAction(event.keyCode, $window.getSelection());
+                        executeAction(event.keyCode, $window.getSelection().toString());
                         event.preventDefault();
                     }
                 });
