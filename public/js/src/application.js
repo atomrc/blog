@@ -168,7 +168,7 @@ var Blog = (function () {
                 query: function () {
                     if (this.posts.length > 0) { return this.posts; } //caching
                     this.posts = Post.query();
-                    return this.posts;
+                    return this.posts.$promise;
                 },
 
                 getInCache: function (slug) {
@@ -181,29 +181,18 @@ var Blog = (function () {
                 },
 
                 getById: function (id) {
-                    var deferred = q.defer(),
-                        success = function (post) { deferred.resolve(post); },
-                        error = function (response) { deferred.reject('not found'); };
-                    Post.get({ id: id }, success, error);
-                    return deferred.promise;
+                    return Post.get({ id: id }).$promise;
                 },
 
                 get: function (slug) {
-                    var post = this.getInCache(slug),
-                        deferred = q.defer(),
-                        success = function (post) { deferred.resolve(post); },
-                        error = function (response) { deferred.reject('not found'); };
-
-                    if (!slug) {
-                        timeout(error, 0);
-                    } else if (this.isFullyLoaded(post)) {
-                        timeout(function () { success(post); }, 0);
-                    } else if (post) {
-                        post.$get(success, error);
-                    } else {
-                        Post.find({ id: slug }, success, error);
+                    var post = this.getInCache(slug);
+                    if (this.isFullyLoaded(post)) {
+                        return post;
                     }
-                    return deferred.promise;
+                    if (post) {
+                        return post.$get();
+                    }
+                    return Post.find({ id: slug }).$promise;
                 }
             };
         }],
@@ -362,13 +351,9 @@ var Blog = (function () {
             $location.path('/posts/' + post.slug);
         };
 
-        if ($scope.posts.$resolved) {
+        $scope.posts.$promise.then(function () {
             $scope.metadatas = metadatasManager.loadForResources($scope.posts);
-        } else {
-            $scope.posts.$then(function () {
-                $scope.metadatas = metadatasManager.loadForResources($scope.posts);
-            });
-        }
+        });
 
         $scope.higlightPostsWithTag = function (tag, unlight) {
             $scope.posts.map(function (post) {

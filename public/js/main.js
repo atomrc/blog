@@ -4,9 +4,11 @@ require.config({
     baseUrl: '/',
     paths: {
         requirejslib: './js/lib/require.min',
-        angular: './js/lib/angular/1.1.5/angular.min',
-        ngResource: './js/lib/angular/1.1.5/angular.resource.min',
-        ngSanitize: './js/lib/angular/1.1.5/angular.sanitize.min',
+        angular: './js/lib/angular/1.2/angular.min',
+        ngResource: './js/lib/angular/1.2/angular.resource.min',
+        ngSanitize: './js/lib/angular/1.2/angular.sanitize.min',
+        ngAnimate: './js/lib/angular/1.2/angular.animate.min',
+        ngRoute: './js/lib/angular/1.2/angular.route.min',
         rainbow: './js/lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
         disqus: 'http://whysocurious.disqus.com/embed'
@@ -32,13 +34,13 @@ require.config({
 });
 
 if (!window.angular) {
-    require(['angular', 'requirejslib', 'ngSanitize', 'ngResource']);
+    require(['angular', 'requirejslib', 'ngSanitize', 'ngResource', 'ngAnimate', 'ngRoute']);
 }
 
 (function () {
     'use strict';
     var element,
-        application = angular.module('blog', ['ngResource', 'ngSanitize']);
+        application = angular.module('blog', ['ngResource', 'ngSanitize', 'ngAnimate', 'ngRoute']);
 
     for (element in Blog.services) {
         if (Blog.services.hasOwnProperty(element)) {
