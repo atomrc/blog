@@ -98,23 +98,28 @@
     Blog.services.adminPostsManager = ['postsManager', 'Tag', 'Post', function (postsManager, Tag, Post) {
 
         postsManager.create = function (post) {
-            post.$save();
-            this.posts.unshift(post);
+            return post
+                .$save()
+                .then(function () {
+                    this.posts.unshift(post);
+                }.bind(this));
         };
 
         postsManager.save = function (post) {
             var self = this;
             if (post._id) {
-                return post.$update(function () { console.log('saved'); });
+                return post.$update().then(function () {
+                    console.log('saved');
+                });
             }
-            post.$save(function (post) {
+            return post.$save().then(function (post) {
                 self.posts.unshift(post);
             });
         };
 
         postsManager.remove = function (post) {
             var self = this;
-            post.$delete(function () {
+            post.$delete().then(function () {
                 self.posts.removeElement(post);
             });
         };
@@ -161,18 +166,20 @@
         $scope.toggleState = postsManager.toggleState;
 
         $scope.save = function (post) {
-            postsManager.save(post);
-            post.$then(function () {
-                $location.url('/posts/' + post.slug);
-            });
+            postsManager
+                .save(post)
+                .then(function () {
+                    $location.url('/posts/' + post.slug);
+                });
         };
 
         $scope.reset = function (post) {
             if ($window.confirm('It might probably change the url of the post. Are you sure you want to do that ?')) {
-                postsManager.reset(post);
-                post.$then(function () {
-                    $location.url('/posts/' + post.slug);
-                });
+                postsManager
+                    .reset(post)
+                    .then(function () {
+                        $location.url('/posts/' + post.slug);
+                    });
             }
         };
 
