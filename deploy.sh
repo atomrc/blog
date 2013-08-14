@@ -1,6 +1,5 @@
 git checkout master
 git merge develop
-git tag deploy
 git push
 cd public
 make
