@@ -354,10 +354,11 @@ var Blog = (function () {
         $scope.posts = posts;
     }];
 
-    application.controllers.showController = ['$rootScope', '$scope', 'post', function ($rootScope, $scope, post) {
+    application.controllers.showController = ['$rootScope', '$scope', 'post', '$sce', function ($rootScope, $scope, post, sce) {
         $rootScope.description = post.description;
         $rootScope.title = post.title;
 
+        post.body = sce.trustAsHtml(post.body);
         $scope.post = post;
     }];
 
