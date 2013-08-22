@@ -6,7 +6,6 @@ require.config({
         requirejslib: './js/lib/require.min',
         angular: './js/lib/angular/1.2/angular.min',
         ngResource: './js/lib/angular/1.2/angular.resource.min',
-        ngSanitize: './js/lib/angular/1.2/angular.sanitize.min',
         ngAnimate: './js/lib/angular/1.2/angular.animate.min',
         ngRoute: './js/lib/angular/1.2/angular.route.min',
         rainbow: './js/lib/rainbow.min',
@@ -34,7 +33,7 @@ require.config({
 });
 
 if (!window.angular) {
-    require(['angular', 'requirejslib', 'ngSanitize', 'ngResource', 'ngAnimate', 'ngRoute']);
+    require(['angular', 'requirejslib', 'ngResource', 'ngAnimate', 'ngRoute']);
 }
 
 (function () {
