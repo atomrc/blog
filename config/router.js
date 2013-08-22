@@ -113,20 +113,19 @@ module.exports = function (app) {
     app.get('/api/posts/:post_id', loadPost, controllers.postsController.show);
     app.get('/api/posts/:post_slug/find', findPost, controllers.postsController.show);
     app.get('/api/posts/:post_id/suggest', loadPost, controllers.postsController.suggest);
-    app.put('/api/posts/:post_id/reset', isAuthenticated, loadPost, controllers.postsController.reset);
-    app.put('/api/posts/:post_id', isAuthenticated, controllers.postsController.update);
+    app.put('/api/posts/:post_id', isAuthenticated, loadPost, controllers.postsController.update);
     app.delete('/api/posts/:post_id', isAuthenticated, loadPost, controllers.postsController.delete);
 
 
 
     //TAGS
-    app.post('/api/posts/:post_id/tags', isAuthenticated, loadPost, controllers.postsController.createTag);
-    app.post('/api/posts/:post_id/tags/:tag_id', isAuthenticated, loadPost, loadTag, controllers.postsController.affectTag);
-    app.delete('/api/posts/:post_id/tags/:tag_id', isAuthenticated, loadPost, controllers.postsController.deleteTag);
+    app.post('/api/posts/:post_id/tags/:tag_id', isAuthenticated, loadPost, loadTag, controllers.postsController.tag);
+    app.delete('/api/posts/:post_id/tags/:tag_id', isAuthenticated, controllers.postsController.untag);
 
     app.get('/api/tags', isAuthenticated, loadTags, controllers.tagsController.index);
     app.get('/api/tags/find', controllers.tagsController.find);
     app.get('/api/tags/:tag_id', loadTag, controllers.tagsController.show);
+    app.post('/api/tags', controllers.tagsController.create);
     app.delete('/api/tags/:tag_id', isAuthenticated, loadTag, controllers.tagsController.delete);
 
     app.post('/api/snapshots', authenticateApp, controllers.snapshotsController.snapshot);

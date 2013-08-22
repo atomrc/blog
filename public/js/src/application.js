@@ -198,15 +198,17 @@ var Blog = (function () {
         }],
 
         Tag: ['$resource', function (resource) {
-            return resource('/api/posts/:postId/tags/:tagId', {tagId: '@_id'});
+            return resource('/api/tags/:id', {id: '@_id'});
         }],
 
         Post: ['$resource', '$location', function (resource, $location) {
-            var Post = resource('/api/posts/:id/:action', { id: '@_id' }, {
-                update: { method: 'PUT' },
-                reset: { method: 'PUT', params: { action: 'reset'} },
-                find: { method: 'GET', params: { action: 'find' } }
-            });
+            var baseUrl = '/api/posts/:id/:action/:resourceId',
+                Post = resource(baseUrl, { id: '@_id' }, {
+                    update: { method: 'PUT' },
+                    find: { method: 'GET', params: { action: 'find' } },
+                    tag: { method: 'POST', params: { action: 'tags' } },
+                    untag: { method: 'DELETE', params: { action: 'tags' } }
+                });
 
             Post.prototype.getUrl = function () {
                 return 'http://' + $location.$$host + ($location.$$port !== 80 ? ':' + $location.$$port : '') + '/posts/' + this.slug;
@@ -358,7 +360,7 @@ var Blog = (function () {
         $rootScope.description = post.description;
         $rootScope.title = post.title;
 
-        post.body = angular.isString(post.body) ? sce.trustAsHtml(post.body) : post.body;
+        post.$body = post.$body || sce.trustAsHtml(post.body);
         $scope.post = post;
     }];
 

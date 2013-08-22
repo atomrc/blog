@@ -15,5 +15,5 @@ block tag_edit
             button.delete(data-ng-click='remove(post, tag)')
 block tag_form
     - if (auth)
-        form(data-ng-submit='create(post, newTag)')
-            div(data-autocomplete="newTag.name", data-autocomplete-url="/api/tags/find", data-autocomplete-select="affectTag(post, data);")
+        form(data-ng-submit='tag(post, newTag)')
+            div(data-autocomplete="newTag.name", data-autocomplete-url="/api/tags/find", data-autocomplete-select="tag(post, data);")

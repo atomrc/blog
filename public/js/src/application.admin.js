@@ -1,4 +1,5 @@
-/*global require, Blog, document*/
+/*jslint nomen: true */
+/*global require, Blog, document, */
 (function () {
     'use strict';
 
@@ -125,7 +126,9 @@
         };
 
         postsManager.reset = function (post) {
-            return post.$reset();
+            post.pubdate = null;
+            post.slug = null;
+            return post.$update();
         };
 
         postsManager.toggleState = function (post) {
@@ -133,19 +136,22 @@
             return post.$update();
         };
 
-        postsManager.addTag = function (post, tag) {
-            tag.$save({postId: post._id}, function (newTag) {
-                if (newTag) {
-                    post.tags.push(newTag);
-                }
-            });
+        postsManager.tag = function (post, tag) {
+            var affect = function (post, tag) {
+                post.$tag({ resourceId: tag._id });
+            };
+
+            if (!tag._id) {
+                tag = new Tag(tag);
+                return tag.$save().then(function (tag) {
+                    affect(post, tag);
+                });
+            }
+            affect(post, tag);
         };
 
-        postsManager.removeTag = function (post, tag) {
-            var dTag = new Tag(tag);
-            dTag.$delete({slug: post.slug, tagId: tag._id}, function () {
-                post.tags.removeElement(tag);
-            });
+        postsManager.untag = function (post, tag) {
+            post.$untag({ resourceId: tag._id });
         };
 
         return postsManager;
@@ -157,6 +163,11 @@
     Blog.controllers.postEditionController = ['$scope', 'adminPostsManager', 'Post', '$location', '$window', function ($scope, postsManager, Post, $location, $window) {
 
         $scope.add = function () { $scope.newPost = new Post(); };
+
+        $scope.$watch('post', function (newValue, oldValue) {
+            if (!newValue || !oldValue) { return; }
+            newValue.$unsaved = true;
+        }, true);
 
         $scope.create = function (post) {
             postsManager.create(post);
@@ -194,19 +205,15 @@
     Blog.controllers.tagsController = ['$scope', 'Tag', 'adminPostsManager', function ($scope, Tag, postsManager) {
         $scope.newTag = new Tag();
 
-        $scope.create = function (post, tag) {
-            postsManager.addTag(post, tag);
+        $scope.tag = function (post, tag) {
+            postsManager.tag(post, tag);
             this.newTag = new Tag();
         };
 
         $scope.remove = function (post, tag) {
-            postsManager.removeTag(post, tag);
+            postsManager.untag(post, tag);
         };
 
-        $scope.affectTag = function (post, tag) {
-            postsManager.addTag(post, new Tag(tag));
-            this.newTag = new Tag();
-        };
     }];
 
 }());

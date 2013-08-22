@@ -3,7 +3,15 @@ var mongoose = require('mongoose'),
     utils    = require('../libs/utils'),
     Schema   = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    Tag  = require('../models/Tag');
+    Tag  = require('../models/Tag'),
+    fillMandatories = function (post) {
+        'use strict';
+        if (!post.pubdate) { post.pubdate = Date.now(); }
+        if (!post.title || post.slug) {
+            return;
+        }
+        post.slug = utils.slugify(post.title);
+    };
 
 var PostSchema = new Schema({
     title:        String,
@@ -16,11 +24,8 @@ var PostSchema = new Schema({
 }, { versionKey:  "version" });
 
 PostSchema.pre('save', function (next) {
-    if ( !this.pubdate ) { this.pubdate = Date.now(); }
-    if( !this.title || this.slug ) {
-        return next();
-    }
-    this.slug = utils.slugify(this.title);
+    'use strict';
+    fillMandatories(this);
     next();
 });
 

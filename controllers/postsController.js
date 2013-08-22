@@ -1,25 +1,10 @@
+/*jslint node: true, nomen: true */
 /*global require, exports*/
 var Post = require('../models/Post'),
     Tag  = require('../models/Tag'),
     NotFound = require('../libs/errors').NotFound,
     RSS = require('rss'),
-    suggester = require('../services/suggester'),
-    associateTag = function (post, tag, callback) {
-        'use strict';
-        var alreadyAdded = post.tags.reduce(function (prev, current) {
-            return prev || '' + current._id === '' + tag._id;
-        }, false);
-        if (alreadyAdded) {
-            return callback(false);
-        }
-        tag.posts.push(post);
-        tag.save(function (err, tag) {
-            callback(tag);
-            post.tags.push(tag);
-            post.save(function (err, post) {
-            });
-        });
-    };
+    suggester = require('../services/suggester');
 
 exports.index = function (req, res) {
     'use strict';
@@ -56,71 +41,73 @@ exports.feed = function (req, res) {
 };
 
 exports.show = function (req, res, next) {
+    'use strict';
     res.send(req.post);
 };
 
 exports.suggest = function (req, res) {
+    'use strict';
     suggester.suggest(req.post);
     res.send('soon');
 };
 
 exports.create = function (req, res) {
+    'use strict';
     var post = new Post(req.body);
     post.save(function (err, post){
         res.send(post);
     });
 };
 
-exports.reset = function (req, res) {
-    var post = req.post;
-    post.slug = null;
-    post.pubdate = null;
+exports.update = function (req, res, next) {
+    'use strict';
+    var i,
+        post = req.post;
+    delete req.body.tags;
+    delete req.body._id;
+    for (i in req.body) {
+        if (req.body.hasOwnProperty(i)) {
+            req.post[i] = req.body[i];
+        }
+    }
     post.save(function (err, post) {
-        if(err) res.send(err);
+        if (err || !post) { return res.send('error'); }
         res.send(post);
     });
 };
 
-exports.createTag = function (req, res) {
-    associateTag(req.post, new Tag(req.body), function (tag) {
-        res.send(tag);
-    });
-};
-
-exports.affectTag = function (req, res) {
-    associateTag(req.post, req.tag, function (tag) {
-        res.send(tag);
-    });
-};
-
-exports.deleteTag = function (req, res) {
-    Post.findOneAndUpdate(
-        { slug: req.params.post_slug },
-        {$pull : {tags: req.params.tag_id }},
-        function ( err, post ) {
-            if(err) res.send(err);
-            Tag.findOneAndUpdate(
-                { _id: req.params.tag_id },
-                { $pull: { posts:  post._id }},
-                function (err, tag) {
-                    res.send(tag);
-            });
+exports.tag = function (req, res) {
+        'use strict';
+        var post = req.post,
+            tag = req.tag,
+            alreadyAdded = post.tags.reduce(function (prev, current) {
+                return prev || current._id.toString() === tag._id.toString();
+            }, false);
+        if (alreadyAdded) {
+            return res.send(post);
         }
-    );
+        tag.posts.push(post);
+        tag.save(function (err, tag) {
+            post.tags.push(tag);
+            post.save(function (err, p) {
+                res.send(post);
+            });
+        });
 };
 
-exports.update = function (req, res, next) {
-    delete req.body._id;
-    delete req.body.tags;
+exports.untag = function (req, res) {
+
     Post.findByIdAndUpdate(
         req.params.post_id,
-        req.body,
-        function ( err, post ) {
-            if( err ) return next(err);
-            if( !post ) return next(new NotFound);
+        { $pull : { tags: req.params.tag_id }}
+    ).populate('tags').exec(function ( err, post ) {
+        if(err) res.send(err);
+        Tag.findByIdAndUpdate(req.params.tag_id, { $pull: { posts: req.params.post_id }}, function () {
+            post.populate('tags');
             res.send(post);
-        }
-    );
+        });
+    });
+
 };
 
 exports.delete = function (req, res) {

@@ -1,5 +1,5 @@
 .edit-form(data-post-edition="post")
-    button(data-ng-click='reset(post)') Reset
+    .icon.save(data-ng-show="post.$unsaved")
     form(data-ng-submit='save(post)')
         input(type='text', data-ng-model='post.title')
         br
@@ -7,5 +7,6 @@
         br
         textarea(class='article-body', data-ng-model='post.body')
         br
-        input(type='submit')
+        input(type='submit') Save
+        button(data-ng-click='reset(post)') Reset
 
