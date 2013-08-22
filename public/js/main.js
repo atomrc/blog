@@ -40,7 +40,7 @@ if (!window.angular) {
 (function () {
     'use strict';
     var element,
-        application = angular.module('blog', ['ngResource', 'ngSanitize', 'ngAnimate', 'ngRoute']);
+        application = angular.module('blog', ['ngResource', 'ngAnimate', 'ngRoute']);
 
     for (element in Blog.services) {
         if (Blog.services.hasOwnProperty(element)) {

@@ -358,7 +358,6 @@ var Blog = (function () {
         $rootScope.description = post.description;
         $rootScope.title = post.title;
 
-        post.body = sce.trustAsHtml(post.body);
         $scope.post = post;
     }];
 
