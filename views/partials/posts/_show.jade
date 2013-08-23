@@ -1,19 +1,23 @@
 extends _post
 
-block content
+block title
+    - if(auth)
+        h1(contenteditable="true", data-ng-model="post.title")
+    - else
+        h1 {{post.title}}
+
+block body
     - if(auth)
         .body(contenteditable="true", data-ng-model="post.body")
     - else
-        .body(data-ng-bind-html='post.body', data-codecontainer)
-    .author par
-        span(itemprop="author")  Thomas Belin
-    div(style="clear:both;")
+        .body(data-ng-bind-html='post.$body', data-codecontainer)
 
 block tag_edit
     - if (auth)
         .edit-panel
             button.delete(data-ng-click='remove(post, tag)')
+
 block tag_form
     - if (auth)
-        form(data-ng-submit='tag(post, newTag)')
+        form(data-ng-submit='tag(post, newTag)', data-ng-show="newTag")
             div(data-autocomplete="newTag.name", data-autocomplete-url="/api/tags/find", data-autocomplete-select="tag(post, data);")

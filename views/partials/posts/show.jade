@@ -1,6 +1,3 @@
--if (auth)
-    include _form
-
 .full-article
     .actions-panel(data-sticky='{ start: 10 }')
         table.actions-container
@@ -19,7 +16,12 @@
                             span.count(data-ng-show="provider.count > 0")
                                 | &nbsp;
                                 span(data-ng-bind="provider.count")
-    include _show
+    - if (auth)
+        div(data-post-edition="post", data-ng-keydown="keydown($event);")
+            include _form
+            include _show
+    - else
+        include _show
 
 -if (prod)
     section

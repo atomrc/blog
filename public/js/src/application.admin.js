@@ -64,10 +64,15 @@
                             break;
                         }
                     };
+
                 element.bind('blur', function () {
                     scope.$apply(function () {
-                        ctrl.$setViewValue(element.html());
+                        scope.$emit('updateModel');
                     });
+                });
+
+                scope.$on('updateModel', function () {
+                    ctrl.$setViewValue(element.html());
                 });
 
                 // model -> view
@@ -75,6 +80,11 @@
                     element.html(this.$modelValue);
                 };
 
+                element.bind('keyup', function (event) {
+                    if (!event.ctrlKey) {
+                        scope.$emit('updateModel');
+                    }
+                });
                 element.bind('keydown', function (event) {
                     if (event.ctrlKey) {
                         executeAction(event.keyCode, $window.getSelection().toString());
@@ -85,7 +95,7 @@
         };
     }];
 
-    Blog.directives.postEdition = [function () {
+    Blog.directives.postEdition = ['$document', function ($document) {
         return {
             restrict: 'A',
             scope: { post: '=postEdition' },
@@ -109,9 +119,7 @@
         postsManager.save = function (post) {
             var self = this;
             if (post._id) {
-                return post.$update().then(function () {
-                    console.log('saved');
-                });
+                return post.$update();
             }
             return post.$save().then(function (post) {
                 self.posts.unshift(post);
@@ -169,6 +177,13 @@
             newValue.$unsaved = true;
         }, true);
 
+        $scope.keydown = function (event) {
+            if (event.ctrlKey && event.keyCode === 83) {
+                $scope.$emit('updateModel');
+                $scope.save();
+            }
+        };
+
         $scope.create = function (post) {
             postsManager.create(post);
             $scope.newPost = null;
@@ -176,7 +191,8 @@
 
         $scope.toggleState = postsManager.toggleState;
 
-        $scope.save = function (post) {
+        $scope.save = function () {
+            var post = $scope.post;
             postsManager
                 .save(post)
                 .then(function () {
@@ -203,11 +219,13 @@
     }];
 
     Blog.controllers.tagsController = ['$scope', 'Tag', 'adminPostsManager', function ($scope, Tag, postsManager) {
-        $scope.newTag = new Tag();
+        $scope.create = function () {
+            $scope.newTag = new Tag();
+        };
 
         $scope.tag = function (post, tag) {
             postsManager.tag(post, tag);
-            this.newTag = new Tag();
+            $scope.newTag = null;
         };
 
         $scope.remove = function (post, tag) {

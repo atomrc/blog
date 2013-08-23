@@ -49,7 +49,8 @@ html(lang="fr", data-ng-app="blog")
         #page-loader(data-route-loader, data-ng-show="loading", class="snake")
         #header
             a.title(href="/"){ Thomas BELIN }
-        #main-content(data-ng-view) !{content}
+        #main-content
+            div(data-ng-view) !{content}
         #footer
             .container
                 img#avatar(src="/images/avatar_s.jpeg", alt="Thomas Belin", height="100", width="100")
