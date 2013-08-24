@@ -91,16 +91,13 @@ var loadTags = function (req, res, next) {
 };
 
 var getSiteUrls = function (req, res, next) {
+    'use strict';
     var urls = ['/'];
-    Post.find({published: true}, function (err, posts) {
-        if( err ) throw new NotFound;
-        for(var i in posts) {
-            var post = posts[i];
-            urls.push('/posts/'+post.slug);
-        }
-        req.urls = urls;
-        next();
+    req.posts.forEach(function (post) {
+        urls.push('/posts/' + post.slug);
     });
+    req.urls = urls;
+    next();
 };
 
 // Routes
@@ -132,7 +129,7 @@ module.exports = function (app) {
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
     app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);
 
-    app.get('/sitemap.:format', getSiteUrls, controllers.sitemapController.index);
+    app.get('/sitemap.:format', loadPosts, getSiteUrls, controllers.sitemapController.index);
 
     app.get('/login', authenticateUser, function (req, res) {
         req.session.auth = true;
