@@ -1,5 +1,6 @@
 /*jslint node: true*/
-var Post = require('../models/Post');
+var Post = require('../models/Post'),
+    tagsManager = require('../managers/tagsManager');
 
 module.exports = {
     loadAll: function (filter, full, limit) {
@@ -35,12 +36,24 @@ module.exports = {
     find: function (slug, filter) {
         'use strict';
         var condition = {slug: slug};
-        if (!req.session.auth) {
+        if (filter) {
             condition.status = 2;
         }
         return Post
             .findOne(condition)
             .populate('tags')
             .exec();
+    },
+
+    tag: function (post, tag) {
+        'use strict';
+        var alreadyAdded = post.tags.reduce(function (prev, current) {
+            return prev || (current && current._id.toString() === tag._id.toString());
+        }, false);
+        if (alreadyAdded) {
+            return true;
+        }
+        post.tags.push(tag);
+        post.save();
     }
 };

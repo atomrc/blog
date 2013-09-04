@@ -1,10 +1,11 @@
 /*jslint node: true, nomen: true, plusplus: true */
-var Post                  = require('../models/Post'),
-    Tag                   = require('../models/Tag'),
-    NotFound              = require('../libs/errors').NotFound,
-    postsManager          = require('../managers/postsManager'),
-    rssManager            = require('../managers/rssManager'),
-    suggester             = require('../services/suggester');
+var Post         = require('../models/Post'),
+    Tag          = require('../models/Tag'),
+    NotFound     = require('../libs/errors').NotFound,
+    postsManager = require('../managers/postsManager'),
+    tagsManager  = require('../managers/tagsManager'),
+    rssManager   = require('../managers/rssManager'),
+    suggester    = require('../services/suggester');
 
 exports.index = function (req, res) {
     'use strict';
@@ -83,24 +84,30 @@ exports.suggest = function (req, res) {
     res.send('soon');
 };
 
-
-exports.tag = function (req, res) {
+exports.delete = function (req, res) {
     'use strict';
-    var post = req.post,
-        tag = req.tag,
-        alreadyAdded = post.tags.reduce(function (prev, current) {
-            return prev || current._id.toString() === tag._id.toString();
-        }, false);
-    if (alreadyAdded) {
-        return res.send(post);
-    }
-    tag.posts.push(post);
-    tag.save(function (err, tag) {
-        post.tags.push(tag);
-        post.save(function (err, p) {
+    postsManager
+        .load(req.params.postId)
+        .then(function (post) {
+            post.remove();
             res.send(post);
         });
-    });
+};
+
+exports.tag = function (req, res, next) {
+    'use strict';
+    postsManager
+        .load(req.params.postId)
+        .then(function (post) {
+            tagsManager
+                .load(req.params.tagId)
+                .then(function (tag) {
+                    if (!tag) { return next(new NotFound()); }
+                    postsManager.tag(post, tag);
+                    tagsManager.affect(tag, post);
+                    res.send(post);
+                });
+        });
 };
 
 exports.untag = function (req, res) {
@@ -116,11 +123,4 @@ exports.untag = function (req, res) {
         });
     });
 
-};
-
-exports.delete = function (req, res) {
-    'use strict';
-    var post = req.post;
-    post.remove();
-    res.send(post);
 };

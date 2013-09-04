@@ -4,81 +4,28 @@ var controllers  = require('../controllers'),
     Unauthorized = require('../libs/errors').Unauthorized,
     NotFound     = require('../libs/errors').NotFound,
     params       = require('../config/parameters'),
-    Post         = require('../models/Post'),
-    Tag          = require('../models/Tag');
+    postsManager = require('../managers/postsManager'),
 
-
-var isAuthenticated = function (req, res, next) {
-    'use strict';
-    if (!req.session || !req.session.auth) { return next(new Unauthorized()); }
-    return next();
-};
-
-var authenticateUser =  express.basicAuth( function (user, pass) {
-    'use strict';
-    return (user === params.user.username && pass === params.user.password);
-});
-
-var authenticateApp = function (req, res, next) {
-    'use strict';
-    if ((!req.query.apikey) || (req.query.apikey !== params.apikey)) { return next(new Unauthorized); }
-    return next();
-};
-
-var loadPost = function (req, res, next) {
-    'use strict';
-    var callback = function (err, post) {
-        if (err || post === null) { return next(new NotFound()); }
-        req.post = post;
+    isAuthenticated = function (req, res, next) {
+        'use strict';
+        if (!req.session || !req.session.auth) { return next(new Unauthorized()); }
         return next();
+    },
+
+    authenticateUser =  express.basicAuth(function (user, pass) {
+        'use strict';
+        return (user === params.user.username && pass === params.user.password);
+    }),
+
+    loadTag = function (req, res, next) {
+        'use strict';
+        Tag.findById(req.params.tag_id, function (err, tag) {
+            if (err) { return next(new NotFound()); }
+            if (tag === null) { return next(new NotFound()); }
+            req.tag = tag;
+            return next();
+        });
     };
-
-    if (!req.session || !req.session.auth) {
-    //if not authenticated, check if post is either published or a draft
-        return Post.findOne({'_id': req.params.post_id, 'status': {$gt: 0} }, callback).populate('tags');
-    }
-};
-
-var findPost = function (req, res, next) {
-    'use strict';
-    var condition = {slug: req.params.post_slug};
-    if (!req.session.auth) {
-        condition.status = 2;
-    }
-    Post.findOne(condition, function (err, post) {
-        if (err) { return next(new NotFound); }
-        if (post === null) { return next(new NotFound); }
-        req.post = post;
-        return next();
-    }).populate('tags');
-};
-
-var loadTag = function (req, res, next) {
-    'use strict';
-    Tag.findById(req.params.tag_id, function (err, tag) {
-        if (err) { return next(new NotFound()); }
-        if (tag === null) { return next(new NotFound()); }
-        req.tag = tag;
-        return next();
-    });
-};
-
-var loadPosts = function (req, res, next) {
-    'use strict';
-    var condition = req.session.auth ?
-            {} :
-            { status: 2 };
-
-    var options = req.query.limit ?
-            { limit: req.query.limit } :
-            {};
-
-    var posts = Post.find(condition, '-body', options).sort({'pubdate': 'desc'}).populate('tags').exec(function (err, posts) {
-        if( err ) throw new NotFound;
-        req.posts = posts;
-        next();
-    });
-};
 
 var loadTags = function (req, res, next) {
     'use strict';
@@ -92,11 +39,15 @@ var loadTags = function (req, res, next) {
 var getSiteUrls = function (req, res, next) {
     'use strict';
     var urls = ['/'];
-    req.posts.forEach(function (post) {
-        urls.push('/posts/' + post.slug);
-    });
-    req.urls = urls;
-    next();
+    postsManager
+        .loadAll(true)
+        .then(function (posts) {
+            posts.forEach(function (post) {
+                urls.push('/posts/' + post.slug);
+            });
+            req.urls = urls;
+            next();
+        });
 };
 
 // Routes
@@ -109,38 +60,38 @@ module.exports = function (app) {
     app.post('/api/posts', isAuthenticated, controllers.postsController.create);
     app.get('/api/posts/:postId', controllers.postsController.show);
     app.get('/api/posts/:postSlug/find', controllers.postsController.find);
-    app.get('/api/posts/:postId/suggest', loadPost, controllers.postsController.suggest);
+    app.get('/api/posts/:postId/suggest', controllers.postsController.suggest);
     app.put('/api/posts/:postId', isAuthenticated, controllers.postsController.update);
-    app.delete('/api/posts/:postId', isAuthenticated, loadPost, controllers.postsController.delete);
+    app.delete('/api/posts/:postId', isAuthenticated, controllers.postsController.delete);
 
 
 
     //TAGS
-    app.post('/api/posts/:post_id/tags/:tag_id', isAuthenticated, loadPost, loadTag, controllers.postsController.tag);
-    app.delete('/api/posts/:post_id/tags/:tag_id', isAuthenticated, controllers.postsController.untag);
+    app.post('/api/posts/:postId/tags/:tagId', isAuthenticated, controllers.postsController.tag);
+    app.delete('/api/posts/:postId/tags/:tagId', isAuthenticated, controllers.postsController.untag);
 
-    app.get('/api/tags', isAuthenticated, loadTags, controllers.tagsController.index);
     app.get('/api/tags/find', controllers.tagsController.find);
-    app.get('/api/tags/:tag_id', loadTag, controllers.tagsController.show);
     app.post('/api/tags', controllers.tagsController.create);
-    app.delete('/api/tags/:tag_id', isAuthenticated, loadTag, controllers.tagsController.delete);
+    /*app.get('/api/tags', isAuthenticated, loadTags, controllers.tagsController.index);
+    app.get('/api/tags/:tag_id', loadTag, controllers.tagsController.show);
+    app.delete('/api/tags/:tag_id', isAuthenticated, loadTag, controllers.tagsController.delete);*/
 
-    app.post('/api/snapshots', authenticateApp, controllers.snapshotsController.snapshot);
+    /*app.post('/api/snapshots', authenticateApp, controllers.snapshotsController.snapshot);
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
-    app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);
+    app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);*/
 
-    app.get('/sitemap.:format', loadPosts, getSiteUrls, controllers.sitemapController.index);
+    //VIEWS
+    app.get('/views/:view_id', controllers.viewsController.show);
+
+    app.get('/sitemap.:format', getSiteUrls, controllers.sitemapController.index);
+
+    //RSS FEED
+    app.get('/feed', controllers.postsController.feed);
 
     app.get('/login', authenticateUser, function (req, res) {
         req.session.auth = true;
         res.redirect('/');
     });
-
-    //RSS FEED
-    app.get('/feed', controllers.postsController.feed);
-
-    //VIEWS
-    app.get('/views/:view_id', controllers.viewsController.show);
 
     //FRONT
     app.get('*', controllers.homeController.index);
