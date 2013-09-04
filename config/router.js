@@ -1,4 +1,4 @@
-/*global require*/
+/*jslint node: true*/
 var controllers  = require('../controllers'),
     express      = require('express'),
     Unauthorized = require('../libs/errors').Unauthorized,
@@ -37,7 +37,6 @@ var loadPost = function (req, res, next) {
     //if not authenticated, check if post is either published or a draft
         return Post.findOne({'_id': req.params.post_id, 'status': {$gt: 0} }, callback).populate('tags');
     }
-    Post.findById(req.params.post_id, callback).populate('tags');
 };
 
 var findPost = function (req, res, next) {
@@ -102,16 +101,17 @@ var getSiteUrls = function (req, res, next) {
 
 // Routes
 module.exports = function (app) {
+    'use strict';
 
     /************ API ****************/
     //POSTS
-    app.get('/api/posts', loadPosts, controllers.postsController.index);
+    app.get('/api/posts', controllers.postsController.index);
     app.post('/api/posts', isAuthenticated, controllers.postsController.create);
-    app.get('/api/posts/:post_id', loadPost, controllers.postsController.show);
-    app.get('/api/posts/:post_slug/find', findPost, controllers.postsController.show);
-    app.get('/api/posts/:post_id/suggest', loadPost, controllers.postsController.suggest);
-    app.put('/api/posts/:post_id', isAuthenticated, loadPost, controllers.postsController.update);
-    app.delete('/api/posts/:post_id', isAuthenticated, loadPost, controllers.postsController.delete);
+    app.get('/api/posts/:postId', controllers.postsController.show);
+    app.get('/api/posts/:postSlug/find', controllers.postsController.find);
+    app.get('/api/posts/:postId/suggest', loadPost, controllers.postsController.suggest);
+    app.put('/api/posts/:postId', isAuthenticated, controllers.postsController.update);
+    app.delete('/api/posts/:postId', isAuthenticated, loadPost, controllers.postsController.delete);
 
 
 
@@ -137,7 +137,7 @@ module.exports = function (app) {
     });
 
     //RSS FEED
-    app.get('/feed', loadPosts, controllers.postsController.feed);
+    app.get('/feed', controllers.postsController.feed);
 
     //VIEWS
     app.get('/views/:view_id', controllers.viewsController.show);

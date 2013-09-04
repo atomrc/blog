@@ -1,48 +1,80 @@
-/*jslint node: true, nomen: true */
-/*global require, exports*/
-var Post = require('../models/Post'),
-    Tag  = require('../models/Tag'),
-    NotFound = require('../libs/errors').NotFound,
-    RSS = require('rss'),
-    suggester = require('../services/suggester');
+/*jslint node: true, nomen: true, plusplus: true */
+var Post                  = require('../models/Post'),
+    Tag                   = require('../models/Tag'),
+    NotFound              = require('../libs/errors').NotFound,
+    postsManager          = require('../managers/postsManager'),
+    rssManager            = require('../managers/rssManager'),
+    suggester             = require('../services/suggester');
 
 exports.index = function (req, res) {
     'use strict';
-    res.send(req.posts);
-};
-
-exports.feed = function (req, res) {
-    'use strict';
-    var feed = new RSS({
-        title: 'Why So Curious ?',
-        description: 'The web is my scene, HTML5/CSS3 are my sound engineers, JS is my guitar, the web standards are my tablature and last but not least you might be my audience ;)',
-        feed_url: 'http://thomasbelin.fr/feed',
-        site_url: 'http://thomasbelin.fr',
-        image_url: 'http://thomasbelin.fr/favicon.png',
-        author: 'Thomas Belin'
-    });
-
-    /* loop over data and add to feed */
-    for (var i = 0; i < req.posts.length; i++) {
-        var post = req.posts[i];
-        feed.item({
-            title:  post.title,
-            description: post.body,
-            url: 'http://thomasbelin.fr/posts/' + post.slug, // link to the item
-            author: 'Thomas Belin', // optional - defaults to feed author property
-            date: post.pubdate // any format that js Date can parse.
+    postsManager
+        .loadAll(!req.session.auth)
+        .then(function (posts) {
+            res.send(posts);
         });
-    }
-
-    var xml = feed.xml();
-
-    res.setHeader("Content-Type", "text/xml; charset=utf-8");
-    res.send(xml);
 };
 
 exports.show = function (req, res, next) {
     'use strict';
-    res.send(req.post);
+    postsManager
+        .load(req.params.postId, !req.session.auth)
+        .then(function (post) {
+            console.log(arguments);
+            if (!post) { return next(new NotFound()); }
+            res.send(post);
+        }, function () {
+            next(new NotFound());
+        });
+};
+
+exports.find = function (req, res, next) {
+    'use strict';
+    postsManager
+        .find(req.params.postSlug, !req.session.auth)
+        .then(function (post) {
+            if (!post) { return next(new NotFound()); }
+            res.send(post);
+        }, function () {
+            next(new NotFound());
+        });
+};
+
+exports.create = function (req, res) {
+    'use strict';
+    var post = new Post(req.body);
+    post.save(function (err, post) {
+        res.send(post);
+    });
+};
+
+exports.update = function (req, res, next) {
+    'use strict';
+    postsManager
+        .load(req.params.postId, !req.session.auth)
+        .then(function (post) {
+            var i;
+            delete req.body.tags;
+            delete req.body._id;
+            for (i in req.body) {
+                if (req.body.hasOwnProperty(i)) {
+                    post[i] = req.body[i];
+                }
+            }
+            post.save(function (err, post) {
+                res.send(post);
+            });
+        });
+};
+
+exports.feed = function (req, res) {
+    'use strict';
+    postsManager
+        .loadAll(true, true)
+        .then(function (posts) {
+            res.setHeader("Content-Type", "text/xml; charset=utf-8");
+            res.send(rssManager.generate(posts));
+        });
 };
 
 exports.suggest = function (req, res) {
@@ -51,58 +83,34 @@ exports.suggest = function (req, res) {
     res.send('soon');
 };
 
-exports.create = function (req, res) {
-    'use strict';
-    var post = new Post(req.body);
-    post.save(function (err, post){
-        res.send(post);
-    });
-};
-
-exports.update = function (req, res, next) {
-    'use strict';
-    var i,
-        post = req.post;
-    delete req.body.tags;
-    delete req.body._id;
-    for (i in req.body) {
-        if (req.body.hasOwnProperty(i)) {
-            req.post[i] = req.body[i];
-        }
-    }
-    post.save(function (err, post) {
-        if (err || !post) { return res.send('error'); }
-        res.send(post);
-    });
-};
 
 exports.tag = function (req, res) {
-        'use strict';
-        var post = req.post,
-            tag = req.tag,
-            alreadyAdded = post.tags.reduce(function (prev, current) {
-                return prev || current._id.toString() === tag._id.toString();
-            }, false);
-        if (alreadyAdded) {
-            return res.send(post);
-        }
-        tag.posts.push(post);
-        tag.save(function (err, tag) {
-            post.tags.push(tag);
-            post.save(function (err, p) {
-                res.send(post);
-            });
+    'use strict';
+    var post = req.post,
+        tag = req.tag,
+        alreadyAdded = post.tags.reduce(function (prev, current) {
+            return prev || current._id.toString() === tag._id.toString();
+        }, false);
+    if (alreadyAdded) {
+        return res.send(post);
+    }
+    tag.posts.push(post);
+    tag.save(function (err, tag) {
+        post.tags.push(tag);
+        post.save(function (err, p) {
+            res.send(post);
         });
+    });
 };
 
 exports.untag = function (req, res) {
-
+    'use strict';
     Post.findByIdAndUpdate(
-        req.params.post_id,
+        req.params.postId,
         { $pull : { tags: req.params.tag_id }}
-    ).populate('tags').exec(function ( err, post ) {
-        if(err) res.send(err);
-        Tag.findByIdAndUpdate(req.params.tag_id, { $pull: { posts: req.params.post_id }}, function () {
+    ).populate('tags').exec(function (err, post) {
+        if (err) { res.send(err); }
+        Tag.findByIdAndUpdate(req.params.tag_id, { $pull: { posts: req.params.postId }}, function () {
             post.populate('tags');
             res.send(post);
         });
@@ -111,6 +119,7 @@ exports.untag = function (req, res) {
 };
 
 exports.delete = function (req, res) {
+    'use strict';
     var post = req.post;
     post.remove();
     res.send(post);

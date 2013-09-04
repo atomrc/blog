@@ -1,4 +1,4 @@
-/*global require, process*/
+/*jslint node: true, nomen: true, plusplus: true */
 
 /**
  * Module dependencies.
@@ -10,6 +10,8 @@ var express = require('express'),
     postsController = require('./controllers/postsController'),
     errorHandler = require('./libs/errors').handler,
     app = express(),
+    mongo,
+    env,
 
     staticCaching = function (req, res, next) {
         'use strict';
@@ -41,6 +43,17 @@ var express = require('express'),
         //setting a query param that will tells the home controller to get the snapshot instead of the single page layout
         req.query.snap = 1;
         next();
+    },
+
+    generateMongoUrl = function (obj) {
+        'use strict';
+        obj.hostname = (obj.hostname || 'localhost');
+        obj.port = (obj.port || 27017);
+        obj.db = (obj.db || 'test');
+        if (obj.username && obj.password) {
+            return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
+        }
+        return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
     };
 
 app.configure('development', function () {
@@ -82,41 +95,28 @@ app.configure('prod', function () {
 });
 
 if (process.env.VCAP_SERVICES) {
-    var env = JSON.parse(process.env.VCAP_SERVICES);
-    var mongo = env['mongodb-1.8'][0]['credentials'];
-}
-else{
-    var mongo = {
-    "hostname":"localhost",
-    "port":27017,
-    "username":"",
-    "password":"",
-    "name":"",
-    "db":"blog"
-    }
-}
-
-var generate_mongo_url = function(obj){
-    obj.hostname = (obj.hostname || 'localhost');
-    obj.port = (obj.port || 27017);
-    obj.db = (obj.db || 'test');
-    if(obj.username && obj.password){
-        return "mongodb://" + obj.username + ":" + obj.password + "@" + obj.hostname + ":" + obj.port + "/" + obj.db;
-    }
-    else{
-        return "mongodb://" + obj.hostname + ":" + obj.port + "/" + obj.db;
-    }
+    env = JSON.parse(process.env.VCAP_SERVICES);
+    mongo = env['mongodb-1.8'][0].credentials;
+} else {
+    mongo = {
+        "hostname": "localhost",
+        "port": 27017,
+        "username": "",
+        "password": "",
+        "name": "",
+        "db": "blog"
+    };
 }
 
-var mongourl = generate_mongo_url(mongo);
-mongoose.connect(mongourl);
+mongoose.connect(generateMongoUrl(mongo));
 
 
 require('./config/router')(app);
 
 var server = http.createServer(app);
-server.listen(app.get('port'), function(){
+server.listen(app.get('port'), function () {
+    'use strict';
     console.log("Express server listening on port " + app.get('port') + ' env ' + app.get('env'));
 });
 
-module.exports=server;
+module.exports = server;
