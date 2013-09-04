@@ -70,8 +70,8 @@ module.exports = function (app) {
     app.post('/api/posts/:postId/tags/:tagId', isAuthenticated, controllers.postsController.tag);
     app.delete('/api/posts/:postId/tags/:tagId', isAuthenticated, controllers.postsController.untag);
 
-    app.get('/api/tags/find', controllers.tagsController.find);
-    app.post('/api/tags', controllers.tagsController.create);
+    app.get('/api/tags/find', isAuthenticated, controllers.tagsController.find);
+    app.post('/api/tags', isAuthenticated, controllers.tagsController.create);
     /*app.get('/api/tags', isAuthenticated, loadTags, controllers.tagsController.index);
     app.get('/api/tags/:tag_id', loadTag, controllers.tagsController.show);
     app.delete('/api/tags/:tag_id', isAuthenticated, loadTag, controllers.tagsController.delete);*/
