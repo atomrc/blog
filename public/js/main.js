@@ -3,7 +3,7 @@
 require.config({
     baseUrl: '/js/src/',
     paths: {
-        angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min',
+        angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular',
         ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min',
         ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-animate.min',
         ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min',
@@ -80,4 +80,8 @@ require(['angular', 'ngResource', 'ngAnimate', 'ngRoute', 'application'], functi
     }]);
 
     ngApp.run(['analyticsTracker', 'errorHandler', function () {}]);
+
+    angular.bootstrap(document, ['blog']);
+
+    return ngApp;
 });
