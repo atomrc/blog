@@ -1,7 +1,9 @@
-/*global require, define, angular, window*/
+/*global define, angular, window*/
 /*jslint plusplus: true*/
-var Blog = (function () {
+
+define(['angular'], function (angular) {
     'use strict';
+
     var application = {
         services: {},
         directives: {},
@@ -438,5 +440,4 @@ var Blog = (function () {
     };
 
     return application;
-
-}());
+});

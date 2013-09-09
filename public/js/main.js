@@ -1,14 +1,13 @@
 /*global angular, Blog, require, window*/
 
 require.config({
-    baseUrl: '/',
+    baseUrl: '/js/src/',
     paths: {
-        requirejslib: './js/lib/require.min',
-        angular: './js/lib/angular/1.2/angular.min',
-        ngResource: './js/lib/angular/1.2/angular.resource.min',
-        ngAnimate: './js/lib/angular/1.2/angular.animate.min',
-        ngRoute: './js/lib/angular/1.2/angular.route.min',
-        rainbow: './js/lib/rainbow.min',
+        angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min',
+        ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-resource.min',
+        ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-animate.min',
+        ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min',
+        rainbow: '../lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
         disqus: 'http://whysocurious.disqus.com/embed'
     },
@@ -16,6 +15,18 @@ require.config({
     shim: {
         angular: {
             exports: "angular"
+        },
+
+        ngAnimate: {
+            deps: ['angular']
+        },
+
+        ngRoute: {
+            deps: ['angular']
+        },
+
+        ngResource: {
+            deps: ['angular']
         },
 
         analytics: {
@@ -32,56 +43,41 @@ require.config({
     }
 });
 
-if (!window.angular) {
-    require(['angular', 'requirejslib', 'ngResource', 'ngAnimate', 'ngRoute']);
-}
-
-(function () {
+require(['angular', 'ngResource', 'ngAnimate', 'ngRoute', 'application'], function (angular, ngResource, ngAnimate, ngRoute, application) {
     'use strict';
-    var element,
-        application = angular.module('blog', ['ngResource', 'ngAnimate', 'ngRoute']);
 
-    for (element in Blog.services) {
-        if (Blog.services.hasOwnProperty(element)) {
-            application.factory(element, Blog.services[element]);
-        }
-    }
+    var ngApp = angular.module('blog', ['ngResource', 'ngAnimate', 'ngRoute']);
+
+    angular.forEach(application.services, function (service, name) {
+        ngApp.factory(name, service);
+    });
+
     //init directives
-    for (element in Blog.directives) {
-        if (Blog.directives.hasOwnProperty(element)) {
-            application.directive(element, Blog.directives[element]);
-        }
-    }
+    angular.forEach(application.directives, function (directive, name) {
+        ngApp.directive(name, directive);
+    });
+
     //init filters
-    for (element in Blog.filters) {
-        if (Blog.filters.hasOwnProperty(element)) {
-            application.filter(element, Blog.filters[element]);
-        }
-    }
+    angular.forEach(application.filters, function (filter, name) {
+        ngApp.filter(name, filter);
+    });
 
-    for (element in Blog.controllers) {
-        if (Blog.controllers.hasOwnProperty(element)) {
-            application.controller(element, Blog.controllers[element]);
-        }
-    }
+    angular.forEach(application.controllers, function (controller, name) {
+        ngApp.controller(name, controller);
+    });
 
-    for (element in Blog.animations) {
-        if (Blog.animations.hasOwnProperty(element)) {
-            application.animation(element, Blog.animations[element]);
-        }
-    }
+    angular.forEach(application.animations, function (animation, name) {
+        ngApp.animation(name, animation);
+    });
 
-    application.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+    ngApp.config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
         var el;
         $locationProvider.html5Mode(true);
-        for (el in Blog.routes) {
-            if (Blog.routes.hasOwnProperty(el)) {
-                $routeProvider.when(el, Blog.routes[el]);
-            }
-        }
+        angular.forEach(application.routes, function (route, name) {
+            $routeProvider.when(name, route);
+        });
         $routeProvider.otherwise({redirectTo: '/404'});
     }]);
 
-    application.run(['analyticsTracker', 'errorHandler', function () {}]);
-
-}());
+    ngApp.run(['analyticsTracker', 'errorHandler', function () {}]);
+});

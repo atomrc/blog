@@ -1,13 +1,13 @@
+/*global define, Blog, document, */
 /*jslint nomen: true */
-/*global require, Blog, document, */
-(function () {
+define(['angular', 'application'], function (angular, application) {
     'use strict';
 
 
     /***************************************/
     /*************** DIRECTIVES ***************/
     /***************************************/
-    Blog.directives.autocomplete = ['$http', function ($http) {
+    application.directives.autocomplete = ['$http', function ($http) {
         return {
             restrict: 'A',
             template:
@@ -32,7 +32,7 @@
         };
     }];
 
-    Blog.directives.contenteditable = ['$window', function ($window) {
+    application.directives.contenteditable = ['$window', function ($window) {
         return {
             require: 'ngModel',
             link: function (scope, element, attrs, ctrl) {
@@ -95,7 +95,7 @@
         };
     }];
 
-    Blog.directives.postEdition = ['$document', function ($document) {
+    application.directives.postEdition = ['$document', function ($document) {
         return {
             restrict: 'A',
             scope: { post: '=postEdition' },
@@ -106,7 +106,7 @@
     /***************************************/
     /*************** SERVICES ***************/
     /***************************************/
-    Blog.services.adminPostsManager = ['postsManager', 'Tag', 'Post', function (postsManager, Tag, Post) {
+    application.services.adminPostsManager = ['postsManager', 'Tag', 'Post', function (postsManager, Tag, Post) {
 
         postsManager.create = function (post) {
             return post
@@ -168,7 +168,7 @@
     /***************************************/
     /*************** CONTROLLERS ***************/
     /***************************************/
-    Blog.controllers.postEditionController = ['$scope', 'adminPostsManager', 'Post', '$location', '$window', function ($scope, postsManager, Post, $location, $window) {
+    application.controllers.postEditionController = ['$scope', 'adminPostsManager', 'Post', '$location', '$window', function ($scope, postsManager, Post, $location, $window) {
 
         $scope.add = function () { $scope.newPost = new Post(); };
 
@@ -218,7 +218,7 @@
 
     }];
 
-    Blog.controllers.tagsController = ['$scope', 'Tag', 'adminPostsManager', function ($scope, Tag, postsManager) {
+    application.controllers.tagsController = ['$scope', 'Tag', 'adminPostsManager', function ($scope, Tag, postsManager) {
         $scope.create = function () {
             $scope.newTag = new Tag();
         };
@@ -234,4 +234,6 @@
 
     }];
 
-}());
+    return application;
+
+});

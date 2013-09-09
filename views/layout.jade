@@ -22,27 +22,21 @@ html(lang="fr", data-ng-app="blog")
         meta(id="_image4", itemprop="image", content="http://thomasbelin.fr/images/avatar-small.jpeg")
 
         title(data-ng-bind="title || '#{title}' ") #{title}
+        script(src="/js/lib/require.min.js", data-main="/js/main")
         - if (prod)
             - if (auth)
                 link(href="/build/css/application.admin.css", type="text/css", rel="stylesheet")
-                script(src="/build/js/application.admin.js")
+                //script(src="/build/js/application.admin.js")
             - else
                 link(href="/build/css/application.css", type="text/css", rel="stylesheet")
-                script(src="/build/js/application.js")
+                //script(src="/build/js/application.js")
         - else
             link(href="/css/application.css", type="text/css", rel="stylesheet")
             link(href="/css/code-themes/custom.css", type="text/css", rel="stylesheet")
-            script(src="/js/lib/require.min.js")
-            script(src="/js/lib/angular/1.2/angular.min.js")
-            script(src="/js/lib/angular/1.2/angular.animate.min.js")
-            script(src="/js/lib/angular/1.2/angular.route.min.js")
-            script(src="/js/lib/angular/1.2/angular.resource.min.js")
-            script(src="/js/src/extensions.js")
-            script(src="/js/src/application.js")
+            //script(src="/js/lib/require.min.js", data-main="/js/main")
             - if (auth)
                 link(href="/css/admin.css", type="text/css", rel="stylesheet")
-                script(src="/js/src/application.admin.js")
-            script(src="/js/main.js")
+                //script(src="/js/src/application.admin.js")
 
         base(href="/")
     body
