@@ -1,64 +1,65 @@
 v1.6 (in progress)
 =============
-reuse angular as an AMD module
-refactor almost all server code
-rich text editor
-upgrade angular to 1.2-rc1
-different states for a post (unpublished, draft, published)
-prevent tags duplication
+- reuse angular as an AMD module
+- refactor almost all server code
+- rich text editor
+- upgrade angular to 1.2-rc1
+- different states for a post (unpublished, draft, published)
+- prevent tags duplication
 
 v1.5 (13/07/2013)
 =============
-use dbrefs between tags and posts
-use seo4ajax to generate snapshots for search engines
-highlight post that have the same tag on the home page
-improve share button UX
-improve error handling
-comments count of each post on home page
+- use dbrefs between tags and posts
+- use seo4ajax to generate snapshots for search engines
+- highlight post that have the same tag on the home page
+- improve share button UX
+- improve error handling
+- comments count of each post on home page
 
 v1.4 (17/06/2013)
 ==========
-upgrade angular to 1.1.5
-no more tweets on home page
-use disqus for comments
-improve SEO + snapshots generation
-retrieve manually share count from providers
-custom share buttons
-import font-awesome
-lighter interface
+- upgrade angular to 1.1.5
+- no more tweets on home page
+- use disqus for comments
+- improve SEO + snapshots generation
+- deployment script
+- retrieve manually share count from providers
+- custom share buttons
+- import font-awesome
+- lighter interface
 
 v1.3 (23/05/2013)
 ==========
-complete redesign of application architecture
-angular doesn't load as an AMD any more to be able to use ng-cloak
-upgrade angular to 1.1.4
-upgrade requireJS
-add html semantic to articles
-admin UI improvements
-ability to reset article slug and pubdate
-facebook share
+- complete redesign of application architecture
+- angular doesn't load as an AMD any more to be able to use ng-cloak
+- upgrade angular to 1.1.4
+- upgrade requireJS
+- add html semantic to articles
+- admin UI improvements
+- ability to reset article slug and pubdate
+- facebook share
 
 v1.2 (30/03/2013)
 ============
-google authorship
-upgrade angular to 1.0.5
-RSS feed
-SEO
-pushState urls
-loading static full page when user arrives for SEO
-remove code specific to search engines
+- google authorship
+- upgrade angular to 1.0.5
+- RSS feed
+- SEO
+- pushState urls
+- loading static full page when user arrives for SEO
+- remove code specific to search engines
 
 v1.1 (22/02/2013)
 ============
-improve admin
-general UI improvements
-add Rainbow.js for syntax highlight
-social improvements (share twitter + google+)
-set file caching
-use of angular resources
+- improve admin
+- general UI improvements
+- add Rainbow.js for syntax highlight
+- social improvements (share twitter + google+)
+- set file caching
+- use of angular resources
 
 v1.0 (31/01/2013)
 ============
-create/edit/delete posts
-create tags
-tag/untag posts
+- create/edit/delete posts
+- create tags
+- tag/untag posts
