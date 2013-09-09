@@ -1,8 +1,7 @@
-/*global define, Blog, document, */
+/*global define, document */
 /*jslint nomen: true */
-define(['angular', 'application'], function (angular, application) {
+define(['angular', 'extensions', 'application'], function (angular, extensions, application) {
     'use strict';
-
 
     /***************************************/
     /*************** DIRECTIVES ***************/
@@ -128,9 +127,11 @@ define(['angular', 'application'], function (angular, application) {
 
         postsManager.remove = function (post) {
             var self = this;
-            post.$delete().then(function () {
-                self.posts.removeElement(post);
-            });
+            post
+                .$delete()
+                .then(function () {
+                    self.posts.removeElement(post);
+                });
         };
 
         postsManager.reset = function (post) {
