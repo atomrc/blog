@@ -5,17 +5,6 @@ BUILD_DIR=build/
 JS_BUILD_DIR=$(BUILD_DIR)$(JS_DIR)
 CSS_BUILD_DIR=$(BUILD_DIR)$(CSS_DIR)
 
-PUBLIC_JS_FILES= \
-				$(JS_DIR)src/extensions.js\
-				$(JS_DIR)src/application.js\
-				$(JS_DIR)main.js
-
-ADMIN_JS_FILES= \
-				$(JS_DIR)src/extensions.js\
-				$(JS_DIR)src/application.js\
-				$(JS_DIR)src/application.admin.js\
-				$(JS_DIR)main.js
-
 PUBLIC_CSS_FILES= \
 				$(CSS_DIR)application.css\
 				$(CSS_DIR)code-themes/custom.css
@@ -37,9 +26,7 @@ public_css:
 	rm temp.css
 
 public_js:
-	cat $(PUBLIC_JS_FILES) > temp.js
-	r.js -o name=temp out=$(JS_BUILD_DIR)application.js mainConfigFile=temp.js baseUrl=.
-	rm temp.js
+	r.js -o js/build.js
 
 admin_css:
 	cat $(ADMIN_CSS_FILES) > temp.css
@@ -47,8 +34,6 @@ admin_css:
 	rm temp.css
 
 admin_js:
-	cat $(ADMIN_JS_FILES) > temp.js
-	r.js -o name=temp out=$(JS_BUILD_DIR)application.admin.js mainConfigFile=temp.js baseUrl=.
-	rm temp.js
+	r.js -o js/build.admin.js
 
 admin: admin_css admin_js

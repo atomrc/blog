@@ -5,5 +5,5 @@
         main: '../main'
     },
     name: 'main',
-    out: 'build/application.js'
+    out: '../build/js/application.js'
 })

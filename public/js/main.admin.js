@@ -43,7 +43,7 @@ require.config({
     }
 });
 
-require(['bootstrap', 'application'], function (bootstrap, application) {
+require(['bootstrap', 'application.admin'], function (bootstrap, application) {
     'use strict';
     bootstrap(application);
 });

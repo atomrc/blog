@@ -1,4 +1,4 @@
-/*global define, angular, window*/
+/*global define, require, window*/
 /*jslint plusplus: true*/
 
 define(['angular'], function (angular) {

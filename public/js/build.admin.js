@@ -1,9 +1,9 @@
 ({
-    baseUrl: "src/admin",
+    baseUrl: "src",
     mainConfigFile: "main.admin.js",
     paths: {
-        main: '../../main.admin'
+        main: '../main.admin'
     },
     name: 'main',
-    out: 'build/application.admin.js'
+    out: '../build/js/application.admin.js'
 })
