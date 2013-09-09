@@ -25,5 +25,12 @@ module.exports = {
         }
         tag.posts.push(post);
         tag.save();
+    },
+
+    unaffect: function (tagId, postId) {
+        'use strict';
+        return Tag
+            .findByIdAndUpdate(tagId, { $pull: { posts: postId }})
+            .exec();
     }
 };

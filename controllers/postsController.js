@@ -21,7 +21,6 @@ exports.show = function (req, res, next) {
     postsManager
         .load(req.params.postId, !req.session.auth)
         .then(function (post) {
-            console.log(arguments);
             if (!post) { return next(new NotFound()); }
             res.send(post);
         }, function () {
@@ -112,15 +111,16 @@ exports.tag = function (req, res, next) {
 
 exports.untag = function (req, res) {
     'use strict';
-    Post.findByIdAndUpdate(
-        req.params.postId,
-        { $pull : { tags: req.params.tag_id }}
-    ).populate('tags').exec(function (err, post) {
-        if (err) { res.send(err); }
-        Tag.findByIdAndUpdate(req.params.tag_id, { $pull: { posts: req.params.postId }}, function () {
-            post.populate('tags');
-            res.send(post);
-        });
-    });
+    var tagId = req.params.tagId,
+        postId = req.params.postId;
 
+    postsManager
+        .untag(postId, tagId)
+        .then(function (post) {
+            return tagsManager
+                .unaffect(tagId, postId)
+                .then(function (tag) {
+                    res.send(post);
+                });
+        });
 };

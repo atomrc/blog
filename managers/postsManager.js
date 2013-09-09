@@ -55,5 +55,13 @@ module.exports = {
         }
         post.tags.push(tag);
         post.save();
+    },
+
+    untag: function (postId, tagId) {
+        'use strict';
+        return Post
+            .findByIdAndUpdate(postId, { $pull : { tags: tagId }})
+            .populate('tags')
+            .exec();
     }
 };
