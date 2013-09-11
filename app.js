@@ -84,6 +84,7 @@ app.configure(function () {
 
 app.configure('development', function () {
     'use strict';
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.use(errorHandler);
 });
 

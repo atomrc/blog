@@ -47,16 +47,38 @@ module.exports = {
 
     findSimilar: function (post) {
         'use strict';
-        var conditions = {
-            '_id': { $ne: post.id },
-            tags: { $in: [] }
-        };
+        var relatedPosts = [],
+            orderedPosts = {},
+            maxMatch = 0,
+            matches = [],
+            i;
+
         post.tags.forEach(function (tag) {
-            conditions.tags.$in.push(tag.id);
+            tag.posts.forEach(function (postId) {
+                relatedPosts.push(postId);
+            });
         });
-        console.log(conditions);
+
+        relatedPosts.forEach(function (postId) {
+            if (!orderedPosts[postId]) {
+                orderedPosts[postId] = 0;
+            }
+            orderedPosts[postId] = orderedPosts[postId] + 1;
+            if (orderedPosts[postId] > maxMatch) {
+                maxMatch = orderedPosts[postId];
+            }
+        });
+
+        for (i in orderedPosts) {
+            if (orderedPosts.hasOwnProperty(i)) {
+                if (orderedPosts[i] === maxMatch) {
+                    matches.push(i);
+                }
+            }
+        }
+
         return Post
-            .find(conditions)
+            .find({ '_id': { $in: matches}})
             .populate('tags')
             .exec();
     },
