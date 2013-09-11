@@ -39,13 +39,13 @@ exports.find = function (req, res, next) {
         });
 };
 
-exports.suggest = function (req, res, next) {
+exports.related = function (req, res, next) {
     'use strict';
     postsManager
         .load(req.params.postId, !req.session.auth)
         .then(function (post) {
             postsManager
-                .findSimilar(post)
+                .findRelated(post)
                 .then(function (posts) {
                     res.send(posts);
                 });

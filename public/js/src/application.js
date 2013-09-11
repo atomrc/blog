@@ -163,7 +163,7 @@ define(['angular'], function (angular) {
             };
         }],
 
-        postsManager: ['Post', '$q', '$timeout', function (Post, q, timeout) {
+        postsManager: ['Post', '$q', '$timeout', '$http', function (Post, q, timeout, http) {
             return {
                 posts: [],
 
@@ -195,6 +195,11 @@ define(['angular'], function (angular) {
                         return post.$get();
                     }
                     return Post.find({ id: slug }).$promise;
+                },
+
+                getRelated: function (post) {
+                    return http
+                        .get('/api/posts/' + post.id + '/related');
                 }
             };
         }],
@@ -358,12 +363,17 @@ define(['angular'], function (angular) {
         $scope.posts = posts;
     }];
 
-    application.controllers.showController = ['$rootScope', '$scope', 'post', '$sce', function ($rootScope, $scope, post, sce) {
+    application.controllers.showController = ['$rootScope', '$scope', 'post', 'postsManager', '$sce', function ($rootScope, $scope, post, postsManager, sce) {
         $rootScope.description = post.description;
         $rootScope.title = post.title;
 
         post.$body = post.$body || sce.trustAsHtml(post.body);
         $scope.post = post;
+        postsManager
+            .getRelated(post)
+            .then(function (response) {
+                $scope.relatedPosts = response.data;
+            });
     }];
 
     application.controllers.postsController = ['$scope', '$location', 'metadatasManager', function ($scope, $location, metadatasManager) {

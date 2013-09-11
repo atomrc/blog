@@ -22,6 +22,9 @@
             include _show
     - else
         include _show
+        .suggestions
+            ul
+                li(data-ng-repeat="post in relatedPosts", data-ng-bind="post.title")
 
 -if (prod)
     section

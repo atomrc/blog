@@ -45,7 +45,7 @@ module.exports = {
             .exec();
     },
 
-    findSimilar: function (post) {
+    findRelated: function (post) {
         'use strict';
         var relatedPosts = [],
             orderedPosts = {},
@@ -60,6 +60,7 @@ module.exports = {
         });
 
         relatedPosts.forEach(function (postId) {
+            if (postId.toString() === post.id.toString()) { return; }
             if (!orderedPosts[postId]) {
                 orderedPosts[postId] = 0;
             }

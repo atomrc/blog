@@ -41,7 +41,7 @@ module.exports = function (app) {
     app.post('/api/posts', isAuthenticated, controllers.postsController.create);
     app.get('/api/posts/:postId', controllers.postsController.show);
     app.get('/api/posts/:postSlug/find', controllers.postsController.find);
-    app.get('/api/posts/:postId/suggest', controllers.postsController.suggest);
+    app.get('/api/posts/:postId/related', controllers.postsController.related);
     app.put('/api/posts/:postId', isAuthenticated, controllers.postsController.update);
     app.delete('/api/posts/:postId', isAuthenticated, controllers.postsController.delete);
 
