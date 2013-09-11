@@ -40,6 +40,9 @@ exports.find = function (req, res, next) {
         });
 };
 
+exports.suggest = function (req, res, next) {
+};
+
 exports.create = function (req, res) {
     'use strict';
     var post = new Post(req.body);

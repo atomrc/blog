@@ -7,7 +7,6 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     mongoose = require('mongoose'),
-    postsController = require('./controllers/postsController'),
     errorHandler = require('./libs/errors').handler,
     app = express(),
     mongo,
@@ -72,10 +71,10 @@ app.configure(function () {
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
 
-    app.use(rewriteRules);
     app.use(express.compress());
-    app.use(express.favicon(__dirname + '/public/favicon.ico'));
     app.use(express.static(path.join(__dirname, 'public')));
+    app.use(express.favicon(path.join(__dirname, '/public/favicon.ico')));
+    app.use(rewriteRules);
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session({secret: 'supersecretkeygoeshere'}));
@@ -85,7 +84,6 @@ app.configure(function () {
 
 app.configure('development', function () {
     'use strict';
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.use(errorHandler);
 });
 

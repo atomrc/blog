@@ -51,4 +51,4 @@ exports.index = function (req, res, next) {
     } else {
         serveLayout(req, res, next);
     }
-}
+};

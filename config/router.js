@@ -17,38 +17,19 @@ var controllers  = require('../controllers'),
         return (user === params.user.username && pass === params.user.password);
     }),
 
-    loadTag = function (req, res, next) {
+    getSiteUrls = function (req, res, next) {
         'use strict';
-        Tag.findById(req.params.tag_id, function (err, tag) {
-            if (err) { return next(new NotFound()); }
-            if (tag === null) { return next(new NotFound()); }
-            req.tag = tag;
-            return next();
-        });
-    };
-
-var loadTags = function (req, res, next) {
-    'use strict';
-    var tags = Tag.find({}, function (err, tags) {
-        if (err) { throw new NotFound(); }
-        req.tags = tags;
-        next();
-    });
-};
-
-var getSiteUrls = function (req, res, next) {
-    'use strict';
-    var urls = ['/'];
-    postsManager
-        .loadAll(true)
-        .then(function (posts) {
-            posts.forEach(function (post) {
-                urls.push('/posts/' + post.slug);
+        var urls = ['/'];
+        postsManager
+            .loadAll(true)
+            .then(function (posts) {
+                posts.forEach(function (post) {
+                    urls.push('/posts/' + post.slug);
+                });
+                req.urls = urls;
+                next();
             });
-            req.urls = urls;
-            next();
-        });
-};
+    };
 
 // Routes
 module.exports = function (app) {
@@ -95,4 +76,4 @@ module.exports = function (app) {
 
     //FRONT
     app.get('*', controllers.homeController.index);
-}
+};

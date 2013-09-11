@@ -1,34 +1,36 @@
-var NotFound = function(msg){
-    this.name = 'NotFound';
-    Error.call(this, msg);
-    Error.captureStackTrace(this, arguments.callee);
-}
+var NotFound = function (msg) {
+        this.name = 'Not Found';
+        Error.call(this, msg);
+        Error.captureStackTrace(this, arguments.callee);
+    },
 
-var Unauthorized = function(msg) {
-    this.name = 'Unauthorized';
-    Error.call(this, msg);
-    Error.captureStackTrace(this, arguments.callee);
-}
+    Unauthorized = function (msg) {
+        this.name = 'Unauthorized';
+        Error.call(this, msg);
+        Error.captureStackTrace(this, arguments.callee);
+    },
 
-var ValidationError = function(msg) {
-    this.name = 'Validation Failed';
-    Error.call(this, msg);
-    Error.captureStackTrace(this, arguments.callee);
-}
+    ValidationError = function (msg) {
+        this.name = 'Validation Failed';
+        Error.call(this, msg);
+        Error.captureStackTrace(this, arguments.callee);
+    };
 
 exports.Unauthorized = Unauthorized;
 exports.NotFound = NotFound;
 
-exports.handler = function(err, req, res, next) {
+exports.handler = function (err, req, res, next) {
+    'use strict';
+    var code = 500;
     if (err instanceof NotFound) {
-        return res.send({message: 'Not Found'}, 404);
+        code = 404;
     }
     if (err instanceof Unauthorized) {
-        return res.send({message: 'Unauthorized'}, 401);
+        code = 401;
     }
     if (err instanceof ValidationError) {
-        return res.send({message: 'Missing Parameters'});
+        code = 400;
     }
-    console.log(err);
-    return next(err);
-}
+    if (code === 500) { console.log(err.stack); }
+    return res.send({error: err.name}, code);
+};
