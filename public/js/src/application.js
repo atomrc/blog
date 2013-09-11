@@ -200,12 +200,12 @@ define(['angular'], function (angular) {
         }],
 
         Tag: ['$resource', function (resource) {
-            return resource('/api/tags/:id', {id: '@_id'});
+            return resource('/api/tags/:id', {id: '@id'});
         }],
 
         Post: ['$resource', '$location', function (resource, $location) {
             var baseUrl = '/api/posts/:id/:action/:resourceId',
-                Post = resource(baseUrl, { id: '@_id' }, {
+                Post = resource(baseUrl, { id: '@id' }, {
                     update: { method: 'PUT' },
                     find: { method: 'GET', params: { action: 'find' } },
                     tag: { method: 'POST', params: { action: 'tags' } },
@@ -218,7 +218,7 @@ define(['angular'], function (angular) {
 
             Post.prototype.hasTag = function (tag) {
                 return tag && this.tags.reduce(function (value, element) {
-                    return value || element._id === tag._id;
+                    return value || element.id === tag.id;
                 }, false);
             };
 

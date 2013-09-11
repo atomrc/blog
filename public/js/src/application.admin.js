@@ -117,7 +117,7 @@ define(['angular', 'extensions', 'application'], function (angular, extensions, 
 
         postsManager.save = function (post) {
             var self = this;
-            if (post._id) {
+            if (post.id) {
                 return post.$update();
             }
             return post.$save().then(function (post) {
@@ -147,10 +147,10 @@ define(['angular', 'extensions', 'application'], function (angular, extensions, 
 
         postsManager.tag = function (post, tag) {
             var affect = function (post, tag) {
-                post.$tag({ resourceId: tag._id });
+                post.$tag({ resourceId: tag.id });
             };
 
-            if (!tag._id) {
+            if (!tag.id) {
                 tag = new Tag(tag);
                 return tag.$save().then(function (tag) {
                     affect(post, tag);
@@ -160,7 +160,7 @@ define(['angular', 'extensions', 'application'], function (angular, extensions, 
         };
 
         postsManager.untag = function (post, tag) {
-            post.$untag({ resourceId: tag._id });
+            post.$untag({ resourceId: tag.id });
         };
 
         return postsManager;

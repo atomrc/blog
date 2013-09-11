@@ -4,8 +4,7 @@ var Post         = require('../models/Post'),
     NotFound     = require('../libs/errors').NotFound,
     postsManager = require('../managers/postsManager'),
     tagsManager  = require('../managers/tagsManager'),
-    rssManager   = require('../managers/rssManager'),
-    suggester    = require('../services/suggester');
+    rssManager   = require('../managers/rssManager');
 
 exports.index = function (req, res) {
     'use strict';
@@ -41,6 +40,16 @@ exports.find = function (req, res, next) {
 };
 
 exports.suggest = function (req, res, next) {
+    'use strict';
+    postsManager
+        .load(req.params.postId, !req.session.auth)
+        .then(function (post) {
+            postsManager
+                .findSimilar(post)
+                .then(function (posts) {
+                    res.send(posts);
+                });
+        });
 };
 
 exports.create = function (req, res) {
@@ -58,7 +67,7 @@ exports.update = function (req, res, next) {
         .then(function (post) {
             var i;
             delete req.body.tags;
-            delete req.body._id;
+            delete req.body.id;
             for (i in req.body) {
                 if (req.body.hasOwnProperty(i)) {
                     post[i] = req.body[i];
@@ -78,12 +87,6 @@ exports.feed = function (req, res) {
             res.setHeader("Content-Type", "text/xml; charset=utf-8");
             res.send(rssManager.generate(posts));
         });
-};
-
-exports.suggest = function (req, res) {
-    'use strict';
-    suggester.suggest(req.post);
-    res.send('soon');
 };
 
 exports.delete = function (req, res) {

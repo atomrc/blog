@@ -14,14 +14,24 @@ var mongoose = require('mongoose'),
     };
 
 var PostSchema = new Schema({
-    title:        String,
-    description:  String,
-    body:         String,
-    slug:         String,
-    status:       { type: Number, 'default': 0 },
-    pubdate:      { type: Date, 'default': Date.now },
-    tags:         [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
-}, { versionKey:  "version" });
+        title:        String,
+        description:  String,
+        body:         String,
+        slug:         String,
+        status:       { type: Number, 'default': 0 },
+        pubdate:      { type: Date, 'default': Date.now },
+        tags:         [{ type: Schema.Types.ObjectId, ref: 'Tag' }]
+    }, {
+        versionKey:  "version",
+        toJSON: {
+            getters: true,
+            transform: function (doc, ret, options) {
+                'use strict';
+                delete ret._id;
+                return ret;
+            }
+        }
+    });
 
 PostSchema.pre('save', function (next) {
     'use strict';

@@ -45,10 +45,26 @@ module.exports = {
             .exec();
     },
 
+    findSimilar: function (post) {
+        'use strict';
+        var conditions = {
+            '_id': { $ne: post.id },
+            tags: { $in: [] }
+        };
+        post.tags.forEach(function (tag) {
+            conditions.tags.$in.push(tag.id);
+        });
+        console.log(conditions);
+        return Post
+            .find(conditions)
+            .populate('tags')
+            .exec();
+    },
+
     tag: function (post, tag) {
         'use strict';
         var alreadyAdded = post.tags.reduce(function (prev, current) {
-            return prev || (current && current._id.toString() === tag._id.toString());
+            return prev || (current && current.id.toString() === tag.id.toString());
         }, false);
         if (alreadyAdded) {
             return true;
