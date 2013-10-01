@@ -61,7 +61,7 @@ exports.sync = function (req, res) {
             posts.forEach(function (post) {
                 post.tags.forEach(function (tag) {
                     if (tag.posts.indexOf(post.id) === -1) {
-                        log.push('[+] ' + post.title + ' -> ' + tag.name);
+                        log.push('[+] ' + tag.name + ' <- ' + post.title);
                     }
                 });
             });
@@ -79,7 +79,7 @@ exports.sync = function (req, res) {
             tags.forEach(function (tag) {
                 tag.posts.forEach(function (post) {
                     if (post.tags.indexOf(tag.id) === -1) {
-                        log.push('[-] ' + post.title + ' -> ' + tag.name);
+                        log.push('[-] ' + tag.name + ' <- ' + post.title);
                     }
                 });
             });
