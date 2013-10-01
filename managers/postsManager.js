@@ -1,11 +1,14 @@
 /*jslint node: true*/
 var Post = require('../models/Post'),
-    tagsManager = require('../managers/tagsManager');
+    tagsManager = require('../managers/tagsManager'),
+    STATUS_UNPUBLISHED = 0,
+    STATUS_DRAFT = 1,
+    STATUS_PUBLISHED = 2;
 
 module.exports = {
     loadAll: function (filter, full, limit) {
         'use strict';
-        var condition = filter ? { status: 2 } : {},
+        var condition = filter ? { status: STATUS_PUBLISHED } : {},
             options = limit ?  { limit: limit } : {},
             properties = full ? '' : '-body';
 
@@ -28,7 +31,7 @@ module.exports = {
 
         //load the post and check if its status is published or draft
         return Post
-            .findOne({'_id': id, 'status': {$gt: 0} })
+            .findOne({'_id': id, 'status': {$gt: STATUS_UNPUBLISHED} })
             .populate('tags')
             .exec();
     },
@@ -37,7 +40,7 @@ module.exports = {
         'use strict';
         var condition = {slug: slug};
         if (filter) {
-            condition.status = 2;
+            condition.status = STATUS_PUBLISHED;
         }
         return Post
             .findOne(condition)
@@ -50,26 +53,29 @@ module.exports = {
         var relatedPosts = [],
             orderedPosts = {},
             maxMatch = 0,
+            maxTotalRelated = 3,
             matches = [],
             i;
 
+        //retrieving all the posts of all the tags of the current post
         post.tags.forEach(function (tag) {
             tag.posts.forEach(function (postId) {
                 relatedPosts.push(postId);
             });
         });
 
+        //counting times a single post appears in the list of posts
         relatedPosts.forEach(function (postId) {
             if (postId.toString() === post.id.toString()) { return; }
-            if (!orderedPosts[postId]) {
-                orderedPosts[postId] = 0;
-            }
-            orderedPosts[postId] = orderedPosts[postId] + 1;
-            if (orderedPosts[postId] > maxMatch) {
-                maxMatch = orderedPosts[postId];
-            }
+
+            orderedPosts[postId] = orderedPosts[postId] ?
+                    orderedPosts[postId] + 1 :
+                    1;
+
+            maxMatch = Math.max(orderedPosts[postId], maxMatch);
         });
 
+        //grouping all the posts that have the maximum number of tags commun with the current post
         for (i in orderedPosts) {
             if (orderedPosts.hasOwnProperty(i)) {
                 if (orderedPosts[i] === maxMatch) {
@@ -79,7 +85,7 @@ module.exports = {
         }
 
         return Post
-            .find({ '_id': { $in: matches}})
+            .find({ '_id': { $in: matches}, status: STATUS_PUBLISHED })
             .populate('tags')
             .exec();
     },
