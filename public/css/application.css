@@ -14,7 +14,7 @@ html, body { height: 100% }
 
 body { padding:0; margin:0; background:url('/images/noise.png') #EEE; color:#666; font-family:Open Sans, Arial; }
 
-h1, h2, strong, #not-found .code, .pubdate .month { color:#F06; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75); font-weight: normal; }
+h1, h2, strong, #not-found .code, .pubdate .month, .suggestions .title { color:#F06; text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.75); font-weight: normal; }
 a {  text-decoration:none; color: rgb(0, 132, 180); }
 #header a, h1 a, h2 a { color:inherit; }
 ul { list-style: none; padding:0; }
@@ -189,6 +189,10 @@ article .edition-panel, .widget, .full-article .body table { background:rgba(255
 .full-article .header { text-align: center; margin: 0 0 60px 0; }
 .full-article .header h1 { text-align: center; }
 .full-article .author { font-size: 10pt; margin: 10px 0; }
+
+.full-article .suggestions { border: solid #CCC 1px; border-radius: 5px; background-color: #DDD; padding: 10px; margin: 10px 0; }
+.full-article .suggestions .title { font-weight: bold; font-size: 15pt; }
+
 .actions-panel { position: relative; }
 .actions-panel .share { text-align: right; }
 

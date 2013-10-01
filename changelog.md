@@ -1,4 +1,4 @@
-v1.6 (in progress)
+v1.6 (11/09/2013)
 =============
 - reuse angular as an AMD module
 - refactor almost all server code
@@ -6,6 +6,7 @@ v1.6 (in progress)
 - upgrade angular to 1.2-rc1
 - different states for a post (unpublished, draft, published)
 - prevent tags duplication
+- replace _id by id to identify database objects
 
 v1.5 (13/07/2013)
 =============
