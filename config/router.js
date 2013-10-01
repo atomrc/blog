@@ -52,6 +52,7 @@ module.exports = function (app) {
     app.delete('/api/posts/:postId/tags/:tagId', isAuthenticated, controllers.postsController.untag);
 
     app.get('/api/tags/find', isAuthenticated, controllers.tagsController.find);
+    app.get('/api/tags', /*isAuthenticated,*/ controllers.tagsController.index);
     app.post('/api/tags', isAuthenticated, controllers.tagsController.create);
     app.get('/api/tags/sync', /*isAuthenticated,*/ controllers.tagsController.sync);
     /*app.get('/api/tags', isAuthenticated, loadTags, controllers.tagsController.index);
