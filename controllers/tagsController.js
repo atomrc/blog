@@ -47,24 +47,49 @@ exports.delete = function (req, res) {
     res.send(tag);
 };
 
+exports.reset = function (req, res) {
+    'use strict';
+    Tag
+        .find({})
+        .exec()
+        .then(function (tags) {
+            tags.forEach(function (tag) {
+                Post
+                    .find({ tags: tag.id })
+                    .exec()
+                    .then(function (posts) {
+                        tag.posts = posts.map(function (post) {
+                            return post.id;
+                        });
+                        tag.save();
+                    });
+            });
+            res.send('done');
+
+        });
+};
+
 exports.sync = function (req, res) {
     'use strict';
     var state = 0,
-        log = [];
+        log = {};
 
     Post
         .find({})
         .populate('tags')
         .exec()
         .then(function (posts) {
-            state += 1;
+            log.add = [];
             posts.forEach(function (post) {
                 post.tags.forEach(function (tag) {
                     if (tag.posts.indexOf(post.id) === -1) {
-                        log.push('[+] ' + post.title + ' -> ' + tag.name);
+                        log.add.push('[+] ' + tag.name + ' <- ' + post.title);
+                    } else {
+                        log.add.push('[v] ' + tag.name + ' <- ' + post.title);
                     }
                 });
             });
+            state += 1;
             if (state === 11) {
                 res.send(log);
             }
@@ -75,14 +100,17 @@ exports.sync = function (req, res) {
         .populate('posts')
         .exec()
         .then(function (tags) {
-            state += 10;
+            log.remove = [];
             tags.forEach(function (tag) {
                 tag.posts.forEach(function (post) {
                     if (post.tags.indexOf(tag.id) === -1) {
-                        log.push('[-] ' + post.title + ' -> ' + tag.name);
+                        log.remove.push('[-] ' + tag.name + ' <- ' + post.title);
+                    } else {
+                        log.remove.push('[v] ' + tag.name + ' <- ' + post.title);
                     }
                 });
             });
+            state += 10;
             if (state === 11) {
                 res.send(log);
             }
