@@ -50,7 +50,7 @@ text-shadow:0px 1px 0px white;
 
 #header .title { color:#666; font-size:2em; font-weight:bold; margin-top:0.25em; }
 
-#footer { background:#666; color: #EEE; }
+#footer { background:#666; color: #EEE; margin-top: 80px; }
 #footer .container {
     background: url('/images/tom.png') no-repeat center right;
     height: 100%;
@@ -165,7 +165,8 @@ article .edition-panel, .widget, .full-article .body table { background:rgba(255
 .comment-count:after { content: " \f075"; font-family: FontAwesome }
 
 /*** FULL ARTICLE ***/
-.full-article .readable-content { width: 800px; margin: auto; position: relative; }
+.full-article .readable-content,
+section.readable-content { width: 800px; margin: auto; position: relative; }
 
 .full-article .header { text-align: center; width: 100%; padding: 20px 0; }
 .full-article .header h1 { text-align: center; width: 100%; }
