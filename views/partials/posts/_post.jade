@@ -11,7 +11,7 @@ article(itemscope="", itemtype="http://schema.org/Article", itemref="_image4 _de
 
         aside(data-ng-controller="tagsController")
             span.tags-list
-                div.tag-container(data-ng-repeat='tag in post.tags')
+                span(data-ng-repeat='tag in post.tags')
                     span.tag(data-ng-mouseover="setHoveredTag(tag);", data-ng-mouseout="setHoveredTag(null);")
                         {{ tag.name }}
                         block tag_edit
@@ -19,11 +19,12 @@ article(itemscope="", itemtype="http://schema.org/Article", itemref="_image4 _de
             - if (auth)
                 span.add(data-ng-click="create()")+
             block tag_form
-        div(style='clear:both')
-    block body
-        p.description{{ post.description }}
+        block header_additions
+    .readable-content
+        block body
+            p.description{{ post.description }}
 
-    block author
-        .author par
-            span(itemprop="author")  Thomas Belin
-        div(style="clear:both;")
+        block author
+            .author par
+                span(itemprop="author")  Thomas Belin
+            div(style="clear:both;")

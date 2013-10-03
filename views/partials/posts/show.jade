@@ -1,21 +1,4 @@
 .full-article
-    .actions-panel(data-sticky='{ start: 10 }')
-        table.actions-container
-            tr
-                td
-                    a(href='/', class='button')
-                        i.icon-chevron-left
-                        |  Tous les articles
-                td.share
-                    div(data-share="post")
-                        a.button.share-button(data-ng-repeat="provider in providers",
-                            class="{{provider.name}} icon",
-                            href="javascript:void(0);",
-                            data-ng-click="share(provider)"
-                        )
-                            span.count(data-ng-show="provider.count > 0")
-                                | &nbsp;
-                                span(data-ng-bind="provider.count")
     - if (auth)
         div(data-post-edition="post", data-ng-keydown="keydown($event);")
             include _form
@@ -23,12 +6,12 @@
     - else
         include _show
 
-    .suggestions(data-ng-if="relatedPosts.length > 0")
+    .suggestions.readable-content(data-ng-if="relatedPosts.length > 0")
         span.title Sur le même sujet
         ul
             li(data-ng-repeat="post in relatedPosts")
                 a(href="/posts/{{post.slug}}", data-ng-bind="post.title")
 
 -if (prod)
-    section
+    section.readable-content
         #disqus_thread(data-disqus="post")
