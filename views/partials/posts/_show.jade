@@ -1,10 +1,13 @@
 extends _post
 
 block title
-    - if(auth)
-        h1(contenteditable="true", data-ng-model="post.title")
-    - else
-        h1 {{post.title}}
+    div(data-sticky-container="{ start: 100 }")
+        div.sticky-bar(data-sticky)
+            h1 {{post.title}}
+            .share(data-share="post")
+
+block header_additions
+    .share(data-share="post")
 
 block body
     - if(auth)

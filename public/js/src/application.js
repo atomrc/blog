@@ -256,26 +256,43 @@ define(['angular'], function (angular) {
         },
 
         // add a sticky header on top of the window that shows when the user scroll to a specific position
-        sticky: ['$window', function ($window) {
+        stickyContainer: ['$window', '$timeout', function ($window, $timeout) {
             return {
                 restrict: 'A',
                 link: function (scope, element, attrs) {
-                    var options = scope.$eval(attrs.sticky),
+                    $timeout(function () {
+                        var initialHeight = $window.getComputedStyle(element[0]).height;
+                        element.css('height', initialHeight);
+                    }, 0);
+                }
+            };
+        }],
+
+        sticky: ['$window', '$timeout', function ($window, $timeout) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    var offsetTop = null,
+                        fullOpacityLevel = 200,
                         isSticky = false;
-                    if (!options) { return; }
-                    element.addClass('sticky hidden');
                     $window.onscroll = function () {
-                        var shouldBeSticky = $window.pageYOffset >= options.start;
-                        if (shouldBeSticky === isSticky) { return; }
-
-                        if (shouldBeSticky) {
-                            element.removeClass('hidden');
-                        } else {
-                            element.addClass('hidden');
-                        }
-
+                        if (!offsetTop) { return; }
+                        var offsetDiff = $window.pageYOffset - offsetTop,
+                            shouldBeSticky = offsetDiff >= 0,
+                            opacity = Math.max(0.15, Math.min(1, offsetDiff / fullOpacityLevel));
                         isSticky = shouldBeSticky;
+                        if (shouldBeSticky) {
+                            element.addClass('sticky');
+                            element.css('opacity', opacity);
+                        } else {
+                            element.css('opacity', 1);
+                            element.removeClass('sticky');
+                        }
                     };
+
+                    $timeout(function () {
+                        offsetTop = element[0].getBoundingClientRect().top;
+                    }, 0);
                 }
             };
         }],
@@ -322,6 +339,11 @@ define(['angular'], function (angular) {
             return {
                 restrict: 'A',
                 scope: { resource: "=share" },
+                template: '<a href="#" data-ng-click="share(provider)" class="share-button {{provider.name}} icon" data-ng-repeat="provider in providers">' +
+                            '<span class="count" data-ng-show="provider.count > 0"> ' +
+                                '<span data-ng-bind="provider.count"></span>' +
+                            '</span>' +
+                        '</a>',
                 controller: 'shareController'
             };
         }],
