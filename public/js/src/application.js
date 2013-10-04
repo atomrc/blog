@@ -42,7 +42,7 @@ define(['angular'], function (angular) {
                 this.name = settings.name;
                 this.title = settings.title;
                 this.shareUrlPattern = settings.shareUrl;
-                this.countPath = settings.countPath;
+                //this.countPath = settings.countPath;
             };
             SocialNetwork.prototype = {
                 name: '',
@@ -57,7 +57,7 @@ define(['angular'], function (angular) {
                     });
                 },
 
-                extractCount: function (allCounts) {
+                /*extractCount: function (allCounts) {
                     var splittedPath = this.countPath.split('.'),
                         i = 0,
                         pathDepth = splittedPath.length,
@@ -66,7 +66,7 @@ define(['angular'], function (angular) {
                         tmp = tmp[splittedPath[i]];
                     }
                     this.count = 10;//tmp;
-                }
+                }*/
             };
 
             return SocialNetwork;
@@ -79,20 +79,20 @@ define(['angular'], function (angular) {
                     'twitter': {
                         name: 'twitter',
                         title: 'Twitter',
-                        shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
-                        countPath: 'Twitter'
+                        shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4'
+                        //countPath: 'Twitter'
                     },
                     'facebook' : {
                         name: 'facebook',
                         title: 'Facebook',
-                        shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
-                        countPath: 'Facebook.total_count'
+                        shareUrl: 'http://www.facebook.com/share.php?u={{url}}'
+                        //countPath: 'Facebook.total_count'
                     },
                     'google-plus': {
                         name: 'google-plus',
                         title: 'Google+',
-                        shareUrl: 'https://plus.google.com/share?url={{url}}',
-                        countPath: 'GooglePlusOne'
+                        shareUrl: 'https://plus.google.com/share?url={{url}}'
+                        //countPath: 'GooglePlusOne'
                     }
                 },
 
@@ -111,12 +111,12 @@ define(['angular'], function (angular) {
                             this.providers[url].push(provider);
                         }
                     }
-                    this.initShareCounts(url, this.providers[url]);
+                    //this.initShareCounts(url, this.providers[url]);
 
                     return this.providers[url];
-                },
+                }
 
-                initShareCounts: function (url, providers) {
+                /*initShareCounts: function (url, providers) {
                     var countUrlPattern = 'http://api.sharedcount.com/?url={{url}}&callback=JSON_CALLBACK',
                         countUrl = $interpolate(countUrlPattern)({ url: encodeURIComponent(url) });
                     $http.jsonp(countUrl).success(function (response) {
@@ -128,7 +128,7 @@ define(['angular'], function (angular) {
                             }
                         }
                     });
-                }
+                }*/
 
             };
         }],
