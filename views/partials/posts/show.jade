@@ -10,7 +10,7 @@
         span.title Sur le même sujet
         ul
             li(data-ng-repeat="post in relatedPosts")
-                a(href="/posts/{{post.slug}}", data-ng-bind="post.title")
+                a(href="/posts/{{post.slug}}", data-ng-bind="post.title", data-event-tracker="{category: \'Suggestion\', action: \'followed\', label: \'{{post.slug}}\' }")
 
 -if (prod)
     section.readable-content

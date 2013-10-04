@@ -34,6 +34,7 @@ define(['angular'], function (angular) {
                     buffer.forEach(function (element) {
                         track(element);
                     });
+                    buffer = [];
                 };
 
             if (location.host() !== 'localhost') {
