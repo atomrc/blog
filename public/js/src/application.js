@@ -17,14 +17,46 @@ define(['angular'], function (angular) {
     /***************************************/
     application.services = {
 
-        analyticsTracker: ['$location', '$rootScope', function (location, rootScope) {
-            if (location.host() === 'localhost') { console.log('analytics skipped'); return; }
-            require(['analytics'], function (analytics) {
-                var track = function () {
+        tracker: ['$location', function (location) {
+            var analytics = null,
+                buffer = [],
+
+                track = function (element) {
+                    if (!analytics) {
+                        console.log(element);
+                        return buffer.push(element);
+                    }
                     analytics.push(['_setAccount', 'UA-34218773-1']);
-                    analytics.push(['_trackPageview', location.path()]);
+                    analytics.push(element);
+                },
+
+                flushBuffer = function () {
+                    buffer.forEach(function (element) {
+                        track(element);
+                    });
                 };
-                rootScope.$on('$viewContentLoaded', track);
+
+            if (location.host() !== 'localhost') {
+                require(['analytics'], function (analyticsTracker) {
+                    analytics = analyticsTracker;
+                    flushBuffer();
+                });
+            }
+
+            return {
+                trackPage: function (path) {
+                    track(['_trackPageview', path]);
+                },
+
+                trackEvent: function (category, action, label) {
+                    track(['_trackEvent', category, action, label]);
+                }
+            };
+        }],
+
+        pageTracker: ['$location', '$rootScope', 'tracker', function (location, rootScope, tracker) {
+            rootScope.$on('$viewContentLoaded', function () {
+                tracker.trackPage(location.path());
             });
         }],
 
@@ -360,11 +392,23 @@ define(['angular'], function (angular) {
             };
         }],
 
+        eventTracker: ['tracker', function (tracker) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    var datas = scope.$eval(attrs.eventTracker);
+                    element.on('click', function () {
+                        tracker.trackEvent(datas.category, datas.action, datas.label);
+                    });
+                }
+            };
+        }],
+
         share: [function () {
             return {
                 restrict: 'A',
                 scope: { resource: "=share" },
-                template: '<a href="#" data-ng-click="share(provider)" class="share-button" data-ng-repeat="provider in providers">' +
+                template: '<a href="javascript:void(0)" data-ng-click="share(provider)" data-event-tracker="{category: \'Social\', action: \'share\', label: \'{{provider.name}}\' }" class="share-button" data-ng-repeat="provider in providers">' +
                             '<span class="icon {{provider.name}}"></span>' +
                         '</a>',
                 controller: 'shareController'

@@ -1,3 +1,9 @@
+v1.7 (current)
+=============
+- suggestion algorithm based on article tags
+- new sticky bar on an article page
+- track google analytics events (in share links)
+
 v1.6 (11/09/2013)
 =============
 - reuse angular as an AMD module

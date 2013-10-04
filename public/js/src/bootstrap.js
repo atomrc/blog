@@ -38,7 +38,7 @@ define(['angular', 'ngResource', 'ngAnimate', 'ngRoute'], function (angular, ngR
             $routeProvider.otherwise({redirectTo: '/404'});
         }]);
 
-        ngApp.run(['analyticsTracker', 'errorHandler', function () {}]);
+        ngApp.run(['pageTracker', 'errorHandler', function () {}]);
 
         angular.bootstrap(document, ['blog']);
 
