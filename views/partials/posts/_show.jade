@@ -1,10 +1,10 @@
 extends _post
 
 block title
-    div(data-sticky-container="{ start: 100 }")
-        div.sticky-bar(data-sticky)
+    div(data-sticky-container="")
+        div.sticky-bar(data-sticky, data-scroll-animated="{ property: 'opacity', before: 1, from: 0.15, to: 1, start: 160, duration: 200}")
             h1 {{post.title}}
-            .share(data-share="post")
+            .share(data-share="post", data-scroll-animated="{ property: 'right', from: 0, to: 100, start: 160, duration: 200, unit: 'px' }")
 
 block header_additions
     .share(data-share="post")
