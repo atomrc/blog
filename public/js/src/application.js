@@ -18,6 +18,7 @@ define(['angular'], function (angular) {
     application.services = {
 
         analyticsTracker: ['$location', '$rootScope', function (location, rootScope) {
+            if (location.host() === 'localhost') { console.log('analytics skipped'); return; }
             require(['analytics'], function (analytics) {
                 var track = function () {
                     analytics.push(['_setAccount', 'UA-34218773-1']);
@@ -41,7 +42,7 @@ define(['angular'], function (angular) {
                 this.name = settings.name;
                 this.title = settings.title;
                 this.shareUrlPattern = settings.shareUrl;
-                this.countPath = settings.countPath;
+                //this.countPath = settings.countPath;
             };
             SocialNetwork.prototype = {
                 name: '',
@@ -56,7 +57,7 @@ define(['angular'], function (angular) {
                     });
                 },
 
-                extractCount: function (allCounts) {
+                /*extractCount: function (allCounts) {
                     var splittedPath = this.countPath.split('.'),
                         i = 0,
                         pathDepth = splittedPath.length,
@@ -64,8 +65,8 @@ define(['angular'], function (angular) {
                     for (i; i < pathDepth; i++) {
                         tmp = tmp[splittedPath[i]];
                     }
-                    this.count = tmp;
-                }
+                    this.count = 10;//tmp;
+                }*/
             };
 
             return SocialNetwork;
@@ -78,20 +79,20 @@ define(['angular'], function (angular) {
                     'twitter': {
                         name: 'twitter',
                         title: 'Twitter',
-                        shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
-                        countPath: 'Twitter'
+                        shareUrl: 'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4'
+                        //countPath: 'Twitter'
                     },
                     'facebook' : {
                         name: 'facebook',
                         title: 'Facebook',
-                        shareUrl: 'http://www.facebook.com/share.php?u={{url}}',
-                        countPath: 'Facebook.total_count'
+                        shareUrl: 'http://www.facebook.com/share.php?u={{url}}'
+                        //countPath: 'Facebook.total_count'
                     },
                     'google-plus': {
                         name: 'google-plus',
                         title: 'Google+',
-                        shareUrl: 'https://plus.google.com/share?url={{url}}',
-                        countPath: 'GooglePlusOne'
+                        shareUrl: 'https://plus.google.com/share?url={{url}}'
+                        //countPath: 'GooglePlusOne'
                     }
                 },
 
@@ -110,12 +111,12 @@ define(['angular'], function (angular) {
                             this.providers[url].push(provider);
                         }
                     }
-                    this.initShareCounts(url, this.providers[url]);
+                    //this.initShareCounts(url, this.providers[url]);
 
                     return this.providers[url];
-                },
+                }
 
-                initShareCounts: function (url, providers) {
+                /*initShareCounts: function (url, providers) {
                     var countUrlPattern = 'http://api.sharedcount.com/?url={{url}}&callback=JSON_CALLBACK',
                         countUrl = $interpolate(countUrlPattern)({ url: encodeURIComponent(url) });
                     $http.jsonp(countUrl).success(function (response) {
@@ -127,7 +128,7 @@ define(['angular'], function (angular) {
                             }
                         }
                     });
-                }
+                }*/
 
             };
         }],
@@ -275,24 +276,48 @@ define(['angular'], function (angular) {
                     var offsetTop = null,
                         fullOpacityLevel = 200,
                         isSticky = false;
-                    $window.onscroll = function () {
+                    $window.addEventListener('scroll', function () {
                         if (!offsetTop) { return; }
-                        var offsetDiff = $window.pageYOffset - offsetTop,
-                            shouldBeSticky = offsetDiff >= 0,
-                            opacity = Math.max(0.15, Math.min(1, offsetDiff / fullOpacityLevel));
+                        var shouldBeSticky = $window.pageYOffset >= offsetTop;
+                        if (shouldBeSticky === isSticky) { return; }
                         isSticky = shouldBeSticky;
                         if (shouldBeSticky) {
                             element.addClass('sticky');
-                            element.css('opacity', opacity);
                         } else {
-                            element.css('opacity', 1);
                             element.removeClass('sticky');
                         }
-                    };
+                    }, false);
 
                     $timeout(function () {
                         offsetTop = element[0].getBoundingClientRect().top;
                     }, 0);
+                }
+            };
+        }],
+
+        scrollAnimated: ['$window', function ($window) {
+            return {
+                restrict: 'A',
+                link: function (scope, element, attrs) {
+                    var conf = scope.$eval(attrs.scrollAnimated),
+                        animDistance = conf.from - conf.to,
+                        beforeValue = conf.before || conf.from,
+                        unit = conf.unit || '';
+                    element.css(conf.property, beforeValue + unit);
+                    $window.addEventListener('scroll', function () {
+                        var offset = $window.pageYOffset,
+                            animPercent = 0,
+                            animValue = 0;
+                        if (offset < conf.start || offset > (conf.start + conf.duration)) {
+                            animValue = offset < conf.start ?
+                                    beforeValue :
+                                    conf.to;
+                            return element.css(conf.property, animValue + unit);
+                        }
+                        animPercent = (offset - conf.start) / conf.duration;
+                        animValue = conf.from - (animPercent * animDistance);
+                        element.css(conf.property, animValue + unit);
+                    }, false);
                 }
             };
         }],
@@ -339,10 +364,8 @@ define(['angular'], function (angular) {
             return {
                 restrict: 'A',
                 scope: { resource: "=share" },
-                template: '<a href="#" data-ng-click="share(provider)" class="share-button {{provider.name}} icon" data-ng-repeat="provider in providers">' +
-                            '<span class="count" data-ng-show="provider.count > 0"> ' +
-                                '<span data-ng-bind="provider.count"></span>' +
-                            '</span>' +
+                template: '<a href="#" data-ng-click="share(provider)" class="share-button" data-ng-repeat="provider in providers">' +
+                            '<span class="icon {{provider.name}}"></span>' +
                         '</a>',
                 controller: 'shareController'
             };

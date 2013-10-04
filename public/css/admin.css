@@ -19,6 +19,7 @@ legend { font-weight:bold; }
 .card:hover .edit-panel { height: 34px; opacity: 1; }
 
 article .unsaved { float: right; }
+.save:before { content: "\F0C7"; }
 
 .tag { position: relative; }
 .tag .edit-panel button.delete { width: 100%; height: 100%; }
