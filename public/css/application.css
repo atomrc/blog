@@ -216,7 +216,7 @@ input[type=submit]:active, button:active, .button:active { box-shadow: black 0px
 /* tags */
 .full-article aside { margin-bottom: 10px; }
 .tags-list { color: white; }
-.tag { padding: 1px 7px; font-size: 10pt; background-color: #72A6FC; }
+.tags-list .tag { padding: 1px 7px; font-size: 10pt; background-color: #72A6FC; }
 .full-article .tag { font-size: 11pt; }
 .card .tag { cursor: pointer; }
 .card .tag:hover { background-color: #4D90FE; }

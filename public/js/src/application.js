@@ -55,7 +55,7 @@ define(['angular'], function (angular) {
                         url: escapedUrl,
                         text: encodeURIComponent(text)
                     });
-                },
+                }
 
                 /*extractCount: function (allCounts) {
                     var splittedPath = this.countPath.split('.'),
