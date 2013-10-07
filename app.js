@@ -35,7 +35,7 @@ var express = require('express'),
 
     rewriteRules = function (req, res, next) {
         'use strict';
-        var botRegexp = /(bot|spider|archiver|facebook|twitter|pinterest)/,
+        var botRegexp = /(bot|spider|archiver|google|facebook|twitter|pinterest)/i,
             isBot = req.headers['user-agent'].match(botRegexp);
 
         if (!isBot) { return next(); }
