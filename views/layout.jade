@@ -3,25 +3,28 @@ html(lang="fr")
     head
         - var image = "http://thomasbelin.fr/images/avatar_o.jpeg"
         meta(http-equiv="content-type", content="text/html; charset=UTF-8")
-        meta(id="_desc", name="description", content="#{description}", data-meta-content="description", itemprop="desc")
+        meta(name="description", content="#{description}", data-meta-content="description")
         meta(name="author", content="Thomas Belin")
 
+        meta(id="_desc", content="#{description}", data-meta-content="description", itemprop="description")
+        meta(id="_author", content="Thomas Belin", itemprop="author")
+        meta(id="_url", content="http://thomasbelin.fr", itemprop="url")
+        meta(id="_image", itemprop="image", content="#{image}")
+
         meta(name="twitter:card", content="summary")
-        meta(name="twitter:title", content="#{title}")
+        meta(name="twitter:title", content="{{ title }}")
         meta(name="twitter:description", content="#{description}", data-meta-content="description")
         meta(name="twitter:site", content="@ThomasBelin4")
         meta(name="twitter:creator", content="@ThomasBelin4")
-        meta(name="twitter:image", content="#{image}")
+        meta(name="twitter:image:src", content="#{image}")
 
         meta(property="og:type", content="article")
-        meta(property="og:title", content="#{title}")
+        meta(property="og:title", content="{{ title }}")
         meta(property="og:description", content="#{description}", data-meta-content="description")
         meta(property="og:image", content="#{image}")
         meta(property="article:author", content="Thomas Belin")
 
-        meta(id="_image4", itemprop="image", content="http://thomasbelin.fr/images/avatar-small.jpeg")
-
-        title(data-ng-bind="title || '#{title}' ") #{title}
+        title(id="_title", data-ng-bind="title || '#{title}' ") #{title}
         - if (prod)
             - if (auth)
                 link(href="/build/css/application.admin.css", type="text/css", rel="stylesheet")

@@ -3,7 +3,8 @@ extends _post
 block title
     div(data-sticky-container="")
         div.sticky-bar(data-sticky, data-scroll-animated="{ property: 'opacity', before: 1, from: 0.15, to: 1, start: 160, duration: 200}")
-            h1 {{post.title}}
+            h1(itemprop="name")
+                a(href="/posts/{{post.slug}}", itemprop="url"){{post.title}}
             .share(data-share="post", data-scroll-animated="{ property: 'right', from: 0, to: 100, start: 160, duration: 200, unit: 'px' }")
 
 block header_additions
@@ -13,7 +14,7 @@ block body
     - if(auth)
         .body(contenteditable="true", data-ng-model="post.body")
     - else
-        .body(data-ng-bind-html='post.$body', data-codecontainer)
+        .body(data-ng-bind-html='post.$body', data-codecontainer, itemprop="articleBody")
 
 block tag_edit
     - if (auth)

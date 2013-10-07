@@ -1,8 +1,9 @@
-article(itemscope="", itemtype="http://schema.org/Article", itemref="_image4 _desc")
+article(itemscope="", itemtype="http://schema.org/Article", itemref="_image _author")
+    meta(itemprop="description", content="{{post.description}}")
     .header
         block title
-            h2
-                a(href="/posts/{{ post.slug }}") {{post.title}}
+            h2(itemprop="name")
+                a(href="/posts/{{ post.slug }}", itemprop="url") {{post.title}}
 
         time.pubdate(datetime="{{post.pubdate}}", itemprop="datePublished", content="{{post.pubdate}}")
             span.day {{ post.pubdate | date:'d' }} 
@@ -10,7 +11,7 @@ article(itemscope="", itemtype="http://schema.org/Article", itemref="_image4 _de
             span.year {{ post.pubdate | date:'yyyy' }}
 
         aside(data-ng-controller="tagsController")
-            span.tags-list
+            span.tags-list(itemprop="keywords")
                 span(data-ng-repeat='tag in post.tags')
                     span.tag(data-ng-mouseover="setHoveredTag(tag);", data-ng-mouseout="setHoveredTag(null);")
                         {{ tag.name }}
@@ -26,5 +27,5 @@ article(itemscope="", itemtype="http://schema.org/Article", itemref="_image4 _de
 
         block author
             .author par
-                span(itemprop="author")  Thomas Belin
+                span Thomas Belin
             div(style="clear:both;")
