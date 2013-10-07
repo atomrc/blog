@@ -1,4 +1,4 @@
-article(itemscope="", itemtype="http://schema.org/Article", itemref="_image _author")
+article(itemscope="", itemtype="http://schema.org/Article")
     meta(itemprop="description", content="{{post.description}}")
     .header
         block title
@@ -27,5 +27,5 @@ article(itemscope="", itemtype="http://schema.org/Article", itemref="_image _aut
 
         block author
             .author par
-                span Thomas Belin
+                span(itemprop="author") Thomas Belin
             div(style="clear:both;")
