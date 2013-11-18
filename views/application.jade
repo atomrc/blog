@@ -20,29 +20,15 @@ html(lang="fr")
         meta(property="article:author", content="Thomas Belin")
 
         title(id="_title", data-ng-bind="title || '#{title}' ") #{title}
-        - if (prod)
-            - if (auth)
-                link(href="/build/css/application.admin.css", type="text/css", rel="stylesheet")
-                script(src="/js/lib/require.min.js", data-main="/build/js/application.admin")
-            - else
-                link(href="/build/css/application.css", type="text/css", rel="stylesheet")
-                script(src="/js/lib/require.min.js", data-main="/build/js/application")
-        - else
-            link(href="/css/application.css", type="text/css", rel="stylesheet")
-            link(href="/css/code-themes/custom.css", type="text/css", rel="stylesheet")
-            - if (auth)
-                link(href="/css/admin.css", type="text/css", rel="stylesheet")
-                script(src="/js/lib/require.min.js", data-main="/js/main.admin")
-            -else
-                script(src="/js/lib/require.min.js", data-main="/js/main")
-
+        link(href="/css/application.css", type="text/css", rel="stylesheet")
+        script(src='/js/libs/require.min.js', data-main='/js/application.js')
         base(href="/")
     body
         #page-loader(data-route-loader, data-ng-show="loading", class="snake")
         #header
             a.title(href="/"){ Thomas BELIN }
         #main-content
-            div(data-ng-view) !{content}
+            div(data-ng-view)
         #footer
             .container
                 img#avatar(src="/images/avatar_s.jpeg", alt="Thomas Belin", height="100", width="100")

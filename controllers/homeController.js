@@ -7,7 +7,6 @@ var Snapshot = require('../models/Snapshot'),
         res.render('index', {
             auth: req.session.auth,
             prod: req.app.get('env') === 'prod',
-            content: "",
             description: "Et si on parlait un peu Javascript, AngularJS et code en général !",
             title: "Why So Curious ?"
         });

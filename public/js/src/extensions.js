@@ -1,11 +1,1 @@
-/*global define */
-
-define([], function () {
-    'use strict';
-    /***************************************/
-    /*************** EXTENSIONS ***************/
-    /***************************************/
-    Array.prototype.removeElement = function (element) {
-        this.splice(this.indexOf(element), 1);
-    };
-});
+define([],function(){Array.prototype.removeElement=function(e){this.splice(this.indexOf(e),1)}});

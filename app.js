@@ -38,7 +38,15 @@ var express = require('express'),
         var botRegexp = /(bot|spider|archiver|google|facebook|twitter|pinterest)/i,
             isBot = req.headers['user-agent'].match(botRegexp);
 
-        if (!isBot) { return next(); }
+        if (!isBot) {
+            //in case of a human requesting one of the front urls
+            //serving the static application.html file
+            var url = require('url').parse(req.url);
+            if (url.pathname.match(/^\/$|^\/posts.*$/)) {
+                req.url = '/partials/application.html';
+            }
+            return next();
+        }
         //setting a query param that will tells the home controller to get the snapshot instead of the single page layout
         req.query.snap = 1;
         next();
@@ -72,9 +80,9 @@ app.configure(function () {
     app.set('view engine', 'jade');
 
     app.use(express.compress());
+    app.use(rewriteRules);
     app.use(express.static(path.join(__dirname, 'public')));
     app.use(express.favicon(path.join(__dirname, '/public/favicon.ico')));
-    app.use(rewriteRules);
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session({secret: 'supersecretkeygoeshere'}));

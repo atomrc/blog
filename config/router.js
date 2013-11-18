@@ -64,9 +64,6 @@ module.exports = function (app) {
     app.get('/snapshots/stats', controllers.snapshotsController.stats);
     app.get('/snapshots/clean', getSiteUrls, controllers.snapshotsController.clean);*/
 
-    //VIEWS
-    app.get('/views/:view_id', controllers.viewsController.show);
-
     app.get('/sitemap.:format', getSiteUrls, controllers.sitemapController.index);
 
     //RSS FEED
@@ -78,5 +75,6 @@ module.exports = function (app) {
     });
 
     //FRONT
-    app.get('*', controllers.homeController.index);
+    app.get('/', controllers.homeController.index);
+    app.get('/posts*', controllers.homeController.index);
 };
