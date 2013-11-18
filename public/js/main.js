@@ -3,10 +3,10 @@
 require.config({
     baseUrl: '/js/src/',
     paths: {
-        angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min',
-        ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-resource.min',
-        ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-animate.min',
-        ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-route.min',
+        angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular.min',
+        ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-resource.min',
+        ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-animate.min',
+        ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-route.min',
         rainbow: '../lib/rainbow.min',
         analytics: 'http://www.google-analytics.com/ga',
         disqus: 'http://whysocurious.disqus.com/embed'
