@@ -7,7 +7,6 @@ module.exports = function (grunt) {
         requirejs: {
             options: {
                 baseUrl: './frontend/js',
-                dir: './backend/public/js',
                 mainConfigFile: './frontend/js/application.js',
                 paths: {
                     angular: 'empty:',
@@ -15,6 +14,8 @@ module.exports = function (grunt) {
                     ngAnimate: 'empty:',
                     ngRoute: 'empty:'
                 },
+                name: 'application',
+                out: 'backend/public/js/application.js',
                 optimize: 'none'
             },
 
