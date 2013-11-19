@@ -7,7 +7,7 @@ var express = require('express'),
     http = require('http'),
     path = require('path'),
     mongoose = require('mongoose'),
-    errorHandler = require('./libs/errors').handler,
+    errorHandler = require('./backend/libs/errors').handler,
     app = express(),
     mongo,
     env,
@@ -81,8 +81,8 @@ app.configure(function () {
 
     app.use(express.compress());
     app.use(rewriteRules);
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use(express.favicon(path.join(__dirname, '/public/favicon.ico')));
+    app.use(express.static(path.join(__dirname, '/backend/public')));
+    app.use(express.favicon(path.join(__dirname, '/backend//public/favicon.ico')));
     app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session({secret: 'supersecretkeygoeshere'}));
@@ -118,7 +118,7 @@ if (process.env.VCAP_SERVICES) {
 mongoose.connect(generateMongoUrl(mongo));
 
 
-require('./config/router')(app);
+require('./backend/config/router')(app);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function () {

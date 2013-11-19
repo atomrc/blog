@@ -6,9 +6,9 @@ module.exports = function (grunt) {
 
         requirejs: {
             options: {
-                baseUrl: './front/js',
-                dir: './public/js',
-                mainConfigFile: './front/js/application.js',
+                baseUrl: './frontend/js',
+                dir: './backend/public/js',
+                mainConfigFile: './frontend/js/application.js',
                 paths: {
                     angular: 'empty:',
                     ngResource: 'empty:',
@@ -37,13 +37,13 @@ module.exports = function (grunt) {
                     title: "Why So Curious ?"
                 } },
                 files: {
-                    'public/partials/application.html': 'views/application.jade'
+                    'backend/public/partials/application.html': 'backend/views/application.jade'
                 }
             },
             admin: {
                 options: { data: {auth: true} },
                 files: {
-                    'public/partials/application.admin.html': 'views/application.jade'
+                    'backend/public/partials/application.admin.html': 'backend/views/application.jade'
                 }
             }
         },
@@ -51,15 +51,15 @@ module.exports = function (grunt) {
         copy: {
             all: {
                 files: [
-                    { expand: true, cwd: 'front/css', src: ['**/*.css'], dest: 'public/css' },
-                    { expand: true, cwd: 'front/images', src: ['**/*'], dest: 'public/images' }
+                    { expand: true, cwd: 'frontend/css', src: ['**/*.css'], dest: 'backend/public/css' },
+                    { expand: true, cwd: 'frontend/static/', src: ['**/*'], dest: 'backend/public/' }
                 ]
             }
         },
 
         watch: {
             scripts: {
-                files: 'front/**/*.js',
+                files: 'frontend/**/*.js',
                 tasks: ['requirejs:dev']
             },
 

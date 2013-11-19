@@ -1,1 +1,0 @@
-define([],function(){Array.prototype.removeElement=function(e){this.splice(this.indexOf(e),1)}});
