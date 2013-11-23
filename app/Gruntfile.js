@@ -73,7 +73,7 @@ module.exports = function (grunt) {
             },
 
             partials: {
-                files: 'backend/views/**/*.jade',
+                files: '<%= srcPath %>/views/**/*.jade',
                 tasks: ['jade']
             },
 
