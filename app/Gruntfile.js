@@ -79,7 +79,10 @@ module.exports = function (grunt) {
 
             css: {
                 files: '<%= srcPath %>/sass/*.scss',
-                tasks: ['sass']
+                tasks: ['sass'],
+                options: {
+                    livereload: true
+                }
             }
         }
     });

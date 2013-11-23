@@ -28,7 +28,7 @@ require.config({
 
 require(['angular', 'blog'], function (angular, blog) {
     'use strict';
-    var ngBlog = angular.module('blog', ['ngRoute', 'ngResource']);
+    var ngBlog = angular.module('blog', ['ngRoute', 'ngResource', 'ngAnimate']);
     blog(ngBlog);
     angular.bootstrap(window.document, ['blog']);
 });

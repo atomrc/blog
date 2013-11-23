@@ -1,4 +1,18 @@
+@mixin transition($property, $duration) {
+    -webkit-transition: $property $duration;
+    -moz-transition: $property $duration;
+    -o-transition: $property $duration;
+    transition: $property $duration;
+}
+@mixin transform($property) {
+    -webkit-transform: $property;
+    -moz-transform: $property;
+    -o-transform: $property;
+    transform: $property;
+}
+
 $pinkcolor: #F06;
+$coolblue: rgb(114, 166, 252);
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 @font-face {
     font-family: "tomfont";
@@ -18,6 +32,7 @@ body {
     color:#666;
     font-family:Open Sans, Arial;
     font-size: 12pt;
+    background: url(/images/noise.png) #EEE;
 }
 
 h1,
@@ -33,4 +48,100 @@ strong,
 a { text-decoration:none; color: rgb(0, 132, 180); }
 ul { list-style: none; padding:0; }
 
-#header a, h1 a, h2 a { color:inherit; }
+h1 a, h2 a { color:inherit; }
+
+hr {
+    border: none;
+    border-top: 1px solid #BBB;
+    border-bottom: 1px solid white;
+}
+
+
+/**
+ * Flexible Google-style progress indicator
+ */
+
+@keyframes progress {
+    50% { border-width: .5em 0; }
+    to { border-width: .5em 0 0 0; }
+}
+
+@keyframes rotate {
+    to { transform: rotate(-270deg); }
+}
+
+.progress {
+    display: inline-block;
+    font-size: 50px; /* Size of the progress indicator */
+    width: 1em; height: 1em;
+    border: solid #EEE;
+    border-top-color: $coolblue;
+    border-width: 0 0 .5em 0;
+    border-radius: 50%;
+    background: linear-gradient(#EEE 50%,$coolblue 50%);
+    background-origin: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: .1em .2em;
+    transform: rotate(90deg);
+    animation: rotate 2s steps(4) infinite,
+               progress .5s linear infinite alternate;
+    text-indent: 99em;
+    overflow: hidden;
+}
+
+
+#content {
+    margin: 0 3%;
+    &.ng-leave {
+        position: relative;
+        left: 100%;
+        @include transition(left, 1s);
+        &.ng-leave-active {
+            left: 0;
+        }
+    }
+}
+
+#posts-container {
+    text-align: center;
+}
+
+.section-title {
+    padding-top: 20px;
+    color: #999;
+    text-shadow: 1px 1px 0 white;
+    font-size: 25pt;
+}
+
+.card {
+    text-align: left;
+    background: white;
+    display: inline-block;
+    vertical-align: top;
+    height: 300px;
+    width: 300px;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 3px;
+    border: solid 1px #DDD;
+    article {
+        h1 {
+            font-size: 14pt;
+            margin-top: 0;
+        }
+    }
+    @include transition(all, 0.2s);
+    &:hover {
+        box-shadow: 2px 2px 5px #CCC;
+        @include transform(translate(-2px, -2px));
+    }
+}
+
+.tag {
+    background: $coolblue;
+    color: white;
+    padding: 1px 5px;
+    font-size: 11pt;
+}

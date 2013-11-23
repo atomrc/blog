@@ -1,6 +1,6 @@
 /*global define*/
 
-define(['ngRoute', 'ngResource'], function () {
+define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
     'use strict';
     return function (app) {
 
@@ -91,7 +91,7 @@ define(['ngRoute', 'ngResource'], function () {
                     get: function (slug) {
                         var post = find(slug);
                         if (post) {
-                            return post.$get();
+                            return post.body ? post : post.$get();
                         }
                         return Post.find({id: slug});
                     }
@@ -114,12 +114,8 @@ define(['ngRoute', 'ngResource'], function () {
                 return {
                     restrict: 'A',
                     templateUrl: "/post.html",
-                    controller: ['$scope', '$attrs', function ($scope, $attrs) {
+                    controller: ['$scope', '$attrs', '$location', function ($scope, $attrs, $location) {
                         $scope.full = $scope.$eval($attrs.postContainer);
-                        $scope.load = function (post) {
-                            post.$get();
-                            this.full = true;
-                        };
                     }]
                 };
             }]);
