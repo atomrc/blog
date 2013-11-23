@@ -1,6 +1,7 @@
 .afignore
+.sass-cache
 parameters.js
-build
+app/public
 .DS_Store
 *.swp
 

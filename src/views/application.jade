@@ -1,0 +1,53 @@
+doctype 5
+html(lang="fr")
+    head
+        - var image = "http://thomasbelin.fr/images/avatar_o.jpeg"
+        meta(http-equiv="content-type", content="text/html; charset=UTF-8")
+        meta(name="description", content="#{description}", data-meta-content="description")
+        meta(name="author", content="Thomas Belin")
+
+        meta(name="twitter:card", content="summary")
+        meta(name="twitter:title", content="#{ title }", data-meta-content="title")
+        meta(name="twitter:description", content="#{description}", data-meta-content="description")
+        meta(name="twitter:site", content="@ThomasBelin4")
+        meta(name="twitter:creator", content="@ThomasBelin4")
+        meta(name="twitter:image", content="#{image}")
+
+        meta(property="og:type", content="article")
+        meta(property="og:title", content="#{title}", data-meta-content="title")
+        meta(property="og:description", content="#{description}", data-meta-content="description")
+        meta(property="og:image", content="#{image}")
+        meta(property="article:author", content="Thomas Belin")
+
+        title(id="_title", data-ng-bind="title || '#{title}' ") #{title}
+        link(href="/css/application.css", type="text/css", rel="stylesheet")
+        script(src='/js/libs/require.min.js', data-main='/js/application.js')
+        base(href="/")
+    body
+        #header
+            a.title(href="/"){ Thomas BELIN }
+            //img#avatar(src="/images/avatar_s.jpeg", alt="Thomas Belin", height="100", width="100")
+            //| Front End développeur chez 
+            //a(href="http://www.doyoubuzz.com") DoYouBuzz 
+            //| (
+            //a(href="https://thomas-belin.com") mon cv
+            //|). Je fais la part belle au code. Je crois en la richesse du web. Je m'éclate avec Javascript. Vous pouvez me retrouver ici : 
+        //.social.icon
+            a.twitter.animated(href='https://twitter.com/ThomasBelin4', target='_blank', title="Mon profil Twitter") 
+            a.google-plus.animated(href='https://plus.google.com/118010420630912086698?rel=author', target='_blank', title="Mon profil Google+") 
+            a.github.animated(href='https://github.com/thomasbelin4', target='_blank', title="Mon repo Github")
+        #content(data-ng-view)
+        #footer
+            .container
+
+script(type="text/ng-template", id="/page/home.html")
+    include partials/home
+
+script(type="text/ng-template", id="/page/post.html")
+    include partials/post
+
+script(type="text/ng-template", id="/posts.html")
+    include partials/posts
+
+script(type="text/ng-template", id="/post.html")
+    include partials/post

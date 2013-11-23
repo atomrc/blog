@@ -1,0 +1,36 @@
+$pinkcolor: #F06;
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+@font-face {
+    font-family: "tomfont";
+    src: url('/font/Tomfont-Regular.ttf');
+}
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('/font/fontawesome-webfont.eot?v=3.2.1');
+  src: url('/font/fontawesome-webfont.eot?#iefix&v=3.2.1') format('embedded-opentype'), url('/font/fontawesome-webfont.woff?v=3.2.1') format('woff'), url('/font/fontawesome-webfont.ttf?v=3.2.1') format('truetype'), url('/font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.1') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+    padding:0;
+    margin:0;
+    color:#666;
+    font-family:Open Sans, Arial;
+    font-size: 12pt;
+}
+
+h1,
+h2,
+strong,
+#not-found .code,
+.pubdate .month,
+.suggestions .title {
+    color: $pinkcolor;
+    font-weight: normal;
+}
+
+a { text-decoration:none; color: rgb(0, 132, 180); }
+ul { list-style: none; padding:0; }
+
+#header a, h1 a, h2 a { color:inherit; }

@@ -1,0 +1,9 @@
+form(class='edit-form', ng-submit='save()', draggable)
+    fieldset
+        input(type='text', data-ng-model='post.title')
+        br
+        textarea(data-ng-model='post.description')
+        br
+        textarea(class='article-body', data-ng-model='post.body')
+        br
+        input(type='submit')

@@ -1,0 +1,22 @@
+article(itemscope="", itemtype="http://schema.org/Article", data-ng-click="load(post)")
+    meta(itemprop="description", content="{{post.description}}")
+    .header
+        h1(itemprop="name")
+            a(href="/posts/{{ post.slug }}", itemprop="url") {{post.title}}
+
+        time.pubdate(datetime="{{post.pubdate}}", itemprop="datePublished", content="{{post.pubdate}}")
+            span.day {{ post.pubdate | date:'d' }} 
+            span.month {{ post.pubdate | date:'MMM' }} 
+            span.year {{ post.pubdate | date:'yyyy' }}
+
+        aside
+            span.tags-list(itemprop="keywords")
+                span(data-ng-repeat='tag in post.tags')
+                    span.tag
+                        {{ tag.name }}
+                    &nbsp;
+    .readable-content
+        p.description(data-ng-if="!full"){{ post.description }}
+        .body(data-ng-if="full", data-ng-bind-html='post.body | trustAsHtml', data-codecontainer, itemprop="articleBody")
+        .author(data-ng-if="full") par 
+            span(itemprop="author") Thomas Belin
