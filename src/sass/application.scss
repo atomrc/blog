@@ -72,21 +72,24 @@ hr {
 
 .progress {
     display: inline-block;
-    font-size: 50px; /* Size of the progress indicator */
+    font-size: 18pt; /* Size of the progress indicator */
+    &.small { font-size: inherit; }
+    &.medium { font-size: 20pt; }
+    &.big { font-size: 50pt; }
     width: 1em; height: 1em;
     border: solid #EEE;
     border-top-color: $coolblue;
     border-width: 0 0 .5em 0;
     border-radius: 50%;
-    background: linear-gradient(#EEE 50%,$coolblue 50%);
+    background-image: linear-gradient(#EEE 50%,$coolblue 50%);
     background-origin: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     margin: .1em .2em;
     transform: rotate(90deg);
-    animation: rotate 2s steps(4) infinite,
-               progress .5s linear infinite alternate;
+    animation: rotate 1.4s steps(4) infinite,
+               progress .35s linear infinite alternate;
     text-indent: 99em;
     overflow: hidden;
 }
@@ -94,14 +97,14 @@ hr {
 
 #content {
     margin: 0 3%;
-    &.ng-leave {
+    /*&.ng-leave {
         position: relative;
         left: 100%;
         @include transition(left, 1s);
         &.ng-leave-active {
             left: 0;
         }
-    }
+    }*/
 }
 
 #posts-container {
@@ -136,6 +139,12 @@ hr {
     &:hover {
         box-shadow: 2px 2px 5px #CCC;
         @include transform(translate(-2px, -2px));
+    }
+
+    .progress {
+        border-color: #FFF;
+        border-top-color: $coolblue;
+        background-image: linear-gradient(#FFF 50%,$coolblue 50%);
     }
 }
 

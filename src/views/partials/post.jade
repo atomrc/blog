@@ -3,6 +3,7 @@ article(itemscope="", itemtype="http://schema.org/Article")
     .header
         h1(itemprop="name")
             a(href="/posts/{{ post.slug }}", itemprop="url") {{post.title}}
+            .progress.small(data-ng-if="post.$loading")
 
         time.pubdate(datetime="{{post.pubdate}}", itemprop="datePublished", content="{{post.pubdate}}")
             span.day {{ post.pubdate | date:'d' }} 

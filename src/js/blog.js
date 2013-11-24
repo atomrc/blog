@@ -91,6 +91,7 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                     get: function (slug) {
                         var post = find(slug);
                         if (post) {
+                            post.$loading = true;
                             return post.body ? post : post.$get();
                         }
                         return Post.find({id: slug});
