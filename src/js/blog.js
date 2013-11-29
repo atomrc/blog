@@ -1,4 +1,4 @@
-/*global define*/
+/*global define, ga*/
 
 define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
     'use strict';
@@ -90,11 +90,10 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                      */
                     get: function (slug) {
                         var post = find(slug);
-                        if (post) {
-                            post.$loading = true;
-                            return post.body ? post : post.$get();
-                        }
-                        return Post.find({id: slug});
+                        if (!post) { return Post.find({id: slug}); }
+                        if (post.body) { return post; }
+                        post.$loading = true;
+                        return post.$get();
                     }
                 };
             }]);
@@ -119,6 +118,34 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                         $scope.full = $scope.$eval($attrs.postContainer);
                     }]
                 };
+            }])
+
+            .directive('disqus', ['$location', function ($location) {
+                return {
+                    restrict: 'A',
+                    scope: { resource: '=disqus' },
+                    controller: ['$scope', function (scope) {
+                        require(['disqus'], function (disqus) {
+                            Disqus.reset({
+                                reload: true,
+                                config: function () {
+                                    this.page.identifier = scope.resource.slug;
+                                    this.page.url = $location.absUrl();
+                                    this.page.title = scope.resource.title;
+                                }
+                            });
+                        });
+                    }]
+                };
             }]);
+
+
+        app.run(['$rootScope', '$location', function ($rootScope, $location) {
+            $rootScope.$on('$routeChangeStart', function (e, to, from) {
+                if (from) {
+                    ga('send', 'pageview', $location.path());
+                }
+            });
+        }]);
     };
 });

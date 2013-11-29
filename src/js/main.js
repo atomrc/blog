@@ -5,7 +5,8 @@ require.config({
         angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min',
         ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-resource.min',
         ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-animate.min',
-        ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-route.min'
+        ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-route.min',
+        disqus: 'http://whysocurious.disqus.com/embed'
     },
     shim: {
         angular: {
@@ -22,6 +23,10 @@ require.config({
 
         ngResource: {
             deps: ['angular']
+        },
+
+        disqus: {
+            exports: 'DISQUS'
         }
     }
 });

@@ -21,3 +21,5 @@ article(itemscope="", itemtype="http://schema.org/Article")
         .body(data-ng-if="full", data-ng-bind-html='post.body | trustAsHtml', data-codecontainer, itemprop="articleBody")
         .author(data-ng-if="full") par 
             span(itemprop="author") Thomas Belin
+
+div#disqus_thread(data-ng-if="full", data-disqus="post")
