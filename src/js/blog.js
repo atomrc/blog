@@ -120,6 +120,27 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                 };
             }])
 
+            .directive('sticky', ['$window', function ($window) {
+                return {
+                    restrict: 'A',
+                    link: function (scope, element, attrs) {
+                        var offset = element[0].getBoundingClientRect().top,
+                            isSticky = false;
+                        $window.addEventListener('scroll', function () {
+                            var shouldBeSticky = $window.pageYOffset >= offset;
+                            //if the element already has the state it should have
+                            if (shouldBeSticky === isSticky) { return; }
+                            isSticky = shouldBeSticky;
+                            if (shouldBeSticky) {
+                                element.addClass('sticky');
+                            } else {
+                                element.removeClass('sticky');
+                            }
+                        });
+                    }
+                };
+            }])
+
             .directive('disqus', ['$location', function ($location) {
                 return {
                     restrict: 'A',

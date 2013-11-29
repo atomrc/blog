@@ -13,6 +13,11 @@
 
 $pinkcolor: #F06;
 $coolblue: rgb(114, 166, 252);
+
+$googlePlusColor:  rgba(212, 11, 13, 1);
+$twitterColor: rgba(19, 157, 233, 1);
+$facebookColor: rgba(36, 71, 134, 1);
+
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 @font-face {
     font-family: "tomfont";
@@ -31,7 +36,7 @@ body {
     margin:0;
     color:#666;
     font-family:Open Sans, Arial;
-    font-size: 12pt;
+    font-size: 13pt;
     background: url(/images/noise.png) #EEE;
 }
 
@@ -40,9 +45,12 @@ h2,
 strong,
 #not-found .code,
 .pubdate .month,
+.section-title,
+#header .title,
 .suggestions .title {
     color: $pinkcolor;
     font-weight: normal;
+    text-shadow: 1px 1px 0 white;
 }
 
 a { text-decoration:none; color: rgb(0, 132, 180); }
@@ -60,11 +68,22 @@ hr {
     font-family: FontAwesome;
 }
 
+.sticky {
+    position: fixed !important;
+    top: 0 !important;
+}
+
+.soft-box {
+    border: solid 1px #DDD;
+    border-radius: 3px;
+    background-color: #FFF;
+}
+
 //.github { color: rgba(57, 223 ,255, 1);}
 .github:before { content: "\f113"; }
 //.github:before { content: "\f092"; }
 
-//.twitter { color: rgba(19, 157, 233, 1);}
+//.twitter { color: ;}
 .twitter:before { content: "\f099"; }
 //.twitter:before { content: "\f081"; }
 
@@ -77,11 +96,33 @@ hr {
 //.facebook { color: rgba(36, 71, 134, 1);}
 .facebook:before { content: "\f09a"; }
 
+.provider {
+    border-radius: 5px;
+    padding: 5px 0;
+    margin: 5px 0;
+    width: 100%;
+    color: white;
+    display: block;
+    &.twitter {
+        background-color: $twitterColor;
+    }
+    &.google-plus {
+        background-color: $googlePlusColor;
+    }
+    &.facebook {
+        background-color: $facebookColor;
+    }
+}
+
 #header {
     //text-align: center;
     //background-color: white;
+    padding: 1em 0 1em 0;
+    text-align: center;
     .title {
-        font-size: 20pt;
+        font-size: 2em;
+        color: inherit;
+        font-weight: bold;
         //display: block;
     }
 }
@@ -119,6 +160,37 @@ hr {
             border-radius: 1em;
             border: 3px solid #EEE;
             background-color: #666;
+        }
+    }
+}
+
+#full-article {
+    position: relative;
+    margin: auto;
+    padding: 2em;
+    text-align: center;
+    width: 800px;
+    h1 {
+        font-size: 2em;
+    }
+    .readable-content {
+        margin: auto;
+        text-align: justify;
+    }
+}
+
+#aside-post-container {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    #aside-post {
+        .content, .header {
+            padding: 5px;
+        }
+        .header {
+            text-align: center;
+            background: $coolblue;
+            color: white;
         }
     }
 }
@@ -180,7 +252,6 @@ hr {
 .section-title {
     padding-top: 20px;
     //color: #999;
-    text-shadow: 1px 1px 0 white;
     font-size: 25pt;
 }
 
