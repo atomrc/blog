@@ -126,7 +126,7 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                     scope: { resource: '=disqus' },
                     controller: ['$scope', function (scope) {
                         require(['disqus'], function (disqus) {
-                            Disqus.reset({
+                            disqus.reset({
                                 reload: true,
                                 config: function () {
                                     this.page.identifier = scope.resource.slug;
