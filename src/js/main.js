@@ -2,11 +2,12 @@
 
 require.config({
     paths: {
-        angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min',
-        ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-resource.min',
-        ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-animate.min',
-        ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular-route.min',
-        disqus: 'http://whysocurious.disqus.com/embed'
+        angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min',
+        ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-resource.min',
+        ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.min',
+        ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-route.min',
+        disqus: 'http://whysocurious.disqus.com/embed',
+        rainbow: '/js/libs/rainbow.min'
     },
     shim: {
         angular: {
@@ -27,6 +28,10 @@ require.config({
 
         disqus: {
             exports: 'DISQUS'
+        },
+
+        rainbow: {
+            exports: 'Rainbow'
         }
     }
 });

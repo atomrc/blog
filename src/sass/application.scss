@@ -11,6 +11,8 @@
     transform: $property;
 }
 
+@import "code-themes/custom.scss";
+
 $pinkcolor: #F06;
 $coolblue: rgb(114, 166, 252);
 
@@ -100,6 +102,7 @@ hr {
     border-radius: 5px;
     padding: 5px 0;
     margin: 5px 0;
+    text-shadow: 0.1em 0.1em 2px #888;
     width: 100%;
     color: white;
     display: block;
@@ -164,18 +167,30 @@ hr {
     }
 }
 
+#full-article, #disqus_thread {
+    width: 800px;
+    margin: auto;
+}
+
 #full-article {
     position: relative;
-    margin: auto;
     padding: 2em;
     text-align: center;
-    width: 800px;
     h1 {
         font-size: 2em;
     }
     .readable-content {
         margin: auto;
         text-align: justify;
+    }
+}
+
+article {
+    pre {
+        padding: 1em;
+        background-color: #EFEFEF;
+        border-radius: 3px;
+        border: solid 1px #DDD;
     }
 }
 

@@ -120,13 +120,28 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                 };
             }])
 
-            .directive('sticky', ['$window', function ($window) {
+            .directive('code', [function () {
+                return {
+                    restrict: 'E',
+                    link: function (scope, element, attrs) {
+                        require(['rainbow'], function (rainbow) {
+                            console.log(rainbow);
+                        });
+                    }
+                };
+            }])
+
+            .directive('sticky', ['$window', '$timeout', function ($window, $timeout) {
                 return {
                     restrict: 'A',
                     link: function (scope, element, attrs) {
-                        var offset = element[0].getBoundingClientRect().top,
+                        var offset = null,
                             isSticky = false;
+                        $timeout(function () {
+                            offset = element[0].getBoundingClientRect().top;
+                        });
                         $window.addEventListener('scroll', function () {
+                            if (!offset) { return; }
                             var shouldBeSticky = $window.pageYOffset >= offset;
                             //if the element already has the state it should have
                             if (shouldBeSticky === isSticky) { return; }
