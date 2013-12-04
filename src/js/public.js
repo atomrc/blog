@@ -1,6 +1,6 @@
 /*global define, ga*/
 
-define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
+define([], function () {
     'use strict';
     return function (app) {
 
@@ -117,17 +117,6 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                     controller: ['$scope', '$attrs', '$location', function ($scope, $attrs, $location) {
                         $scope.full = $scope.$eval($attrs.postContainer);
                     }]
-                };
-            }])
-
-            .directive('code', [function () {
-                return {
-                    restrict: 'E',
-                    link: function (scope, element, attrs) {
-                        require(['rainbow'], function (rainbow) {
-                            console.log(rainbow);
-                        });
-                    }
                 };
             }])
 

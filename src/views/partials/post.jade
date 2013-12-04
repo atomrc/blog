@@ -1,4 +1,6 @@
 article(itemscope="", itemtype="http://schema.org/Article")
+    - if (auth)
+        button(data-ng-click="remove(post);") remove
     meta(itemprop="description", content="{{post.description}}")
     .header
         h1(itemprop="name")
@@ -18,7 +20,10 @@ article(itemscope="", itemtype="http://schema.org/Article")
                     &nbsp;
     .readable-content
         p.description(data-ng-if="!full"){{ post.description }}
-        .body(data-ng-if="full", data-ng-bind-html='post.body | trustAsHtml', data-codecontainer, itemprop="articleBody")
+        - if (auth)
+            .body(data-ng-if="full", data-wsc-contenteditable, data-ng-model="post.body")
+        - else
+            .body(data-ng-if="full", data-ng-bind-html='post.body | trustAsHtml', itemprop="articleBody")
         .author(data-ng-if="full") par 
             span(itemprop="author") Thomas Belin
     #aside-post-container(data-ng-if="full")

@@ -2,10 +2,6 @@
 
 require.config({
     paths: {
-        /*angular: 'libs/angular.min',
-        ngResource: 'libs/angular-resource.min',
-        ngAnimate: 'libs/angular-animate.min',
-        ngRoute: 'libs/angular-route.min',*/
         angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min',
         ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-resource.min',
         ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.min',
@@ -40,9 +36,17 @@ require.config({
     }
 });
 
-require(['angular', 'blog'], function (angular, blog) {
+require(['angular', 'public', 'extensions', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular, bootstrap) {
     'use strict';
     var ngBlog = angular.module('blog', ['ngRoute', 'ngResource', 'ngAnimate']);
-    blog(ngBlog);
-    angular.bootstrap(window.document, ['blog']);
+    bootstrap(ngBlog);
+    //TODO switch between admin and public config
+    if (true || admin) {
+        require(['admin'], function (adminBoostrap) {
+            adminBoostrap(ngBlog);
+            angular.bootstrap(window.document, ['blog']);
+        });
+    } else {
+        angular.bootstrap(window.document, ['blog']);
+    }
 });

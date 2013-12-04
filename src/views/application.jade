@@ -30,7 +30,7 @@ html(lang="fr")
             ga('create', 'UA-34218773-1', 'thomasbelin.fr');
             ga('send', 'pageview');
 
-        script(src='/js/libs/require.min.js', data-main='/js/application.js')
+        script(src='/js/libs/require.min.js', data-main='/js/application/main.js')
         script(src="//localhost:35729/livereload.js")
         base(href="/")
 
@@ -38,8 +38,7 @@ html(lang="fr")
         #header
             a.title(href="/"){ Thomas BELIN }
                 - if (auth)
-                    | Admin
-        #content(data-ng-view)
+        #content(data-ng-view, data-wsc-edit)
         #footer
             .container
                 img#avatar(src="/images/avatar_s.jpeg", alt="Thomas Belin", height="100", width="100")
