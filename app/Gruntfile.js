@@ -15,10 +15,15 @@ module.exports = function (grunt) {
                     ngResource: 'empty:',
                     ngAnimate: 'empty:',
                     ngRoute: 'empty:',
-                    application: 'main'
+                    disqus: 'empty:',
+                    application: 'main',
+                    'application.admin': 'main.admin'
                 },
-                name: 'application',
-                out: '<%= destPath %>/js/application.js',
+                modules: [
+                    {name: 'application'},
+                    {name: 'application.admin'}
+                ],
+                dir: '<%= destPath %>/js',
                 optimize: 'none'
             },
 

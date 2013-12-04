@@ -41,9 +41,13 @@ var express = require('express'),
         if (!isBot) {
             //in case of a human requesting one of the front urls
             //serving the static application.html file
-            var url = require('url').parse(req.url);
+            var url = require('url').parse(req.url),
+                templatePath = '';
             if (url.pathname.match(/^\/$|^\/posts\/.*$/)) {
-                req.url = '/partials/application.html';
+                templatePath = (req.session || {}).auth ?
+                    'application.admin.html' :
+                    'application.html';
+                req.url = '/partials/' + templatePath;
             }
             return next();
         }
@@ -80,12 +84,12 @@ app.configure(function () {
     app.set('view engine', 'jade');
 
     app.use(express.compress());
+    app.use(express.cookieParser());
+    app.use(express.session({secret: 'supersecretkeygoeshere'}));
     app.use(rewriteRules);
     app.use(express.static(path.join(__dirname, '/public')));
     app.use(express.favicon(path.join(__dirname, '/public/favicon.ico')));
     app.use(express.bodyParser());
-    app.use(express.cookieParser());
-    app.use(express.session({secret: 'supersecretkeygoeshere'}));
     app.use(express.methodOverride());
     app.use(app.router);
 });

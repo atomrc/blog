@@ -37,6 +37,8 @@ html(lang="fr")
     body
         #header
             a.title(href="/"){ Thomas BELIN }
+                - if (auth)
+                    | Admin
         #content(data-ng-view)
         #footer
             .container
