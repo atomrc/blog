@@ -50,9 +50,12 @@ define([], function () {
         app
 
             .factory('Post', ['$resource', function ($resource) {
-                return $resource('/api/posts/:id/:action', {id: '@id'},
-                    { find: { method: 'GET', params: { action: 'find' } } }
-                );
+                return $resource('/api/posts/:id/:action', { id: '@id' }, {
+                    update: { method: 'PUT' },
+                    find: { method: 'GET', params: { action: 'find' } },
+                    tag: { method: 'POST', params: { action: 'tags' } },
+                    untag: { method: 'DELETE', params: { action: 'tags' } }
+                });
             }])
 
             .factory('postsManager', ['Post', function (Post) {

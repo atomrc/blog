@@ -1,13 +1,15 @@
 /*global require, angular, window*/
 
 require.config({
+    baseUrl: '/js',
     paths: {
         angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular.min',
         ngResource: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-resource.min',
         ngAnimate: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-animate.min',
         ngRoute: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.3/angular-route.min',
         disqus: 'http://whysocurious.disqus.com/embed',
-        rainbow: 'libs/rainbow.min'
+        highlight: 'libs/highlight.pack',
+        markdown: 'libs/markdown'
     },
     shim: {
         angular: {
@@ -30,9 +32,9 @@ require.config({
             exports: 'DISQUS'
         },
 
-        rainbow: {
-            exports: 'Rainbow'
-        }
+        highlight: { exports: 'hljs' },
+
+        markdown: { exports: 'Markdown' }
     }
 });
 

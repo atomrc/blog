@@ -27,10 +27,55 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
         }]);
 
 
-
         app
+            .directive('wscTabInsensitive', [function () {
+                return function ($scope, element) {
+                    element.on('keydown', function (event) {
+                        if (event.keyCode === 9) {
+                            var tab = '\t',
+                                startPos = this.selectionStart,
+                                endPos = this.selectionEnd,
+                                scrollTop = this.scrollTop;
+                            this.value = this.value.substring(0, startPos) + tab + this.value.substring(endPos,this.value.length);
+                            this.selectionStart = startPos + tab.length;
+                            this.selectionEnd = startPos + tab.length;
+                            this.scrollTop = scrollTop;
+                            event.preventDefault();
+                        }
+                    });
+                };
+            }])
+
+            .directive('wscBodyCompiler', [function () {
+                return {
+                    require: '?ngModel',
+                    link: function ($scope, element, attrs, ngModel) {
+                        ngModel.$render = function () {
+                            element.html(ngModel.$modelValue);
+                        };
+
+                        require(['highlight', 'markdown'], function (hl, md) {
+                            $scope.$watch(attrs.wscBodyCompiler, function (toCompile) {
+                                if (toCompile) {
+                                    var html = md.toHTML(toCompile);
+                                    html = html.replace(/<code>:(\w+):([^<]+)<\/code>/g, function (str, language, code) {
+                                        var unescapedCode = angular.element(str).html().replace(':' + language + ':', '');
+                                        return '<code>' + hl.highlight(language, unescapedCode).value + '</code>';
+                                    });
+                                    ngModel.$setViewValue(html);
+                                    ngModel.$render();
+                                }
+                            });
+                        });
+                    }
+                };
+            }])
+
             .directive('wscEdit', ['adminPostsManager', function (adminPostsManager) {
                 return function ($scope) {
+                    var markdown = null,
+                        highlight = null;
+
                     $scope.create = function (post) {
                         adminPostsManager.create(post);
                     };
@@ -107,17 +152,6 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                         });
                     }
                 };
-            }])
-
-            .directive('code', [function () {
-                return {
-                    restrict: 'E',
-                    link: function (scope, element, attrs) {
-                        require(['rainbow'], function (rainbow) {
-                            console.log(rainbow);
-                        });
-                    }
-                };
-            }])
+            }]);
     };
 });

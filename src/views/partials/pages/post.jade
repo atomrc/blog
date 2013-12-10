@@ -1,2 +1,3 @@
 #full-article.soft-box(data-post-container="true")
-div#disqus_thread(data-disqus="post")
+- if (!auth)
+    div#disqus_thread(data-disqus="post")

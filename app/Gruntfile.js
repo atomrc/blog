@@ -18,14 +18,11 @@ module.exports = function (grunt) {
                     disqus: 'empty:',
                 },
                 name: 'main',
-                dir: '<%= destPath %>/js/application',
-                optimize: 'none'
+                dir: '<%= destPath %>/js',
+                optimize: 'uglify2'
             },
 
             prod: {
-                options: {
-                    optimize: 'uglify2'
-                }
             },
 
             dev: {

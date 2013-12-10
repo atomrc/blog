@@ -1,6 +1,10 @@
 article(itemscope="", itemtype="http://schema.org/Article")
     - if (auth)
-        button(data-ng-click="remove(post);") remove
+        .edit-section
+            form(data-ng-submit="update(post)")
+                input(data-ng-model="post.title")
+                textarea(data-ng-model="post.bodySrc", data-wsc-tab-insensitive)
+                input(type="submit")
     meta(itemprop="description", content="{{post.description}}")
     .header
         h1(itemprop="name")
@@ -20,9 +24,9 @@ article(itemscope="", itemtype="http://schema.org/Article")
                     &nbsp;
     .readable-content
         p.description(data-ng-if="!full"){{ post.description }}
-        - if (auth)
-            .body(data-ng-if="full", data-wsc-contenteditable, data-ng-model="post.body")
-        - else
+        -if (auth)
+            .body(data-ng-if="full", data-wsc-body-compiler='post.bodySrc', data-ng-model="post.body")
+        -else
             .body(data-ng-if="full", data-ng-bind-html='post.body | trustAsHtml', itemprop="articleBody")
         .author(data-ng-if="full") par 
             span(itemprop="author") Thomas Belin

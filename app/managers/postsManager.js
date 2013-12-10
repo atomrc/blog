@@ -10,7 +10,7 @@ module.exports = {
         'use strict';
         var condition = filter ? { status: STATUS_PUBLISHED } : {},
             options = limit ?  { limit: limit } : {},
-            properties = full ? '' : '-body';
+            properties = full ? '' : '-body -bodySrc';
 
         return Post
             .find(condition, properties, options)
@@ -31,19 +31,21 @@ module.exports = {
 
         //load the post and check if its status is published or draft
         return Post
-            .findOne({'_id': id, 'status': {$gt: STATUS_UNPUBLISHED} })
+            .findOne({'_id': id, 'status': {$gt: STATUS_UNPUBLISHED}}, '-bodySrc')
             .populate('tags')
             .exec();
     },
 
     find: function (slug, filter) {
         'use strict';
-        var condition = {slug: slug};
+        var condition = {slug: slug},
+            properties = '';
         if (filter) {
             condition.status = STATUS_PUBLISHED;
+            properties = '-bodySrc';
         }
         return Post
-            .findOne(condition)
+            .findOne(condition, properties)
             .populate('tags')
             .exec();
     },

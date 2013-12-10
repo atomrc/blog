@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     utils    = require('../libs/utils'),
     Schema   = mongoose.Schema,
     ObjectId = Schema.ObjectId,
-    Tag  = require('../models/Tag'),
+    Tag      = require('../models/Tag'),
     fillMandatories = function (post) {
         'use strict';
         if (!post.pubdate) { post.pubdate = Date.now(); }
@@ -17,6 +17,7 @@ var PostSchema = new Schema({
         title:        String,
         description:  String,
         body:         String,
+        bodySrc:      String,
         slug:         String,
         status:       { type: Number, 'default': 0 },
         pubdate:      { type: Date, 'default': Date.now },
@@ -41,4 +42,3 @@ PostSchema.pre('save', function (next) {
 
 
 module.exports = mongoose.model('Post', PostSchema);
-
