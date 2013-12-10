@@ -32,7 +32,7 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                 return function ($scope, element) {
                     element.on('keydown', function (event) {
                         if (event.keyCode === 9) {
-                            var tab = '\t',
+                            var tab = '    ',
                                 startPos = this.selectionStart,
                                 endPos = this.selectionEnd,
                                 scrollTop = this.scrollTop;
@@ -59,7 +59,12 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                                 if (toCompile) {
                                     var html = md.toHTML(toCompile);
                                     html = html.replace(/<code>:(\w+):([^<]+)<\/code>/g, function (str, language, code) {
-                                        var unescapedCode = angular.element(str).html().replace(':' + language + ':', '');
+                                        var unescapedCode = angular.element(str).html().replace(':' + language + ':', ''),
+                                            isSupportedLanguage = false;
+                                        for (var i in hl.LANGUAGES) {
+                                            isSupportedLanguage = isSupportedLanguage || i === language;
+                                        }
+                                        if (!isSupportedLanguage) { return '!!unsupported language!!'; }
                                         return '<code>' + hl.highlight(language, unescapedCode).value + '</code>';
                                     });
                                     ngModel.$setViewValue(html);

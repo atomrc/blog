@@ -51,7 +51,10 @@ module.exports = function (grunt) {
 
         sass: {
             dist: {
-                files: { '<%= destPath %>/css/application.css': '<%= srcPath %>/sass/application.scss' }
+                files: [
+                    { '<%= destPath %>/css/application.css': '<%= srcPath %>/sass/application.scss' },
+                    { '<%= destPath %>/css/admin.css': '<%= srcPath %>/sass/admin.scss' },
+                ]
             }
         },
 

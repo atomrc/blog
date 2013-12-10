@@ -21,24 +21,29 @@ html(lang="fr")
 
         title(id="_title", data-ng-bind="title || '#{title}' ") #{title}
         link(href="/css/application.css", type="text/css", rel="stylesheet")
+        -if (auth)
+            link(href="/css/admin.css", type="text/css", rel="stylesheet")
+            script
+                var loadAdmin = true;
+        script(src='/js/libs/require.min.js', data-main='/js/main.js')
         script
             (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
             (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
             m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
             })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
             ga('create', 'UA-34218773-1', 'thomasbelin.fr');
             ga('send', 'pageview');
 
-        script(src='/js/libs/require.min.js', data-main='/js/main.js')
         script(src="//localhost:35729/livereload.js")
         base(href="/")
 
     body
-        #header
-            a.title(href="/"){ Thomas BELIN }
-                - if (auth)
-        #content(data-ng-view, data-wsc-edit)
+        #top-wrapper
+            #header
+                a.title(href="/"){ Thomas BELIN }
+                    - if (auth)
+            #content(data-ng-view, data-wsc-edit)
+        #filler
         #footer
             .container
                 img#avatar(src="/images/avatar_s.jpeg", alt="Thomas Belin", height="100", width="100")

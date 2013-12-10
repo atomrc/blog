@@ -1,3 +1,11 @@
+- if (auth)
+    .edit-section
+        form(data-ng-submit="update(post)")
+            input(data-ng-model="post.title")
+            br
+            textarea(data-ng-model="post.bodySrc", data-wsc-tab-insensitive)
+            br
+            input(type="submit")
 #full-article.soft-box(data-post-container="true")
 - if (!auth)
     div#disqus_thread(data-disqus="post")
