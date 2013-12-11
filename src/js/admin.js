@@ -1,30 +1,102 @@
-/*global define, ga*/
+/*global define, require*/
 
-define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
+define(['angular', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular) {
     'use strict';
     return function (app) {
         /**
          * SERVICES
          */
-        app.factory('adminPostsManager', ['Post', 'postsManager', function (Post, postsManager) {
-            var posts = postsManager.query();
-            return {
-                create: function (data) {
-                    var post = new Post(data);
-                    posts.unshift(post);
-                    post.$save();
-                },
+        app
+            .factory('Tag', ['$resource', function ($resource) {
+                return $resource('/api/tags/:id', {id: '@id'});
+            }])
 
-                remove: function (post) {
-                    posts.removeElement(post);
-                    post.$delete();
-                },
+            .factory('adminPostsManager', ['Post', 'Tag', 'postsManager', function (Post, Tag, postsManager) {
+                var posts = postsManager.query();
+                return {
+                    /**
+                     * create - create a new blog post
+                     *
+                     * @param {Object} data
+                     * @return {Promise}
+                     */
+                    create: function (data) {
+                        var post = new Post(data);
+                        posts.unshift(post);
+                        return post.$save();
+                    },
 
-                update: function (post) {
-                    post.$update();
-                }
-            };
-        }]);
+                    /**
+                     * remove - delete a post
+                     * removes it from the posts array and send a delete request to the server
+                     *
+                     * @param {Post} post
+                     * @return {Promise}
+                     */
+                    remove: function (post) {
+                        posts.removeElement(post);
+                        return post.$delete();
+                    },
+
+                    /**
+                     * update - save a post to the server
+                     *
+                     * @param {Post} post
+                     * @return {Promise}
+                     */
+                    update: function (post) {
+                        return post.$update();
+                    },
+
+                    /**
+                     * reset - will reset the pubdate and slug of the post
+                     *
+                     * @param {Post} post
+                     * @return {Promise}
+                     */
+                    reset: function (post) {
+                        post.pubdate = null;
+                        post.slug = null;
+                        return post.$update();
+                    },
+
+                    /**
+                     * untag - remove a tag from a post
+                     *
+                     * @param {Post} post
+                     * @param {Tag} tag
+                     * @return {Promise}
+                     */
+                    untag: function (post, tag) {
+                        post.$untag({ resourceId: tag.id });
+                    },
+
+                    /**
+                     * tag - add a tag from a post
+                     * if the tag has no id then first create it on the server
+                     *
+                     * @param {Post} post
+                     * @param {Tag} tag
+                     * @return {Promise}
+                     */
+                    tag: function (post, tag) {
+                        if (tag.id) {
+                            //apply the already saved tag to the post
+                            return post.$tag({ resourceId: tag.id });
+                        }
+
+                        //if the tag doesn't exists in the database 
+                        //first make a request to create it
+                        tag = new Tag(tag);
+                        return tag
+                            .$save()
+                            .then(function (tag) {
+                                //when the tag is created, apply it to the post
+                                return post.$tag({ resourceId: tag.id });
+                            });
+                    }
+                };
+            }]);
 
 
         app
@@ -58,11 +130,13 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                             $scope.$watch(attrs.wscBodyCompiler, function (toCompile) {
                                 if (toCompile) {
                                     var html = md.toHTML(toCompile);
-                                    html = html.replace(/<code>:(\w+):([^<]+)<\/code>/g, function (str, language, code) {
+                                    html = html.replace(/<code>:(\w+):([^<]+)<\/code>/g, function (str, language) {
                                         var unescapedCode = angular.element(str).html().replace(':' + language + ':', ''),
                                             isSupportedLanguage = false;
                                         for (var i in hl.LANGUAGES) {
-                                            isSupportedLanguage = isSupportedLanguage || i === language;
+                                            if (hl.LANGUAGES.hasOwnProperty(i)) {
+                                                isSupportedLanguage = isSupportedLanguage || i === language;
+                                            }
                                         }
                                         if (!isSupportedLanguage) { return '!!unsupported language!!'; }
                                         return '<code>' + hl.highlight(language, unescapedCode).value + '</code>';
@@ -78,20 +152,15 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
 
             .directive('wscEdit', ['adminPostsManager', function (adminPostsManager) {
                 return function ($scope) {
-                    var markdown = null,
-                        highlight = null;
+                    $scope.create = adminPostsManager.create;
 
-                    $scope.create = function (post) {
-                        adminPostsManager.create(post);
-                    };
+                    $scope.remove = adminPostsManager.remove;
 
-                    $scope.remove = function (post) {
-                        adminPostsManager.remove(post);
-                    };
+                    $scope.update = adminPostsManager.update;
 
-                    $scope.update = function (post) {
-                        adminPostsManager.update(post);
-                    };
+                    $scope.untag = adminPostsManager.untag;
+
+                    $scope.tag = adminPostsManager.tag;
                 };
             }])
 
@@ -100,8 +169,7 @@ define(['ngRoute', 'ngResource', 'ngAnimate'], function () {
                     require: 'ngModel',
                     link: function (scope, element, attrs, ctrl) {
                         element.attr('contenteditable', true);
-                        var modifiedElement = null,
-                            executeAction = function (key, selectedText) {
+                        var executeAction = function (key, selectedText) {
                                 switch (key) {
                                 case 80: //p
                                     document.execCommand('formatBlock', false, 'p');

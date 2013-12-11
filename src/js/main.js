@@ -1,4 +1,4 @@
-/*global require, angular, window*/
+/*global require, loadAdmin*/
 
 require.config({
     baseUrl: '/js',
@@ -43,7 +43,7 @@ require(['angular', 'public', 'extensions', 'ngRoute', 'ngResource', 'ngAnimate'
     var ngBlog = angular.module('blog', ['ngRoute', 'ngResource', 'ngAnimate']);
     bootstrap(ngBlog);
     //TODO switch between admin and public config
-    if (loadAdmin) {
+    if (window.loadAdmin) {
         require(['admin'], function (adminBoostrap) {
             adminBoostrap(ngBlog);
             angular.bootstrap(window.document, ['blog']);

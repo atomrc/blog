@@ -13,8 +13,12 @@ article(itemscope="", itemtype="http://schema.org/Article")
         aside
             span.tags-list(itemprop="keywords")
                 span(data-ng-repeat='tag in post.tags')
-                    span.tag
-                        {{ tag.name }}
+                    - if (auth)
+                        span.tag(data-ng-click="untag(post, tag)")
+                            {{ tag.name }}
+                    - else
+                        span.tag
+                            {{ tag.name }}
                     &nbsp;
     .readable-content
         p.description(data-ng-if="!full"){{ post.description }}

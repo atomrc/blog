@@ -1,3 +1,6 @@
-.card(data-ng-repeat="post in posts", data-post-container="false")
+.card(data-ng-repeat="post in posts")
+    div(data-post-container="false")
     - if (auth)
-        button(data-ng-click="remove(post);") remove
+        form.manage-section(data-ng-submit="tag(post, newTag); newTag = null;")
+            input(data-ng-model="newTag.name")
+        //button(data-ng-click="remove(post);") remove
