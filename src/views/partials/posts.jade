@@ -1,6 +1,10 @@
 .card(data-ng-repeat="post in posts")
+    - if (auth)
+        .actions
+            span.status(data-ng-class="post.getStatusStr()", data-ng-click="toggleStatus(post);")
+            span.remove(data-ng-click="remove(post);") ×
     div(data-post-container="false")
     - if (auth)
-        form.manage-section(data-ng-submit="tag(post, newTag); newTag = null;")
-            input(data-ng-model="newTag.name")
-        //button(data-ng-click="remove(post);") remove
+        .manage-section
+            form.tag-add(data-ng-submit="tag(post, newTag); newTag = null;")
+                input(data-ng-model="newTag.name")

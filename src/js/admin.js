@@ -85,7 +85,7 @@ define(['angular', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular) {
                             return post.$tag({ resourceId: tag.id });
                         }
 
-                        //if the tag doesn't exists in the database 
+                        //if the tag doesn't exists in the database
                         //first make a request to create it
                         tag = new Tag(tag);
                         return tag
@@ -94,6 +94,20 @@ define(['angular', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular) {
                                 //when the tag is created, apply it to the post
                                 return post.$tag({ resourceId: tag.id });
                             });
+                    },
+
+                    /**
+                     * toggleStates - toggle between the three possibles states of a post :
+                     *  - unpublished
+                     *  - draft
+                     *  - published
+                     *
+                     * @param post
+                     * @return
+                     */
+                    toggleStatus: function (post) {
+                        post.status = (post.status + 1) % 3;
+                        return post.$update();
                     }
                 };
             }]);
@@ -154,13 +168,19 @@ define(['angular', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular) {
                 return function ($scope) {
                     $scope.create = adminPostsManager.create;
 
-                    $scope.remove = adminPostsManager.remove;
+                    $scope.remove = function (post) {
+                        if (window.confirm('sure ?')) {
+                            adminPostsManager.remove(post);
+                        }
+                    };
 
                     $scope.update = adminPostsManager.update;
 
                     $scope.untag = adminPostsManager.untag;
 
                     $scope.tag = adminPostsManager.tag;
+
+                    $scope.toggleStatus = adminPostsManager.toggleStatus;
                 };
             }])
 

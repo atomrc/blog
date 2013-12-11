@@ -50,12 +50,25 @@ define([], function () {
         app
 
             .factory('Post', ['$resource', function ($resource) {
-                return $resource('/api/posts/:id/:action/:resourceId', { id: '@id' }, {
+                var Post = $resource('/api/posts/:id/:action/:resourceId', { id: '@id' }, {
                     update: { method: 'PUT' },
                     find: { method: 'GET', params: { action: 'find' } },
                     tag: { method: 'POST', params: { action: 'tags' } },
                     untag: { method: 'DELETE', params: { action: 'tags' } }
                 });
+
+                Post.prototype.getStatusStr = function () {
+                    switch (this.status) {
+                        case 0:
+                            return "unpublished";
+                        case 1:
+                            return "draft";
+                        case 2:
+                            return "published";
+                    }
+                };
+
+                return Post;
             }])
 
             .factory('postsManager', ['Post', function (Post) {

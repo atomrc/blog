@@ -1,7 +1,7 @@
 .section-title Articles
     .progress.small(data-ng-show="!posts.$resolved") loading
     - if (auth)
-        form(data-ng-submit="create(newPost);")
+        form(data-ng-submit="create(newPost); newPost = null;")
             input(data-ng-model="newPost.title")
             button Create
 hr

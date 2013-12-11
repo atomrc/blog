@@ -1,17 +1,61 @@
+$coolblue: rgb(114, 166, 252);
+
 #full-article {
     float: right;
 }
 
 #posts-container {
-    .card { position: relative; }
+    .card {
+        position: relative;
 
-    .manage-section {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        background-color: #000;
+        .actions {
+            float: right;
+            font-size: 15pt;
+            span { margin-left: 5px; }
+            .remove {
+                cursor: pointer;
+            }
+
+            .status {
+                display: inline-block;
+                height: .75em;
+                width: .75em;
+                border-radius: .5em;
+                cursor: pointer;
+                &.unpublished {
+                    background-color: #7A0026;
+                }
+                &.draft {
+                    background-color: #FF8C00;
+                }
+                &.published {
+                    background-color: $coolblue;
+                }
+
+            }
+        }
+
+        .manage-section {
+            text-align: center;
+            transition: height 0.5s, opacity 0.5s;
+            opacity: 0;
+            height: 0;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background-color: #000;
+            bottom: 0;
+            overflow: hidden;
+        }
+
+        &:hover {
+            .manage-section {
+                opacity: 1;
+                height: 25%;
+            }
+        }
     }
+
 
 }
 
