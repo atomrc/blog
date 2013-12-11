@@ -4,9 +4,54 @@ $coolblue: rgb(114, 166, 252);
     float: right;
 }
 
+.inplace-edit {
+    position: relative;
+    min-height: 1em;
+    textarea {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+        font: inherit;
+        color: inherit;
+        border: none;
+    }
+}
+
 #posts-container {
     .card {
         position: relative;
+
+        .save {
+            cursor: pointer;
+            position: absolute;
+            bottom: 100%;
+            left: 1em;
+            height: 1.5em;
+            width: 2em;
+            background-color: #666;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            &.ng-enter, &.ng-leave {
+                transition: height 1s;
+            }
+            &.ng-enter {
+                height: 0;
+                &.ng-enter-active {
+                    height: 1.5em;
+                }
+            }
+            &.ng-leave {
+                height: 1.5em;
+                &.ng-leave-active {
+                    height: 0;
+                }
+            }
+        }
 
         .actions {
             float: right;

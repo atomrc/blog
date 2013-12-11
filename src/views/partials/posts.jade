@@ -1,10 +1,7 @@
 .card(data-ng-repeat="post in posts")
     - if (auth)
+        .save(data-ng-if="post.$unsaved", data-ng-click="update(post);") ✓
         .actions
             span.status(data-ng-class="post.getStatusStr()", data-ng-click="toggleStatus(post);")
             span.remove(data-ng-click="remove(post);") ×
     div(data-post-container="false")
-    - if (auth)
-        .manage-section
-            form.tag-add(data-ng-submit="tag(post, newTag); newTag = null;")
-                input(data-ng-model="newTag.name")

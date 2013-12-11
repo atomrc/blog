@@ -164,6 +164,25 @@ define(['angular', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular) {
                 };
             }])
 
+            .directive('wscObserve', function () {
+                return {
+                    scope: true,
+                    link: function ($scope, element, attrs) {
+                        var isInit = true;
+                        $scope.$watch(attrs.wscObserve, function (element, previous) {
+                            if (isInit) { isInit = false; return; }
+                            //in case the element has been saved, the $unsaved will automatically be removed
+                            //we don't need to state this has an unsaved change
+                            if (!element.$unsaved && previous.$unsaved) { return; }
+
+                            if (!element.$unsaved) {
+                                element.$unsaved = true;
+                            }
+                        }, true);
+                    }
+                };
+            })
+
             .directive('wscEdit', ['adminPostsManager', function (adminPostsManager) {
                 return function ($scope) {
                     $scope.create = adminPostsManager.create;
@@ -181,6 +200,21 @@ define(['angular', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular) {
                     $scope.tag = adminPostsManager.tag;
 
                     $scope.toggleStatus = adminPostsManager.toggleStatus;
+                };
+            }])
+
+            .directive('wscInplaceEdit', [function () {
+                return {
+                    require: '?ngModel',
+                    template: '<p>{{model}}<textarea data-ng-model="model"></textarea></p>',
+                    link: function ($scope, element, attrs, ngModel) {
+                        ngModel.$render = function () {
+                            $scope.model = ngModel.$modelValue;
+                        };
+                        $scope.$watch('model', function (value) {
+                            ngModel.$setViewValue(value);
+                        });
+                    }
                 };
             }])
 

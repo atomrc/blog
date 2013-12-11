@@ -1,4 +1,4 @@
-article(itemscope="", itemtype="http://schema.org/Article")
+article(itemscope="", itemtype="http://schema.org/Article", data-wsc-observe="post")
     meta(itemprop="description", content="{{post.description}}")
     .header
         h1(itemprop="name")
@@ -21,10 +21,11 @@ article(itemscope="", itemtype="http://schema.org/Article")
                             {{ tag.name }}
                     &nbsp;
     .readable-content
-        p.description(data-ng-if="!full"){{ post.description }}
         -if (auth)
+            .description.inplace-edit(data-wsc-inplace-edit, data-ng-model="post.description", data-ng-if="!full")
             .body(data-ng-if="full", data-wsc-body-compiler='post.bodySrc', data-ng-model="post.body")
         -else
+            p.description(data-ng-if="!full"){{ post.description }}
             .body(data-ng-if="full", data-ng-bind-html='post.body | trustAsHtml', itemprop="articleBody")
         .author(data-ng-if="full") par 
             span(itemprop="author") Thomas Belin
