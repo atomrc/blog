@@ -1,3 +1,9 @@
+v2.0
+=============
+- use Grunt to compile js files, scss files, copy static files ...
+- complete split between application sources and application production code
+- some design improvments
+
 v1.7 (current)
 =============
 - suggestion algorithm based on article tags
