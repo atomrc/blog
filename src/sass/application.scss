@@ -50,7 +50,7 @@ strong,
 .pubdate .month,
 .section-title,
 #header .title,
-.suggestions .title {
+.related-posts .title {
     color: $pinkcolor;
     font-weight: normal;
     text-shadow: 1px 1px 0 white;
@@ -176,14 +176,26 @@ hr {
     }
 }
 
-#full-article, #disqus_thread {
+#full-article, #disqus_thread, .related-posts {
     width: 800px;
     margin: auto;
+    padding: 2em;
+}
+
+.related-posts {
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 5px;
+    background-color: rgb(221, 221, 221);
+    padding-top: 1em;
+    padding-bottom: 1em;
+    margin: 10px auto;
+    .title {
+        font-size: 16pt;
+    }
 }
 
 #full-article {
     position: relative;
-    padding: 2em;
     text-align: center;
     h1 {
         font-size: 2em;

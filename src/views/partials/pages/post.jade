@@ -7,5 +7,16 @@
             br
             input(type="submit")
 #full-article.soft-box(data-post-container="true")
+.related-posts(data-ng-show="related.length > 0", data-wsc-related-posts="post")
+    span.title A lire aussi
+    ul
+        li(data-ng-repeat="post in related")
+            a(
+                href="/posts/{{post.slug}}",
+                data-ng-bind="post.title",
+                data-ga-tracker="{type: \'event\', category: \'Suggestion\', action: \'click\', label: post.slug }"
+            )
+
+
 - if (!auth)
     div#disqus_thread(data-disqus="post")

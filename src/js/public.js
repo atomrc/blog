@@ -1,4 +1,4 @@
-/*global define, ga*/
+/*global define, require, ga*/
 
 define([], function () {
     'use strict';
@@ -13,7 +13,7 @@ define([], function () {
                     resolve: {
                         posts: ['postsManager', function (postsManager) {
                             return postsManager.query();
-                        }],
+                        }]
                     },
                     controller: ['$scope', 'posts', function ($scope, posts) {
                         $scope.posts = posts;
@@ -50,12 +50,13 @@ define([], function () {
         app
 
             .factory('Post', ['$resource', function ($resource) {
-                var Post = $resource('/api/posts/:id/:action/:resourceId', { id: '@id' }, {
-                    update: { method: 'PUT' },
-                    find: { method: 'GET', params: { action: 'find' } },
-                    tag: { method: 'POST', params: { action: 'tags' } },
-                    untag: { method: 'DELETE', params: { action: 'tags' } }
-                });
+                var baseUrl = '/api/posts/:id/:action/:resourceId',
+                    Post = $resource(baseUrl, { id: '@id' }, {
+                        update: { method: 'PUT' },
+                        find: { method: 'GET', params: { action: 'find' } },
+                        tag: { method: 'POST', params: { action: 'tags' } },
+                        untag: { method: 'DELETE', params: { action: 'tags' } }
+                    });
 
                 Post.prototype.getStatusStr = function () {
                     switch (this.status) {
@@ -68,11 +69,19 @@ define([], function () {
                     }
                 };
 
+                Post.prototype.getRelatedUrl = function () {
+                    return baseUrl
+                        .replace(':id', this.id)
+                        .replace(':action/', 'related')
+                        .replace(':resourceId', '');
+                };
+
                 return Post;
             }])
 
-            .factory('postsManager', ['Post', function (Post) {
+            .factory('postsManager', ['Post', '$http', function (Post, $http) {
                 var posts,
+                    relatedPosts = {},
                     find = function (slug) {
                         var filtered = [];
                         if (!posts) { return false; }
@@ -110,6 +119,18 @@ define([], function () {
                         if (post.body) { return post; }
                         post.$loading = true;
                         return post.$get();
+                    },
+
+                    getRelated: function (post) {
+                        if (!relatedPosts[post.id]) {
+                            relatedPosts[post.id] = [];
+                            $http
+                                .get(post.getRelatedUrl())
+                                .success(function (posts) {
+                                    Array.prototype.push.apply(relatedPosts[post.id], posts);
+                                });
+                        }
+                        return relatedPosts[post.id];
                     }
                 };
             }]);
@@ -130,8 +151,22 @@ define([], function () {
                 return {
                     restrict: 'A',
                     templateUrl: "/post.html",
-                    controller: ['$scope', '$attrs', '$location', function ($scope, $attrs, $location) {
+                    controller: ['$scope', '$attrs', function ($scope, $attrs) {
                         $scope.full = $scope.$eval($attrs.postContainer);
+                    }]
+                };
+            }])
+
+            .directive('wscRelatedPosts', ['postsManager', function (postsManager) {
+                return {
+                    restrict: 'A',
+                    scope: true,
+                    controller: ['$scope', '$attrs', function ($scope, $attrs) {
+                        $scope.$watch($attrs.wscRelatedPosts, function (post) {
+                            if (post.id) {
+                                $scope.related = postsManager.getRelated(post);
+                            }
+                        }, true);
                     }]
                 };
             }])
@@ -139,7 +174,7 @@ define([], function () {
             .directive('sticky', ['$window', '$timeout', function ($window, $timeout) {
                 return {
                     restrict: 'A',
-                    link: function (scope, element, attrs) {
+                    link: function (scope, element) {
                         var offset = null,
                             isSticky = false;
                         $timeout(function () {
@@ -177,6 +212,18 @@ define([], function () {
                             });
                         });
                     }]
+                };
+            }])
+
+            .directive('gaTracker', [function () {
+                return {
+                    restrict: 'A',
+                    link: function (scope, element, attrs) {
+                        var datas = scope.$eval(attrs.gaTracker);
+                        element.on('click', function () {
+                            ga('send', datas.type, datas.category, datas.action, datas.label);
+                        });
+                    }
                 };
             }]);
 
