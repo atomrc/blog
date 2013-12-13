@@ -76,7 +76,26 @@ define([], function () {
                         .replace(':resourceId', '');
                 };
 
+                Post.prototype.getUrl = function () {
+                    return 'http://thomasbelin.fr/posts/' + this.slug;
+                };
+
                 return Post;
+            }])
+
+            .factory('shareManager', ['$interpolate', function ($interpolate) {
+                var providers = {
+                    'twitter':  'https://twitter.com/intent/tweet?text={{text}}&url={{url}}&via=ThomasBelin4',
+                    'facebook' : 'http://www.facebook.com/share.php?u={{url}}',
+                    'google-plus': 'https://plus.google.com/share?url={{url}}'
+                };
+                return {
+                    getShareUrl: function (provider, url, text) {
+                        var providerUrlPattern = providers[provider];
+                        if (!providerUrlPattern) { return false; }
+                        return $interpolate(providerUrlPattern)({url: url, text: text});
+                    }
+                };
             }])
 
             .factory('postsManager', ['Post', '$http', function (Post, $http) {
@@ -154,6 +173,22 @@ define([], function () {
                     controller: ['$scope', '$attrs', function ($scope, $attrs) {
                         $scope.full = $scope.$eval($attrs.postContainer);
                     }]
+                };
+            }])
+
+            .directive('wscShare', ['$window', 'shareManager', function ($window, shareManager) {
+                return {
+                    scope: {
+                        resource: '=wscShareResource'
+                    },
+                    link: function ($scope, element, attrs) {
+                        var provider = attrs.wscShare;
+                        element.on('click', function (event) {
+                            event.preventDefault();
+                            $window.open(shareManager.getShareUrl(provider, $scope.resource.getUrl(), $scope.resource.title), '_blank');
+                        });
+                    }
+
                 };
             }])
 
