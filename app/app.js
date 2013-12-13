@@ -42,11 +42,11 @@ var express = require('express'),
             //in case of a human requesting one of the front urls
             //serving the static application.html file
             var url = require('url').parse(req.url),
-                templatePath = '';
+                templatePath = '',
+                adminId = (req.session || {}).auth ? 'admin.' : '';
+
             if (url.pathname.match(/^\/$|^\/posts\/.*$/)) {
-                templatePath = (req.session || {}).auth ?
-                    'application.admin.html' :
-                    'application.html';
+                templatePath = 'application.' + adminId + 'html';
                 req.url = '/partials/' + templatePath;
             }
             return next();
@@ -96,8 +96,8 @@ app.configure(function () {
 
 app.configure('development', function () {
     'use strict';
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
     app.use(errorHandler);
+    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('prod', function () {

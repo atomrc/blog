@@ -31,7 +31,16 @@ define([], function () {
                     controller: ['$scope', 'post', function ($scope, post) {
                         $scope.post = post;
                     }]
-                });
+                })
+
+                .when('/404', {
+                    templateUrl: '/404.html',
+                    controller: [function () {
+                        (window.onCaptureReady || angular.noop)(404);
+                    }]
+                })
+
+                .otherwise({redirectTo: '/404'});
         }]);
 
 
@@ -264,6 +273,14 @@ define([], function () {
 
 
         app.run(['$rootScope', '$location', function ($rootScope, $location) {
+            $rootScope.$on('$routeChangeError', function () {
+                if (window.onCaptureReady) {
+                    window.onCaptureReady(404);
+                } else {
+                    $location.url('/404');
+                }
+            });
+
             $rootScope.$on('$routeChangeStart', function (e, to, from) {
                 if (from) {
                     ga('send', 'pageview', $location.path());

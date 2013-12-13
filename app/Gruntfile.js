@@ -1,10 +1,16 @@
-/*global module, grunt*/
+/*global module*/
 
 module.exports = function (grunt) {
     'use strict';
+    var blogConfig = {
+        description: "Et si on parlait un peu Javascript, AngularJS et code en général !",
+        title: "Why So Curious ?"
+    };
+
     grunt.initConfig({
         srcPath: '../src',
         destPath: 'public',
+
 
         requirejs: {
             options: {
@@ -15,7 +21,7 @@ module.exports = function (grunt) {
                     ngResource: 'empty:',
                     ngAnimate: 'empty:',
                     ngRoute: 'empty:',
-                    disqus: 'empty:',
+                    disqus: 'empty:'
                 },
                 name: 'main',
                 dir: '<%= destPath %>/js',
@@ -31,19 +37,18 @@ module.exports = function (grunt) {
         },
 
         jade: {
-            exposed: {
-                options: { data: {
-                    auth: false,
-                    description: "Et si on parlait un peu Javascript, AngularJS et code en général !",
-                    title: "Why So Curious ?"
-                } },
+            dev: {
+                options: {
+                    data: function (dest) {
+                        return {
+                            auth: /admin/.test(dest),
+                            prod: false,
+                            conf: blogConfig
+                        };
+                    }
+                },
                 files: {
-                    '<%= destPath %>/partials/application.html': '<%= srcPath %>/views/application.jade'
-                }
-            },
-            admin: {
-                options: { data: {auth: true} },
-                files: {
+                    '<%= destPath %>/partials/application.html': '<%= srcPath %>/views/application.jade',
                     '<%= destPath %>/partials/application.admin.html': '<%= srcPath %>/views/application.jade'
                 }
             }
@@ -53,7 +58,7 @@ module.exports = function (grunt) {
             dist: {
                 files: [
                     { '<%= destPath %>/css/application.css': '<%= srcPath %>/sass/application.scss' },
-                    { '<%= destPath %>/css/admin.css': '<%= srcPath %>/sass/admin.scss' },
+                    { '<%= destPath %>/css/admin.css': '<%= srcPath %>/sass/admin.scss' }
                 ]
             }
         },
@@ -79,10 +84,7 @@ module.exports = function (grunt) {
 
             css: {
                 files: '<%= srcPath %>/sass/*.scss',
-                tasks: ['sass'],
-                options: {
-                    livereload: true
-                }
+                tasks: ['sass']
             }
         }
     });

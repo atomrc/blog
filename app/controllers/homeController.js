@@ -2,17 +2,7 @@
 var Snapshot = require('../models/Snapshot'),
     http = require('http'),
 
-    serveLayout = function (req, res) {
-        'use strict';
-        res.render('index', {
-            auth: req.session.auth,
-            prod: req.app.get('env') === 'prod',
-            description: "Et si on parlait un peu Javascript, AngularJS et code en général !",
-            title: "Why So Curious ?"
-        });
-    },
-
-    serveSnapshot = function (req, res, next) {
+    serveSnapshot = function (req, res) {
         'use strict';
         var requestParams,
             request,
@@ -45,9 +35,5 @@ var Snapshot = require('../models/Snapshot'),
 
 exports.index = function (req, res, next) {
     'use strict';
-    if (req.query.snap) {
-        serveSnapshot(req, res, next);
-    } else {
-        serveLayout(req, res, next);
-    }
+    serveSnapshot(req, res, next);
 };
