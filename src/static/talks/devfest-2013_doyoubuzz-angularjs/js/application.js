@@ -11,31 +11,21 @@
         visitorsCounter.incrementTo(1200000, 3, 123);
     });
 
-    for (var i in incrementSlides) {
-        if (!incrementSlides[i].addEventListener) { continue; }
-        incrementSlides[i].addEventListener('click', function () {
-            var current = this.dataset.current || 0;
-            this.classList.remove('inc-' + current);
-            current++;
-            this.classList.add('inc-' + current);
-            this.dataset.current = current;
-        });
-    }
 }());
 
 (function (doc) {
     'use strict';
     var ngLogo = [
-            /*[0, 0, 2000, 0],
-            [2000, 100, 0, 100]*/
-            [0, 0, 235, 85],
+            [0, 0, 2000, 0],
+            [2000, 100, 0, 100]
+            /*[0, 0, 235, 85],
             [235, 85, 200, 385],
             [200, 385, 0, 500],
             [0, 500, -200, 385],
             [-200, 385, -235, 85],
             [-235, 85, 0, 0],
             [-145, 365, 0, 50],
-            [0, 50, 145, 365]
+            [0, 50, 145, 365]*/
         ],
         scale = 6,
         freeLength = 0,
@@ -43,9 +33,9 @@
         currentIndex = 0,
         prevX = 0,
         prevY = 0,
-        independantSlides = doc.querySelectorAll('.slide:not(.overlay):not(.free)'),
+        independantSlides = doc.querySelectorAll('.step'),
         unplacedSlides = independantSlides.length,
-        allSlides = doc.querySelectorAll('.slide:not(.free)');
+        allSlides = doc.querySelectorAll('.step');
 
     ngLogo = ngLogo.map(function (element) {
         return [
@@ -82,13 +72,6 @@
             if (!allSlides[currentIndex]) {
                 continue;
             }
-            if (allSlides[currentIndex].classList.contains('overlay')) {
-                i--;
-                allSlides[currentIndex].setAttribute('data-x', prevX);
-                allSlides[currentIndex].setAttribute('data-y', prevY);
-                currentIndex++;
-                continue;
-            }
             allSlides[currentIndex].setAttribute('data-x', cumulativeX);
             allSlides[currentIndex].setAttribute('data-y', cumulativeY);
             prevX = cumulativeX;
@@ -100,9 +83,59 @@
         }
     });
 
-    impress().init();
 
 }(document));
+
+(function () {
+    'use strict';
+    var impressApi = impress(),
+        currentStep = null,
+        moveSubstep = function (element, direction) {
+            if (!element) { return false; }
+            if (!element.dataset.steps) { return false; }
+            var dataset = element.dataset,
+                nbSteps = parseInt(dataset.steps, 10),
+                currentStep = parseInt(dataset.current, 10) || 0,
+                destStep = currentStep + direction;
+
+            if (destStep < 0 || destStep > nbSteps) { return false; }
+            dataset.current = destStep;
+            if (direction < 0) {
+                element.classList.remove('inc-' + currentStep);
+            } else {
+                element.classList.add('inc-' + destStep);
+            }
+            return true;
+        };
+
+    impressApi.init();
+
+    document.addEventListener("keyup", function ( event ) {
+        if ( ( event.keyCode > 32 && event.keyCode <= 34 ) || (event.keyCode >= 37 && event.keyCode <= 40) ) {
+            switch( event.keyCode ) {
+                case 33: // pg up
+                case 37: // left
+                case 38: // up
+                    if (!moveSubstep(currentStep, -1)) {
+                        currentStep = impressApi.prev();
+                    }
+                    break;
+                case 9:  // tab
+                case 32: // space
+                case 34: // pg down
+                case 39: // right
+                case 40: // down
+                    if (!moveSubstep(currentStep, 1)) {
+                        currentStep = impressApi.next();
+                    }
+                    break;
+            }
+
+            event.preventDefault();
+        }
+    }, false);
+ 
+}());
 
 (function (document, angular) {
     'use strict';
@@ -150,13 +183,15 @@
                     timeout(function () {
                         scope.$request = false;
                         scope.$response = true;
+
+                        timeout(function () {
+                            scope.$response = false;
+                            scope.widget.$view = '<h3>' + scope.widget.title + '</h3>' +
+                                '<ul><li>' + (scope.widget.detail1 || '') + '</li>' +
+                                '<li>' + (scope.widget.detail2 || '') + '</li></ul>';
+                        }, 4000);
+
                     }, 4000);
-                    timeout(function () {
-                        scope.$response = false;
-                        scope.widget.$view = '<h3>' + scope.widget.title + '</h3>' +
-                            '<ul><li>' + (scope.widget.detail1 || '') + '</li>' +
-                            '<li>' + (scope.widget.detail2 || '') + '</li></ul>';
-                    }, 8000);
                 },
                 watchChange = function (newValue) {
                     if (!newValue) { return; }

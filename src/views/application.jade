@@ -51,11 +51,23 @@ html(lang="fr")
                     a(href="http://www.doyoubuzz.com") DoYouBuzz. 
                     | Je <a href="/posts/faire-la-part-belle-au-code">fais la part belle au code</a>. Je crois en la richesse du web. Je m'éclate avec Javascript.
                 .social.icon
-                    a.twitter.animated(href='https://twitter.com/ThomasBelin4', target='_blank', title="Mon profil Twitter")
+                    a.twitter.animated(
+                        href='https://twitter.com/ThomasBelin4',
+                        target='_blank',
+                        title="Mon profil Twitter",
+                        data-ga-tracker="{type: \'event\', category: 'Profil', action: 'click', label: 'twitter' }")
                     | 
-                    a.google-plus.animated(href='https://plus.google.com/118010420630912086698?rel=author', target='_blank', title="Mon profil Google+")
+                    a.google-plus.animated(
+                        href='https://plus.google.com/118010420630912086698?rel=author',
+                        target='_blank',
+                        title="Mon profil Google+",
+                        data-ga-tracker="{type: \'event\', category: 'Profil', action: 'click', label: 'google+' }")
                     | 
-                    a.github.animated(href='https://github.com/thomasbelin4', target='_blank', title="Mon repo Github")
+                    a.github.animated(
+                        href='https://github.com/thomasbelin4',
+                        target='_blank',
+                        title="Mon repo Github",
+                        data-ga-tracker="{type: \'event\', category: 'Profil', action: 'click', label: 'github' }")
 
 script(type="text/ng-template", id="/page/home.html")
     include partials/pages/home

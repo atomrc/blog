@@ -34,5 +34,5 @@ article(itemscope="", itemtype="http://schema.org/Article", data-wsc-observe="po
             .header partager
             .content.icon
                 -for (var provider in {'twitter':'', 'google-plus':'', 'facebook':''})
-                    a.provider(class=provider, href="#", data-wsc-share=provider, data-wsc-share-resource="post", data-ga-tracker="{type: \'social\', category: provider, action: 'share', label: post.slug }")
+                    a.provider(class=provider, href="#", data-wsc-share=provider, data-wsc-share-resource="post", data-ga-tracker="{type: \'social\', category: '#{provider}', action: 'share', label: post.slug }")
 

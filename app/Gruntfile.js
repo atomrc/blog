@@ -11,7 +11,6 @@ module.exports = function (grunt) {
         srcPath: '../src',
         destPath: 'public',
 
-
         requirejs: {
             options: {
                 baseUrl: '<%= srcPath %>/js',

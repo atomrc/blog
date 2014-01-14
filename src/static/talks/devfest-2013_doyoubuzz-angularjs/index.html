@@ -10,7 +10,7 @@
     <link href="./css/font-awesome.min.css" rel="stylesheet">
     <link href="./css/code-themes/custom.css" rel="stylesheet">
     <link href="./css/counter.css" rel="stylesheet">
-    <link href="css/application.css" rel="stylesheet">
+    <link href="./css/application.css" rel="stylesheet">
 
     <script type="text/javascript">
 
@@ -39,7 +39,7 @@
         </div>
 
 
-        <div class="step increment" id="about-me" data-scale="0.3" data-x="900" data-y="-10">
+        <div class="step increment" id="about-me" data-steps=3 data-scale="0.3">
             <img src="./images/me.jpeg" style="border-radius: 10px; width: 30%">
             <strong class="me-function">Développeur Front-end @ DoYouBuzz</strong>
             <br>
@@ -55,54 +55,26 @@
             <img src="./images/doyoubuzz.png" style="display: block; margin: 25% auto; width: 70%;">
         </div>
 
-        <!--<div class="step" data-scale="0.3" data-x="1000" data-y="-500">
+        <div class="step" data-scale="0.3" data-x="1000" data-y="-500">
             <iframe src="http://doyoubuzz.com/thomas-belin_0" class="doyoubuzz-iframe"></iframe>
-        </div>-->
+        </div>
 
         <div class="step" data-scale="0.3" data-x="1500" data-y="0">
             <h3 class="subtitle">De quoi part-on ?</h3>
         </div>
 
-        <div class="step slide" data-scale="0.3">
+        <div class="step slide" data-scale="0.3" data-steps=5>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
             <p>
                 <ul>
-                    <li>5000 lines de code JS</li>
-                </ul>
-            </p>
-        </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <p>
-                <ul>
-                    <li>5000 lines de code JS</li>
-                    <li>entièrement basé sur jQuery</li>
-                </ul>
-            </p>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <p>
-                <ul>
-                    <li>5000 lines de code JS</li>
-                    <li>entièrement basé sur jQuery</li>
-                    <li>pas de structure du code JS</li>
-                </ul>
-            </p>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <p>
-                <ul>
-                    <li>5000 lines de code JS</li>
-                    <li>entièrement basé sur jQuery</li>
-                    <li>pas de structure du code JS</li>
-                    <li>très fortement lié à la structure du DOM</li>
+                    <li class="substep s1">5000 lines de code JS</li>
+                    <li class="substep s2">entièrement basé sur jQuery</li>
+                    <li class="substep s3">pas de structure du code JS</li>
+                    <li class="substep s4">très fortement lié à la structure du DOM</li>
+                    <li class="substep s5">DOM très fortement lié au serveur</li>
                 </ul>
             <br>
-            <pre style="font-size: 15pt; line-height: 1.5em"><code data-language="javascript">$('a.widget.edit').click(function () {
+            <pre class="substep x3" style="font-size: 15pt; line-height: 1.5em"><code data-language="javascript">$('a.widget.edit').click(function () {
     var $this = $(this);
     $('.random.selector').show();
     $('.other.random.selector').hide();
@@ -115,90 +87,34 @@
     });
     return false;
 });</code></pre>
-            </p>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <p>
-                <ul>
-                    <li>5000 lines de code JS</li>
-                    <li>entièrement basé sur jQuery</li>
-                    <li>pas de structure du code JS</li>
-                    <li>très fortement lié à la structure du DOM</li>
-                </ul>
-            <br>
+            <div class="substep x4">
                 <img src="./images/dyb.design.classic.png" style="width: 55%">
                 <img src="./images/dyb.design.noise.png" style="width: 40%">
-            </p>
-        </div>
+            </diV>
 
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <p>
-                <ul>
-                    <li>5000 lines de code JS</li>
-                    <li>entièrement basé sur jQuery</li>
-                    <li>pas de structure du code JS</li>
-                    <li>très fortement lié à la structure du DOM</li>
-                    <li>DOM très fortement lié au serveur</li>
-                </ul>
-            </p>
-            <br>
-            <br>
-            <br>
-            <pre><code data-language="html">&lt;a
+            <pre class="substep x5"><code data-language="html">&lt;a
     class=&quot;edit&quot;
     href=&quot;/fr/ajax/skills/save/?id=11&amp;cv_id=12&quot;&gt;
 &lt;/a&gt;</code></pre>
+            </p>
+
         </div>
 
-        <div class="step slide overlay" data-scale="0.3">
+        <div class="step slide" data-scale="0.3" data-steps=1>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
             <q>Un front très "user friendly" mais très peu "developer friendly"</q>
+            <img src="./images/dyb.v1.developper.gif" class="substep s1" style="margin: auto;">
         </div>
 
-        <div class="step slide overlay" data-scale="0.3">
+        <div class="step slide" data-scale="0.3" data-steps=3>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <q>Un front très "user friendly" mais très peu "developer friendly"</q>
-            <img src="./images/dyb.v1.developper.gif" style="display: block; margin: auto;">
+            <img src="./images/skills.png" style="height:70%; border: solid 1px gray; float: left; margin: 10px;">
+            <p>Combien de compétences ?</p>
+            <pre class="substep s1"><code class="inline" data-language="javascript">$('widget.skills').count();</code></pre>
+            <pre class="substep s2"><code class="inline" data-language="javascript">-&gt; 4</code></pre>
+            <img class="substep s3" src="./images/close-enough.jpg" style="height: 50%; float: right">
         </div>
 
-        <div class="step slide" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <img src="./images/skills.png" style="height:70%; border: solid 1px gray; float: left; margin: 10px;">
-            <p>Combien de compétences ?</p>
-        </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <img src="./images/skills.png" style="height:70%; border: solid 1px gray; float: left; margin: 10px;">
-            <p>Combien de compétences ?</p>
-            <pre><code class="inline" data-language="javascript">$('widget.skills').count();</code></pre>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <img src="./images/skills.png" style="height:70%; border: solid 1px gray; float: left; margin: 10px;">
-            <p>Combien de compétences ?</p>
-            <pre><code class="inline" data-language="javascript">$('widget.skills').count();</code></pre>
-            <pre><code class="inline" data-language="javascript">-&gt; 4</code></pre>
-        </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <img src="./images/skills.png" style="height:70%; border: solid 1px gray; float: left; margin: 10px;">
-            <p>Combien de compétences ?</p>
-            <pre><code class="inline" data-language="javascript">$('widget.skills').count();</code></pre>
-            <pre><code class="inline" data-language="javascript">-&gt; 4</code></pre>
-            <img src="./images/close-enough.jpg" style="height: 50%; float: right">
-        </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
-            <img src="./images/skills.png" style="height:70%; border: solid 1px gray; float: left; margin: 10px;">
-            <p>Combien de compétences ?</p>
-            <pre><code class="inline" data-language="javascript">$('widget.skills').count();</code></pre>
-            <pre><code class="inline" data-language="javascript">-&gt; 4</code></pre>
-            <p style="color: red">Problème : on ne compte pas les widgets cachés par l'utilisateur !</p>
-        </div>
 
         <div class="step slide" data-scale="0.3">
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : la V1</h2>
@@ -227,38 +143,17 @@
             <h3 class="subtitle"><img src="./images/doyoubuzz.png"><br> l'âge adulte</h3>
         </div>
 
+        <div class="step slide" data-scale="0.3" data-steps=4>
+            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> V2</h2>
+            <br><div class="fade substep s1" style="font-size: 100pt; text-align: center;">=</div>
+            <br>
+            <br>
+            <img src="./images/the-sentinel.jpg" class="fade substep s2" style="width: 45%; float: left;">
+            <span class="fade substep s3" style="position: absolute; top: 50%; left: 50%; font-size: 100pt;">+</span>
+            <img class="fade substep s4" src="./images/evoli.gif"        style="width: 40%; float: right;">
+        </div>
+
         <div class="step slide" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> V2</h2>
-            <br><div class="fade" style="font-size: 100pt; text-align: center;">=</div>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> V2</h2>
-            <br><div style="font-size: 100pt; text-align: center;">=</div>
-            <br>
-            <br>
-            <img src="./images/the-sentinel.jpg" class="fade" style="width: 45%; float: left;">
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> V2</h2>
-            <br><div style="font-size: 100pt; text-align: center;">=</div>
-            <br>
-            <br>
-            <img src="./images/the-sentinel.jpg" style="width: 45%; float: left;">
-            <span class="fade" style="position: absolute; top: 50%; left: 50%; font-size: 100pt;">+</span>
-        </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> V2</h2>
-            <br><div style="font-size: 100pt; text-align: center;">=</div>
-            <br>
-            <br>
-            <img src="./images/the-sentinel.jpg" style="width: 45%; float: left;">
-            <span style="position: absolute; top: 50%; left: 50%; font-size: 100pt;">+</span>
-            <img class="fade" src="./images/evoli.gif"        style="width: 40%; float: right;">
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"></h2>
             <br>
             <br>
@@ -266,11 +161,6 @@
         </div>
 
         <div class="step slide" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"></h2>
-            <h3 class="subtitle">Mais avant tout !</h3>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"></h2>
             <q style="text-align: center;">No country for old JS !</q>
             <br>
@@ -280,27 +170,24 @@
             <img src="./images/bin.jpeg" id="jsbin">
         </div>
 
-        <div class="step slide" data-scale="0.3">
+        <div class="step slide" data-scale="0.3" data-steps=4>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"></h2>
             <q>Pourquoi Angular ?</q>
             <ul>
-                <li>un framework complet</li>
+                <li class="substep s1">un framework complet</li>
+                <li class="substep s2">injection de dépendances</li>
+                <li class="substep s3">prêt pour les tests</li>
+                <li class="substep s4">une communauté hyper-active (et maintenue par <img style="width: 100px; margin-bottom: -10px;" src="./images/google.jpg">).</li>
             </ul>
-            <pre><code data-language="javascript">angular
+
+            <pre class="substep x1"><code data-language="javascript">angular
     .module('doyoubuzz', ['ng-animate'])
     .controller('resumeController', function () {})
     .factory('resumeManager', function () {})
     .directive('editBox', function () {});
 </code></pre>
-        </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"></h2>
-            <q>Pourquoi Angular ?</q>
-            <ul>
-                <li>un framework complet</li>
-                <li>injection de dépendances</li>
-            </ul>
-            <pre><code data-language="javascript">[
+
+            <pre class="substep x2"><code data-language="javascript">[
     'dependancy1',
     'dependancy2',
     function (dependancy1, dependancy2) {
@@ -308,28 +195,10 @@
         dependancy2.nextSlide();
     }
 ];</code></pre>
-        </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"></h2>
-            <q>Pourquoi Angular ?</q>
-            <ul>
-                <li>un framework complet</li>
-                <li>injection de dépendances</li>
-                <li>prêt pour les tests</li>
-            </ul>
-        </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"></h2>
-            <q>Pourquoi Angular ?</q>
-            <ul>
-                <li>un framework complet</li>
-                <li>injection de dépendances</li>
-                <li>prêt pour les tests</li>
-                <li>une communauté hyper-active (et maintenue par <img style="width: 100px; margin-bottom: -10px;" src="./images/google.jpg">).</li>
-            </ul>
+
             <br>
-            <img src="./images/angular.github.contributors.png">
-            <img src="./images/angular.github.activity.png">
+            <img class="substep x4" src="./images/angular.github.contributors.png">
+            <img class="substep x4" src="./images/angular.github.activity.png">
         </div>
 
         <div class="step slide" data-scale="0.3">
@@ -384,26 +253,15 @@
             </table>
         </div>
 
-        <div class="step slide" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
-            <img src="./images/dyb.v2.png" style="width: 100%;">
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
+        <div class="step slide" data-scale="0.3" data-steps=4>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
             <div style="position: relative;">
                 <img src="./images/dyb.v2.png" style="width: 100%;">
-                <div class="controller resume-controller-wrapper">&nbsp;</div>
-            </div>
-        </div>
+                <div class="controller resume-controller-wrapper substep s1">&nbsp;</div>
+                <div class="controller widget-controller xp-widget-controller-wrapper substep s3">&nbsp;</div>
+                <div class="controller widget-controller skills-widget-controller-wrapper substep s3">&nbsp;</div>
 
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
-            <div style="position: relative;">
-                <img src="./images/dyb.v2.png" style="width: 100%;">
-                <div class="controller resume-controller-wrapper">&nbsp;</div>
-            </div>
-            <pre class="resume-controller-code"><code data-language="javascript">{
+                <pre class="substep x2 resume-controller-code"><code data-language="javascript">{
     positions: Object
     resume: Object
     createElement: function (type) {}
@@ -412,27 +270,7 @@
     sortStop: function (event, data) {}
 }
 </code></pre>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
-            <div style="position: relative;">
-                <img src="./images/dyb.v2.png" style="width: 100%;">
-                <div class="controller resume-controller-wrapper" style="border-width: 1px">&nbsp;</div>
-                <div class="controller widget-controller xp-widget-controller-wrapper">&nbsp;</div>
-                <div class="controller widget-controller skills-widget-controller-wrapper">&nbsp;</div>
-            </div>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
-            <div style="position: relative;">
-                <img src="./images/dyb.v2.png" style="width: 100%;">
-                <div class="controller resume-controller-wrapper" style="border-width: 1px">&nbsp;</div>
-                <div class="controller widget-controller xp-widget-controller-wrapper">&nbsp;</div>
-                <div class="controller widget-controller skills-widget-controller-wrapper">&nbsp;</div>
-            </div>
-            <pre class="widgets-controller-code"><code data-language="javascript">{
+                <pre class="substep x4 widgets-controller-code"><code data-language="javascript">{
     type: String,
     elements: Array,
     create: function () {},
@@ -446,9 +284,10 @@
     sort: function () {}
 }
 </code></pre>
+            </div>
         </div>
 
-        <div class="step slide overlay" data-scale="0.3">
+        <div class="step slide" data-scale="0.3">
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
             <div style="position: relative;">
                 <img src="./images/dyb.v2.widget-hover.png" style="width: 100%;">
@@ -465,10 +304,10 @@
             </div>
         </div>
 
-        <div class="step slide" data-scale="0.3">
+        <div class="step slide" data-scale="0.3" data-steps=2>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
             <p>Héritage de prototype</p>
-            <pre><code data-language="javascript">{
+            <pre class="substep x1"><code data-language="javascript">{
     //le prototype du widgetController
     type: String,
     elements: Array,
@@ -478,12 +317,7 @@
     sort: function () {}
 }
 </code></pre>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
-            <p>Héritage de prototype</p>
-            <pre><code data-language="javascript">{
+            <pre class="substep x2"><code data-language="javascript">{
     //le prototype du widgetController
     type: String,
     elements: Array,
@@ -502,14 +336,6 @@
 }
 </code></pre>
         </div>
-
-        <!--<div class="step slide" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les scopes</h2>
-            <pre>TODO image d'un drawer de la V2
-lien entre un élément du DOM et du code HTML (-&gt; data-ng-click declarative interface)
-lien entre html et scope (appel d'une methode)
-            </pre>
-        </div>-->
 
         <div class="step slide" data-scale="0.3">
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les services</h2>
@@ -560,7 +386,6 @@ lien entre html et scope (appel d'une methode)
 }
             </code></pre>
         </div>
-<!--<idea>exemple de directives avec les listControllers</idea>-->
 
         <div class="step slide" data-scale="0.3">
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : les services</h2>
@@ -634,28 +459,66 @@ w.$update(); //PUT -&gt; /cv/12/skills/1
             </code></pre>
         </div>
 
-<!--<idea>Montrer un exemple de tests</idea>-->
 
         <div class="step" id="contrainte" data-scale="0.3" data-x="-400" data-y="2200" data-z="-1000" data-rotate-x="45">
             <h3 class="subtitle">La contrainte</h3>
         </div>
 
-        <div class="step" data-scale="0.3" data-x="-400" data-y="2200" data-z="-1000">
-            <q style="display: block; width: 100%; margin-top: 25%; text-align: center;" class="fade"><samp>CV en mode 'édition' <br> === <br> CV en mode 'vue'</samp></q>
-        </div>
-
-        <div class="step" data-scale="0.3" data-x="-400" data-y="2200" data-z="-800">
-            <q style="display: block; width: 100%; text-align: center; font-size: 60pt; font-weigth: bold; margin-top: 25%;">Sans <img style="height: 1em;" src="./images/angularjs.png"> en mode vue</q>
+        <div class="step" data-scale="0.3" data-x="-400" data-y="2200" data-z="-800" data-steps=2>
+            <q style="display: block; width: 100%; margin-top: 25%; text-align: center;" class="substep x1 fade"><samp>CV en mode 'édition' <br> === <br> CV en mode 'vue'</samp></q>
+            <q style="display: block; width: 100%; text-align: center; font-size: 60pt; font-weigth: bold;" class="substep s2 fade">Sans <img style="height: 1em;" src="./images/angularjs.png"> en mode vue !!</q>
         </div>
 
 
-        <div class="step slide" data-scale="0.3">
+        <div class="step slide" data-scale="0.3" data-steps=2>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la contrainte</h2>
-            <img src="./images/dyb.mode.edit.png" style="width: 100%">
+            <img class="substep x1" src="./images/dyb.mode.edit.png" style="width: 100%">
+            <img class="substep s2" src="./images/dyb.mode.view.png" style="width: 100%">
         </div>
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la contrainte</h2>
-            <img src="./images/dyb.mode.view.png" style="width: 100%">
+
+        <div class="step slide increment" data-scale="0.3" data-steps=8>
+            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : mode édition</h2>
+            <div class="edit-layout anim">
+                <img src="./images/filling/cv.layout.png" style="width: 100%">
+                <div class="anim widgets-views">
+                    <img src="./images/filling/cv.educations.1.jpg" class="anim positionable edu first">
+                    <img src="./images/filling/cv.educations.2.jpg" class="anim positionable edu second">
+                    <img src="./images/filling/cv.skills.1.jpg" class="anim positionable sk">
+                </div>
+            </div>
+
+            <div class="anim forgot-smthg http-request">T'as&nbsp;pas&nbsp;oublié&nbsp;qqchose&nbsp;? </div>
+
+            <div class="js-libs anim">
+                <img src="./images/jsfile.png">
+                <div class="js-libs-names">
+                <strong>
+                    Angular.js<br>
+                    jQuery.js<br>
+                    services.js<br>
+                    [...]<br>
+                    application.js<br>
+                </strong>
+                </div>
+            </div>
+
+            <div class="anim send-cv http-request">Tu&nbsp;peux&nbsp;m'envoyer&nbsp;le&nbsp;CV&nbsp;? </div>
+
+            <div class="anim cv-json"><pre><code data-language="javascript">{
+    widgets: [...],
+    positions: [...],
+    ...
+} </code></pre></div>
+        </div>
+
+        <div class="step slide increment overlay" data-scale="0.3" data-steps=2>
+            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : mode vue</h2>
+            <div class="edit-layout anim">
+                <img src="./images/filling/cv.full.png" style="width: 100%">
+            </div>
+            <div class="anim success">
+                <img src="./images/filling/dyb.load.success.jpg" style="width:60%">
+            </div>
         </div>
 
         <div class="step slide counters-trigger" data-scale="0.3">
@@ -673,75 +536,15 @@ w.$update(); //PUT -&gt; /cv/12/skills/1
             </table>
         </div>
 
-        <div class="step slide" data-scale="0.3">
+        <div class="step slide" data-scale="0.3" data-steps=5>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la contrainte</h2>
             <q>Plusieurs possibilités pour le rendu :</q>
             <ul>
-                <li>tout le rendu se fait côté serveur</li>
-                <li>tout le rendu se fait côté client</li>
-                <li>duplication de la logique de rendu entre client et serveur</li>
-                <li>le client et le serveur utilisent le même moteur de rendu</li>
-                <li>le serveur rend des morceaux du CV et le client les place</li>
-            </ul>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la contrainte</h2>
-            <q>Plusieurs possibilités pour le rendu :</q>
-            <ul>
-                <li>tout le rendu se fait côté serveur <br><span style="color: red">-&gt; peu de flexibilité</span></li>
-                <li>tout le rendu se fait côté client</li>
-                <li>duplication de la logique de rendu entre client et serveur</li>
-                <li>le client et le serveur utilisent le même moteur de rendu</li>
-                <li>le serveur rend des morceaux du CV et le client les place</li>
-            </ul>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la contrainte</h2>
-            <q>Plusieurs possibilités pour le rendu :</q>
-            <ul>
-                <li>tout le rendu se fait côté serveur <br><span style="color: red">-&gt; peu de flexibilité</span></li>
-                <li>tout le rendu se fait côté client <br><span style="color: red">-&gt; pas de JS en mode vue</span></li>
-                <li>duplication de la logique de rendu entre client et serveur</li>
-                <li>le client et le serveur utilisent le même moteur de rendu</li>
-                <li>le serveur rend des morceaux du CV et le client les place</li>
-            </ul>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la contrainte</h2>
-            <q>Plusieurs possibilités pour le rendu :</q>
-            <ul>
-                <li>tout le rendu se fait côté serveur <br><span style="color: red">-&gt; peu de flexibilité</span></li>
-                <li>tout le rendu se fait côté client <br><span style="color: red">-&gt; pas de JS en mode vue</span></li>
-                <li>duplication de la logique de rendu entre client et serveur <br><span style="color: red">-&gt; maintenabilité 0</span></li>
-                <li>le client et le serveur utilisent le même moteur de rendu</li>
-                <li>le serveur rend des morceaux du CV et le client les place</li>
-            </ul>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la contrainte</h2>
-            <q>Plusieurs possibilités pour le rendu :</q>
-            <ul>
-                <li>tout le rendu se fait côté serveur <br><span style="color: red">-&gt; peu de flexibilité</span></li>
-                <li>tout le rendu se fait côté client <br><span style="color: red">-&gt; pas de JS en mode vue</span></li>
-                <li>duplication de la logique de rendu entre client et serveur <br><span style="color: red">-&gt; maintenabilité 0</span></li>
-                <li>le client et le serveur utilisent le même moteur de rendu <br><span style="color: red">-&gt; pas encore vraiment possible</span></li>
-                <li>le serveur rend des morceaux du CV et le client les place</li>
-            </ul>
-        </div>
-
-        <div class="step slide overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la contrainte</h2>
-            <q>Plusieurs possibilités pour le rendu :</q>
-            <ul>
-                <li>tout le rendu se fait côté serveur <br><span style="color: red">-&gt; peu de flexibilité</span></li>
-                <li>tout le rendu se fait côté client <br><span style="color: red">-&gt; pas de JS en mode vue</span></li>
-                <li>duplication de la logique de rendu entre client et serveur <br><span style="color: red">-&gt; maintenabilité 0</span></li>
-                <li>le client et le serveur utilisent le même moteur de rendu <br><span style="color: red">-&gt; pas encore vraiment possible</span></li>
-                <li style="color: green">le serveur rend des morceaux du CV et le client les place</li>
+                <li>tout le rendu se fait côté serveur <br><span class="substep s1" style="color: red">-&gt; peu de flexibilité</span></li>
+                <li>tout le rendu se fait côté client <br><span class="substep s2" style="color: red">-&gt; pas de JS en mode vue</span></li>
+                <li>duplication de la logique de rendu entre client et serveur <br><span class="substep s3" style="color: red">-&gt; maintenabilité 0</span></li>
+                <li>le client et le serveur utilisent le même moteur de rendu <br><span class="substep s4" style="color: red">-&gt; pas encore vraiment possible</span></li>
+                <li>le serveur rend des morceaux du CV et le client les place <span style="color: green" class="substep s5">✓</span></li>
             </ul>
         </div>
 
@@ -794,51 +597,6 @@ w.$update(); //PUT -&gt; /cv/12/skills/1
             </div>
         </div>
 
-        <div class="step slide increment" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : mode édition</h2>
-            <div class="edit-layout anim">
-                <img src="./images/filling/cv.layout.png" style="width: 100%">
-                <div class="anim widgets-views">
-                    <img src="./images/filling/cv.educations.1.jpg" class="anim positionable edu first">
-                    <img src="./images/filling/cv.educations.2.jpg" class="anim positionable edu second">
-                    <img src="./images/filling/cv.skills.1.jpg" class="anim positionable sk">
-                </div>
-            </div>
-
-            <div class="anim forgot-smthg http-request">T'as&nbsp;pas&nbsp;oublié&nbsp;qqchose&nbsp;? </div>
-
-            <div class="js-libs anim">
-                <img src="./images/jsfile.png">
-                <div class="js-libs-names">
-                <strong>
-                    Angular.js<br>
-                    jQuery.js<br>
-                    services.js<br>
-                    [...]<br>
-                    application.js<br>
-                </strong>
-                </div>
-            </div>
-
-            <div class="anim send-cv http-request">Tu&nbsp;peux&nbsp;m'envoyer&nbsp;le&nbsp;CV&nbsp;? </div>
-
-            <div class="anim cv-json"><pre><code data-language="javascript">{
-    widgets: [...],
-    positions: [...],
-    ...
-} </code></pre></div>
-        </div>
-
-        <div class="step slide increment overlay" data-scale="0.3">
-            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : mode vue</h2>
-            <div class="edit-layout anim">
-                <img src="./images/filling/cv.full.png" style="width: 100%">
-            </div>
-            <div class="anim success">
-                <img src="./images/filling/dyb.load.success.jpg" style="width:60%">
-            </div>
-        </div>
-
         <div class="step slide free" data-scale="0.3" data-x="0" data-y="2000">
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : bilan</h2>
             <table style="width: 100%">
@@ -874,24 +632,15 @@ w.$update(); //PUT -&gt; /cv/12/skills/1
             <img src="./images/dyb.tutor.jpg" style="height: 90%; display: block; margin: auto;">
         </div>
 
-        <div class="step" data-scale="0.3" data-x="0" data-y="2100" data-z="100">
-            <img src="./images/dyb.v2.interactions.0.png" style="height: 700px;">
-        </div>
-        <div class="step overlay" data-scale="0.3" data-x="0" data-y="2100" data-z="100">
-            <img src="./images/dyb.v2.interactions.1.png" style="height: 700px;">
-        </div>
-        <div class="step overlay" data-scale="0.3" data-x="0" data-y="2100" data-z="100">
-            <img src="./images/dyb.v2.interactions.2.png" style="height: 700px;">
-        </div>
-        <div class="step overlay" data-scale="0.3" data-x="0" data-y="2100" data-z="100">
-            <img src="./images/dyb.v2.interactions.3.png" style="height: 700px;">
+        <div class="step" data-scale="0.3" data-x="0" data-y="2100" data-z="100" data-steps=4>
+            <img class="substep x1" src="./images/dyb.v2.interactions.0.png" style="height: 700px;">
+            <img class="substep x2" src="./images/dyb.v2.interactions.1.png" style="height: 700px;">
+            <img class="substep x3" src="./images/dyb.v2.interactions.2.png" style="height: 700px;">
+            <img class="substep x4" src="./images/dyb.v2.interactions.3.png" style="height: 700px;">
         </div>
 
-        <div id="thanks" class="step" data-scale="4.5" data-y="1500" style="text-align: center;">
-            <h1>MERCI</h1>
-        </div>
-
-        <div id="find-me" class="step" data-y="-1000" data-Z="-1500">
+        <div id="find-me" class="step">
+            <h1 style="text-align: center;">MERCI</h1>
             <h1>Retrouvez moi</h1>
             <a href="https://twitter.com/thomasbelin4"><i class="icon-twitter"></i>@ThomasBelin4</a><br>
             <a href="http://thomasbelin.fr"><i class="icon-rss"></i> thomasbelin.fr</a><br>
@@ -902,8 +651,8 @@ w.$update(); //PUT -&gt; /cv/12/skills/1
 
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-animate.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-animate.min.js"></script>
     <script src="./js/rainbow.min.js"></script>
     <script src="./js/language/generic.js"></script>
     <script src="./js/language/javascript.js"></script>

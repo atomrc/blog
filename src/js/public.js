@@ -15,7 +15,9 @@ define([], function () {
                             return postsManager.query();
                         }]
                     },
-                    controller: ['$scope', 'posts', function ($scope, posts) {
+                    controller: ['$rootScope', '$scope', 'posts', function ($rootScope, $scope, posts) {
+                        delete $rootScope.description;
+                        delete $rootScope.title;
                         $scope.posts = posts;
                     }]
                 })
@@ -28,7 +30,9 @@ define([], function () {
                             return postsManager.get(postSlug);
                         }]
                     },
-                    controller: ['$scope', 'post', function ($scope, post) {
+                    controller: ['$rootScope', '$scope', 'post', function ($rootScope, $scope, post) {
+                        $rootScope.description = post.description;
+                        $rootScope.title = post.title;
                         $scope.post = post;
                     }]
                 })
@@ -107,7 +111,7 @@ define([], function () {
                 };
             }])
 
-            .factory('postsManager', ['Post', '$http', function (Post, $http) {
+            .factory('postsManager', ['Post', '$http', '$q', function (Post, $http, $q) {
                 var posts,
                     relatedPosts = {},
                     find = function (slug) {
@@ -142,9 +146,16 @@ define([], function () {
                      * @return {Promise}
                      */
                     get: function (slug) {
-                        var post = find(slug);
-                        if (!post) { return Post.find({id: slug}); }
-                        if (post.body) { return post; }
+                        var post = find(slug),
+                            deferred = $q.defer();
+                        if (!post) {
+                            post = new Post({id: slug});
+                            return post.$find();
+                        }
+                        if (post.body) {
+                            deferred.resolve(post);
+                            return deferred.promise;
+                        }
                         post.$loading = true;
                         return post.$get();
                     },
@@ -167,6 +178,15 @@ define([], function () {
          * DIRECTIVES
          */
         app
+
+            .directive('metaContent', [function () {
+                return function ($scope, element, attrs) {
+                    var defaultContent = attrs.content;
+                    $scope.$watch(attrs.metaContent, function (content) {
+                        element.attr('content', content || defaultContent);
+                    });
+                };
+            }])
 
             .directive('postsContainer', [function () {
                 return {
