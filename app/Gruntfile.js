@@ -14,7 +14,6 @@ module.exports = function (grunt) {
         requirejs: {
             options: {
                 baseUrl: '<%= srcPath %>/js',
-                mainConfigFile: '<%= srcPath %>/js/main.js',
                 paths: {
                     angular: 'empty:',
                     ngResource: 'empty:',
@@ -22,7 +21,10 @@ module.exports = function (grunt) {
                     ngRoute: 'empty:',
                     disqus: 'empty:'
                 },
-                name: 'main',
+                modules: [
+                    { name: 'main' },
+                    { name: 'main.admin' }
+                ],
                 dir: '<%= destPath %>/js',
                 optimize: 'uglify2'
             },
@@ -36,7 +38,7 @@ module.exports = function (grunt) {
         },
 
         jade: {
-            dev: {
+            front: {
                 options: {
                     data: function (dest) {
                         return {
@@ -85,6 +87,12 @@ module.exports = function (grunt) {
                 files: '<%= srcPath %>/sass/*.scss',
                 tasks: ['sass']
             }
+        },
+
+        exec: {
+            deploy: {
+                command: 'af update blog-thomasbelin'
+            }
         }
     });
 
@@ -94,7 +102,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-exec');
 
     // The default tasks to run when you type: grunt
-    grunt.registerTask('default', ['requirejs:prod', 'copy', 'jade', 'sass']);
+    grunt.registerTask('default', ['requirejs:dev', 'copy', 'jade', 'sass']);
+    grunt.registerTask('deploy', ['requirejs:prod', 'copy', 'jade', 'sass', 'shell:deploy']);
 };

@@ -1,6 +1,6 @@
 /*global require */
 
-require(['angular', 'bootstrap.public', 'extensions', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular, bootstrap) {
+require(['angular', 'bootstrap.admin', 'extensions', 'ngRoute', 'ngResource', 'ngAnimate'], function (angular, bootstrap) {
     'use strict';
     var ngBlog = angular.module('blog', ['ngRoute', 'ngResource', 'ngAnimate']);
     bootstrap(ngBlog);
