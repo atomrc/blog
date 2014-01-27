@@ -110,7 +110,7 @@
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> : le front actuel</h2>
             <img src="./images/skills.png" style="height:70%; border: solid 1px gray; float: left; margin: 10px;">
             <p>Combien de compétences ?</p>
-            <pre class="substep s1"><code class="inline" data-language="javascript">$('widget.skills').count();</code></pre>
+            <pre class="substep s1"><code class="inline" data-language="javascript">$('widget.skills').length;</code></pre>
             <pre class="substep s2"><code class="inline" data-language="javascript">-&gt; 4</code></pre>
             <img class="substep s3" src="./images/close-enough.jpg" style="height: 50%; float: right">
         </div>
@@ -511,7 +511,7 @@ w.$update(); //PUT -&gt; /cv/12/skills/1
 } </code></pre></div>
         </div>
 
-        <div class="step slide increment overlay" data-scale="0.3" data-steps=2>
+        <div class="step slide increment" data-scale="0.3" data-steps=2>
             <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : mode vue</h2>
             <div class="edit-layout anim">
                 <img src="./images/filling/cv.full.png" style="width: 100%">
@@ -534,6 +534,11 @@ w.$update(); //PUT -&gt; /cv/12/skills/1
                     <td>CV vus</td>
                 </tr>
             </table>
+        </div>
+
+        <div class="step slide counters-trigger" data-scale="0.3">
+            <h2><img src="./images/doyoubuzz.png" class="dyb-title"> + <img class="dyb-title" src="./images/angularjs.png"> : la problématique</h2>
+            <q>Comment rendre de façon identique des vues qui sont générées à la fois en front et en back ?</q>
         </div>
 
         <div class="step slide" data-scale="0.3" data-steps=5>
@@ -639,14 +644,13 @@ w.$update(); //PUT -&gt; /cv/12/skills/1
             <img class="substep x4" src="./images/dyb.v2.interactions.3.png" style="height: 700px;">
         </div>
 
-        <div id="find-me" class="step">
-            <h1 style="text-align: center;">MERCI</h1>
-            <h1>Retrouvez moi</h1>
-            <a href="https://twitter.com/thomasbelin4"><i class="icon-twitter"></i>@ThomasBelin4</a><br>
-            <a href="http://thomasbelin.fr"><i class="icon-rss"></i> thomasbelin.fr</a><br>
-            <a href="https://github.com/thomasbelin4"><i class="icon-github"></i> ThomasBelin4</a><br>
-            <a href="https://google.com/+ThomasBelin"><i class="icon-google-plus"></i> +ThomasBelin</a><br>
-            <a href="http://thomas-belin.com"><i class="icon-doyoubuzz">d</i> thomas-belin.com</a>
+        <div id="find-me" data-scale="0.5" class="step">
+            <div id="preview-invitation">
+                <div class="hole"></div>
+                <h1 style="text-align: center;">Cadeau</h1>
+                <q><a href="http://preview.doyoubuzz.com">http://preview.doyoubuzz.com</a></q>
+                <q>nantesJS</q>
+            </div>
         </div>
 
     </div>

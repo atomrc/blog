@@ -711,7 +711,7 @@ code, samp { font-family: courier; }
 #thanks.active { opacity: 1; }
 #thanks h1 { color: white; font-size: 35pt; }
 
-#find-me { padding-left: 300px;
+#find-me {
     color: #666;
 }
 
@@ -1007,4 +1007,33 @@ code, samp { font-family: courier; }
 .http-post-response.loading-add.loading-add-active,
 .http-post-request.loading-add.loading-add-active {
     opacity: 1;
+}
+
+#preview-invitation {
+    background-color: white;
+    border-radius: 20px;
+    box-shadow: 2px 2px 2px #AAA;
+    padding: 50px;
+    padding-bottom: 200px;
+    border-bottom: solid 1px #AAA;
+    text-align: center;
+    width: 700px;
+    margin: auto;
+}
+#preview-invitation a {
+    color: rgb(0, 157, 235);
+}
+#preview-invitation h1 {
+    padding: 20px;
+    margin: 20px;
+    margin-bottom: 100px;
+    border-bottom: solid 1px #666;
+}
+.hole {
+    margin:auto;
+    width: 25%;
+    border-radius: 10px;
+    height: 20px;
+    background-color: #EEE;
+    box-shadow: -2px -2px 2px #AAA inset;
 }
